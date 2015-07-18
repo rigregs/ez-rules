@@ -14,7 +14,7 @@
 	</parent>
 
 	<artifactId>ez-rules-core</artifactId>
-	<name>Simple App Fixtures</name>
+	<name>Easy Rules Core</name>
 
 	<dependencies>
 		<!-- SLF4J -->
