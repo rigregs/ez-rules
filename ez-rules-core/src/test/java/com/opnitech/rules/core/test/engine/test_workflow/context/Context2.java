@@ -1,0 +1,23 @@
+package com.opnitech.rules.core.test.engine.test_workflow.context;
+
+/**
+ * @author Rigre Gregorio Garciandia Sonora
+ */
+public class Context2 {
+
+    private String value;
+
+    public Context2(String value) {
+        this.value = value;
+        // Default constructor
+
+    }
+
+    public String getValue() {
+        return this.value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+}
