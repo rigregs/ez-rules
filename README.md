@@ -16,8 +16,12 @@ Some of the features available in the framwork are:
 
  * Generic Context Support, you can pass a set of context to the engine and define the parameters you want in you rules methods. The framework will resolve those parameters for you. 
 
-### Continuous integration
+## Project Details
 
+### Project Web Site
+[http://rigregs.github.io/ez-rules/](http://rigregs.github.io/ez-rules/)
+
+### Continuous integration
 [Build Jenkins job @ CloudBees](https://buildhive.cloudbees.com/job/rigregs/job/ez-rules)
 
 ## License
