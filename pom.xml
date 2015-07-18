@@ -11,7 +11,7 @@
 
 	<groupId>com.opnitech.utils</groupId>
 	<artifactId>ez-rules</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 
 	<modules>
 		<module>ez-rules-core</module>
@@ -40,17 +40,22 @@
 	</properties>
 
 	<scm>
-		<url>git@github.com:opnitech/ez-rules.git</url>
-		<connection>scm:git:git@github.com:opnitech/ez-rules.git</connection>
-		<developerConnection>scm:git:git@github.com:opnitech/ez-rules.git</developerConnection>
+		<url>git@github.com:rigregs/ez-rules.git</url>
+		<connection>scm:git:git@github.com:rigregs/ez-rules.git</connection>
+		<developerConnection>scm:git:git@github.com:rigregs/ez-rules.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/opnitech/ez-rules/issues</url>
+		<url>https://github.com/rigregs/ez-rules/issues</url>
 	</issueManagement>
-
+	
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://buildhive.cloudbees.com/job/rigregs/job/ez-rules</url>
+	</ciManagement>
+	
 	<dependencyManagement>
 		<dependencies>
 			<!-- this project's own modules -->
