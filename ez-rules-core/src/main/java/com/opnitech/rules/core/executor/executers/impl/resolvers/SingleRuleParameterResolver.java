@@ -10,19 +10,19 @@ import com.opnitech.rules.core.executor.reflection.ParameterResolver;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class SingleRuleRunnerParameterResolver implements ParameterResolver {
+public class SingleRuleParameterResolver implements ParameterResolver {
 
     private static final List<RunnerParameterResolver> PARAMETER_RESOLVERS = new ArrayList<>();
 
     static {
-        SingleRuleRunnerParameterResolver.PARAMETER_RESOLVERS.add(new CallbackRunnerParameterResolver());
-        SingleRuleRunnerParameterResolver.PARAMETER_RESOLVERS.add(new ContextManagerRunnerParameterResolver());
-        SingleRuleRunnerParameterResolver.PARAMETER_RESOLVERS.add(new ContextRunnerParameterResolver());
+        SingleRuleParameterResolver.PARAMETER_RESOLVERS.add(new CallbackRunnerParameterResolver());
+        SingleRuleParameterResolver.PARAMETER_RESOLVERS.add(new ExchangeManagerParameterResolver());
+        SingleRuleParameterResolver.PARAMETER_RESOLVERS.add(new ExchangeParameterResolver());
     }
 
     private final WorkflowState workflowState;
 
-    public SingleRuleRunnerParameterResolver(WorkflowState workflowState) {
+    public SingleRuleParameterResolver(WorkflowState workflowState) {
 
         this.workflowState = workflowState;
     }
@@ -30,7 +30,7 @@ public class SingleRuleRunnerParameterResolver implements ParameterResolver {
     @Override
     public Object resolveParameter(ParameterMetadata methodParameterMetadata) throws Exception {
 
-        for (RunnerParameterResolver executerParameterResolver : SingleRuleRunnerParameterResolver.PARAMETER_RESOLVERS) {
+        for (RunnerParameterResolver executerParameterResolver : SingleRuleParameterResolver.PARAMETER_RESOLVERS) {
             if (executerParameterResolver.acceptParameter(this.workflowState, methodParameterMetadata)) {
                 return executerParameterResolver.resolveParameter(this.workflowState, methodParameterMetadata);
             }

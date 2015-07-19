@@ -2,7 +2,7 @@ package com.opnitech.rules.core.executor.flow;
 
 import java.util.List;
 
-import com.opnitech.rules.core.ContextManager;
+import com.opnitech.rules.core.ExchangeManager;
 
 /**
  * Represent the global data that is needed for the rule execution, all rule
@@ -12,26 +12,26 @@ import com.opnitech.rules.core.ContextManager;
  */
 public final class WorkflowState {
 
-    private final ContextManager contextManager;
+    private final ExchangeManager exchangeManager;
 
     private final List<Object> callbacks;
 
     private Exception exception;
 
-    public WorkflowState(List<Object> callbacks, Object... contexts) {
+    public WorkflowState(List<Object> callbacks, Object... exchanges) {
 
         this.callbacks = callbacks;
-        this.contextManager = new ContextManagerFlow(contexts);
+        this.exchangeManager = new ExchangeManagerFlow(exchanges);
     }
 
     /**
-     * Get the context manage
+     * Get the Exchange Manager
      * 
      * @return
      */
-    public ContextManager getContextManager() {
+    public ExchangeManager getExchangeManager() {
 
-        return this.contextManager;
+        return this.exchangeManager;
     }
 
     /**

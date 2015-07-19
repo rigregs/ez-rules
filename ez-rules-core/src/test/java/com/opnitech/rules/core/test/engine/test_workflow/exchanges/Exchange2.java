@@ -1,13 +1,13 @@
-package com.opnitech.rules.core.test.engine.test_workflow.context;
+package com.opnitech.rules.core.test.engine.test_workflow.exchanges;
 
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class Context2 {
+public class Exchange2 {
 
     private String value;
 
-    public Context2(String value) {
+    public Exchange2(String value) {
         this.value = value;
         // Default constructor
 

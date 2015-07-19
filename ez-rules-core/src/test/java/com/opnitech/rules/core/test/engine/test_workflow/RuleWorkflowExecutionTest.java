@@ -7,13 +7,13 @@ import com.opnitech.rules.core.RuleEngineExecutionResult;
 import com.opnitech.rules.core.RulesEngine;
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.test.engine.test_workflow.callback.TestValidCallback;
-import com.opnitech.rules.core.test.engine.test_workflow.context.Context1;
-import com.opnitech.rules.core.test.engine.test_workflow.context.Context2;
+import com.opnitech.rules.core.test.engine.test_workflow.exchanges.Exchange1;
+import com.opnitech.rules.core.test.engine.test_workflow.exchanges.Exchange2;
 import com.opnitech.rules.core.test.engine.test_workflow.rule.workflow.TestAcceptSimpleConditionWithParameterRule;
-import com.opnitech.rules.core.test.engine.test_workflow.rule.workflow.TestAcceptSimpleDualContextConditionWithParameterRule;
+import com.opnitech.rules.core.test.engine.test_workflow.rule.workflow.TestAcceptSimpleDualExchangeConditionWithParameterRule;
 import com.opnitech.rules.core.test.engine.test_workflow.rule.workflow.TestAcceptSimpleRule;
 import com.opnitech.rules.core.test.engine.test_workflow.rule.workflow.TestCallbackRule;
-import com.opnitech.rules.core.test.engine.test_workflow.rule.workflow.TestContextManagerRule;
+import com.opnitech.rules.core.test.engine.test_workflow.rule.workflow.TestExchangeManagerRule;
 import com.opnitech.rules.core.test.engine.test_workflow.rule.workflow.TestMultiActionRule;
 
 /**
@@ -43,60 +43,60 @@ public class RuleWorkflowExecutionTest {
         RulesEngine rulesEngine = new RulesEngine();
         rulesEngine.registerExecutable(rule);
 
-        Context1 context1 = new Context1("TEST");
+        Exchange1 exchange1 = new Exchange1("TEST");
 
-        RuleEngineExecutionResult execute = rulesEngine.execute(context1);
+        RuleEngineExecutionResult execute = rulesEngine.execute(exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }
 
-        Assert.assertEquals(context1, rule.getContextCondition1());
-        Assert.assertEquals(context1, rule.getContextAction1());
+        Assert.assertEquals(exchange1, rule.getExchangeCondition1());
+        Assert.assertEquals(exchange1, rule.getExchangeAction1());
     }
 
     @Test
-    public void testAcceptSimpleDualContextConditionWithParameterRule() throws Exception {
+    public void testAcceptSimpleDualExchangeConditionWithParameterRule() throws Exception {
 
-        TestAcceptSimpleDualContextConditionWithParameterRule rule = new TestAcceptSimpleDualContextConditionWithParameterRule();
+        TestAcceptSimpleDualExchangeConditionWithParameterRule rule = new TestAcceptSimpleDualExchangeConditionWithParameterRule();
 
         RulesEngine rulesEngine = new RulesEngine();
         rulesEngine.registerExecutable(rule);
 
-        Context1 context1 = new Context1("TEST");
-        Context2 context2 = new Context2("TEST");
+        Exchange1 exchange1 = new Exchange1("TEST");
+        Exchange2 exchange2 = new Exchange2("TEST");
 
-        RuleEngineExecutionResult execute = rulesEngine.execute(context1, context2);
+        RuleEngineExecutionResult execute = rulesEngine.execute(exchange1, exchange2);
         if (execute.getException() != null) {
             throw execute.getException();
         }
 
-        Assert.assertEquals(context1, rule.getContext1());
-        Assert.assertEquals(context2, rule.getContext2());
+        Assert.assertEquals(exchange1, rule.getExchange1());
+        Assert.assertEquals(exchange2, rule.getExchange2());
 
-        rule.setContext1(null);
-        rule.setContext2(null);
+        rule.setExchange1(null);
+        rule.setExchange2(null);
 
-        execute = rulesEngine.execute(context2, context1);
+        execute = rulesEngine.execute(exchange2, exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }
 
-        Assert.assertEquals(context1, rule.getContext1());
-        Assert.assertEquals(context2, rule.getContext2());
+        Assert.assertEquals(exchange1, rule.getExchange1());
+        Assert.assertEquals(exchange2, rule.getExchange2());
     }
 
     @Test
     public void testMultiActionRule() throws Exception {
 
-        Context1 context1 = new Context1("TEST");
-        Context2 context2 = new Context2("TEST");
+        Exchange1 exchange1 = new Exchange1("TEST");
+        Exchange2 exchange2 = new Exchange2("TEST");
 
         TestMultiActionRule rule = new TestMultiActionRule();
 
         RulesEngine rulesEngine = new RulesEngine();
         rulesEngine.registerExecutable(rule);
 
-        RuleEngineExecutionResult execute = rulesEngine.execute(context1, context2);
+        RuleEngineExecutionResult execute = rulesEngine.execute(exchange1, exchange2);
         if (execute.getException() != null) {
             throw execute.getException();
         }
@@ -113,7 +113,7 @@ public class RuleWorkflowExecutionTest {
     @Test
     public void testCallbackRule() throws Exception {
 
-        Context1 context1 = new Context1("TEST");
+        Exchange1 exchange1 = new Exchange1("TEST");
 
         TestCallbackRule rule = new TestCallbackRule();
 
@@ -121,33 +121,33 @@ public class RuleWorkflowExecutionTest {
         rulesEngine.registerExecutable(TestValidCallback.class);
         rulesEngine.registerExecutable(rule);
 
-        RuleEngineExecutionResult execute = rulesEngine.execute(context1);
+        RuleEngineExecutionResult execute = rulesEngine.execute(exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }
     }
 
     @Test
-    public void testContextManagerRule() throws Exception {
+    public void testExchangeManagerRule() throws Exception {
 
-        Context1 context1 = new Context1("TEST");
+        Exchange1 exchange1 = new Exchange1("TEST");
 
-        TestContextManagerRule rule = new TestContextManagerRule();
+        TestExchangeManagerRule rule = new TestExchangeManagerRule();
         RulesEngine rulesEngine = new RulesEngine();
         rulesEngine.registerExecutable(rule);
 
-        RuleEngineExecutionResult execute = rulesEngine.execute(context1);
+        RuleEngineExecutionResult execute = rulesEngine.execute(exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }
 
-        Assert.assertEquals(TestContextManagerRule.ACTION_COUNT, rule.getActionExecuted());
+        Assert.assertEquals(TestExchangeManagerRule.ACTION_COUNT, rule.getActionExecuted());
     }
 
     @Test
     public void testMultiRule() throws Exception {
 
-        Context1 context1 = new Context1("TEST");
+        Exchange1 exchange1 = new Exchange1("TEST");
 
         TestAcceptSimpleRule acceptRule1 = new TestAcceptSimpleRule(WhenEnum.ACCEPT);
         TestAcceptSimpleRule acceptRule2 = new TestAcceptSimpleRule(WhenEnum.ACCEPT);
@@ -156,7 +156,7 @@ public class RuleWorkflowExecutionTest {
         rulesEngine.registerExecutable(acceptRule1);
         rulesEngine.registerExecutable(acceptRule2);
 
-        RuleEngineExecutionResult execute = rulesEngine.execute(context1);
+        RuleEngineExecutionResult execute = rulesEngine.execute(exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }

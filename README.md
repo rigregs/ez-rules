@@ -1,10 +1,10 @@
 ## EZ Rules
 
-EZ Rules is a lightweigth Java framework that allow the users to design the project business logic as rules.
+EZ Rules is a lightweight Java framework that allow the users to design the project business logic as rules.
 
 The framework take some ideas of some of the well know Rule frameworks and create a simple and easy to use library.
 
-Some of the features available in the framwork are:
+Some of the features available in the framework are:
 
  * Powerful Java API
  
@@ -12,7 +12,7 @@ Some of the features available in the framwork are:
 
  * Rule grouping with different execution strategy patterns like (stop first run, or execute all)
 
- * Rules prioritation
+ * Rules prioriation
 
  * Generic Context Support, you can pass a set of context to the engine and define the parameters you want in you rules methods. The framework will resolve those parameters for you. 
 

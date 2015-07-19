@@ -41,12 +41,12 @@ public class RuleEngineExecuter {
     /**
      * Manage the execution of the rule
      * 
-     * @param contexts
+     * @param exchanges
      * @return
      */
-    public WorkflowState execute(Object... contexts) {
+    public WorkflowState execute(Object... exchanges) {
 
-        WorkflowState workflowState = new WorkflowState(this.callbacks, contexts);
+        WorkflowState workflowState = new WorkflowState(this.callbacks, exchanges);
 
         try {
             for (RuleRunner ruleExecuter : this.executors) {

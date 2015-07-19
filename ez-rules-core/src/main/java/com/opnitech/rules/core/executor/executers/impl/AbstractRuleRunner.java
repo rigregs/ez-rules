@@ -14,7 +14,7 @@ import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.executor.executers.RuleRunner;
-import com.opnitech.rules.core.executor.executers.impl.resolvers.SingleRuleRunnerParameterResolver;
+import com.opnitech.rules.core.executor.executers.impl.resolvers.SingleRuleParameterResolver;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.reflection.MethodMetadata;
 import com.opnitech.rules.core.executor.reflection.MethodRunnerResult;
@@ -128,7 +128,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
         for (MethodMetadata methodMetadata : this.actionMethodMetadatas) {
 
-            methodMetadata.execute(new MethodRunnerResult<Void>(this.rule), new SingleRuleRunnerParameterResolver(workflowState));
+            methodMetadata.execute(new MethodRunnerResult<Void>(this.rule), new SingleRuleParameterResolver(workflowState));
         }
     }
 
@@ -165,7 +165,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
             MethodRunnerResult<WhenEnum> methodExecutionResult = new MethodRunnerResult<>(rule);
 
-            acceptExecutionMethodMetadata.execute(methodExecutionResult, new SingleRuleRunnerParameterResolver(workflowState));
+            acceptExecutionMethodMetadata.execute(methodExecutionResult, new SingleRuleParameterResolver(workflowState));
 
             return methodExecutionResult.getResult();
         }
@@ -184,7 +184,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
             MethodRunnerResult<Boolean> methodExecutionResult = new MethodRunnerResult<>(rule);
 
-            acceptExecutionMethodMetadata.execute(methodExecutionResult, new SingleRuleRunnerParameterResolver(workflowState));
+            acceptExecutionMethodMetadata.execute(methodExecutionResult, new SingleRuleParameterResolver(workflowState));
 
             return methodExecutionResult.getResult()
                     ? WhenEnum.ACCEPT

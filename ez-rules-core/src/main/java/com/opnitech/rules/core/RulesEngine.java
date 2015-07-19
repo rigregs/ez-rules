@@ -63,41 +63,41 @@ public final class RulesEngine {
     }
 
     /**
-     * Execute the rule engine, you can pass as many context you need for the
+     * Execute the rule engine, you can pass as many exchange you need for the
      * process
      * 
-     * @param contexts
+     * @param exchanges
      * @return
      */
-    public RuleEngineExecutionResult execute(Object... contexts) {
+    public RuleEngineExecutionResult execute(Object... exchanges) {
 
         try {
-            validateNullableContext(contexts);
+            validateNullableExchanges(exchanges);
 
-            WorkflowState workflowState = internalExecute(contexts);
+            WorkflowState workflowState = internalExecute(exchanges);
 
             Exception exception = workflowState.getException();
 
-            return new RuleEngineExecutionResult(exception == null, exception);
+            return new RuleEngineExecutionResult(exception == null, exception, workflowState.getExchangeManager());
         }
         catch (Exception e) {
             return createRuleEngineExecutionResult(false, e);
         }
     }
 
-    private void validateNullableContext(Object... contexts) {
+    private void validateNullableExchanges(Object... exchanges) {
 
-        for (Object context : contexts) {
-            Validate.notNull(context);
+        for (Object exchange : exchanges) {
+            Validate.notNull(exchange);
         }
     }
 
     private RuleEngineExecutionResult createRuleEngineExecutionResult(boolean success, Exception exception) {
 
-        return new RuleEngineExecutionResult(success, exception);
+        return new RuleEngineExecutionResult(success, exception, null);
     }
 
-    private WorkflowState internalExecute(Object... contexts) throws Exception {
+    private WorkflowState internalExecute(Object... exchanges) throws Exception {
 
         if (!this.validated) {
             ExceptionUtil.throwIllegalArgumentException(
@@ -108,7 +108,7 @@ public final class RulesEngine {
             createRuleEngineExecuter();
         }
 
-        return this.ruleEngineExecuter.execute(contexts);
+        return this.ruleEngineExecuter.execute(exchanges);
     }
 
     private void createRuleEngineExecuter() throws Exception {
@@ -120,14 +120,16 @@ public final class RulesEngine {
     /**
      * Allow to register an executable
      * 
-     * @param value
+     * @param executablesToRegister
      * @throws Exception
      */
-    public void registerExecutable(Object value) throws Exception {
+    public void registerExecutable(Object... executablesToRegister) throws Exception {
 
         clearExecuter();
 
-        internalRegisterExecutable(value);
+        for (Object executable : executablesToRegister) {
+            internalRegisterExecutable(executable);
+        }
     }
 
     private void internalRegisterExecutable(Object value) throws Exception {
@@ -146,7 +148,7 @@ public final class RulesEngine {
         }
     }
 
-    private boolean internalRegisterExecutable(List<Object> executableContexts, Object executable,
+    private boolean internalRegisterExecutable(List<Object> candidateExecutable, Object executable,
             Class<? extends Annotation> annotationClass) throws Exception {
 
         RunnerDefinitionConditionValidator executableDefinitionConditionValidator = resolveExecutableDefinitionConditionValidator(
@@ -157,7 +159,7 @@ public final class RulesEngine {
                 ((RunnerDefinitionValidator) executableDefinitionConditionValidator).validate(executable);
             }
 
-            executableContexts.add(executable);
+            candidateExecutable.add(executable);
 
             if (RulesEngine.LOGGER.isInfoEnabled()) {
 
