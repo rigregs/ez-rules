@@ -76,7 +76,7 @@ public class GroupRunner implements RuleRunner {
     }
 
     @Override
-    public WhenEnum execute(WorkflowState workflowState) throws Exception {
+    public WhenEnum execute(WorkflowState workflowState) throws Throwable {
 
         return this.executerStrategy.doExecution(workflowState, this.executors);
     }

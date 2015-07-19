@@ -1,9 +1,12 @@
 package com.opnitech.rules.core.executor.reflection;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.opnitech.rules.core.executor.util.PriorityOrdered;
 
@@ -13,6 +16,8 @@ import com.opnitech.rules.core.executor.util.PriorityOrdered;
  * @author Rigre Gregorio Garciandia Sonora
  */
 public final class MethodMetadata implements PriorityOrdered {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodMetadata.class);
 
     private final Method method;
 
@@ -73,29 +78,52 @@ public final class MethodMetadata implements PriorityOrdered {
      * @throws Exception
      */
     public <ResultType> void execute(MethodRunnerResult<ResultType> methodExecutionResult, ParameterResolver parameterResolver)
-            throws Exception {
+            throws Throwable {
 
-        @SuppressWarnings("unchecked")
-        ResultType result = (ResultType) (ArrayUtils.isNotEmpty(this.parametersMetadata)
-                ? result = executeWithParameters(methodExecutionResult, parameterResolver)
-                : this.method.invoke(methodExecutionResult.getInstance()));
+        try {
+            @SuppressWarnings("unchecked")
+            ResultType result = (ResultType) (ArrayUtils.isNotEmpty(this.parametersMetadata)
+                    ? result = executeWithParameters(methodExecutionResult, parameterResolver)
+                    : this.method.invoke(methodExecutionResult.getInstance()));
 
-        methodExecutionResult.setResult(result);
+            methodExecutionResult.setResult(result);
+        }
+        catch (InvocationTargetException e) {
+            throw extractInternalException(e);
+        }
+        catch (Exception e) {
+            throw e;
+        }
+    }
+
+    private Throwable extractInternalException(InvocationTargetException invocationTargetException) {
+
+        MethodMetadata.LOGGER.error("Error executing internal rule engine...", invocationTargetException);
+
+        return invocationTargetException.getTargetException();
     }
 
     private <ResultType> ResultType executeWithParameters(MethodRunnerResult<ResultType> methodExecutionResult,
-            ParameterResolver parameterResolver) throws Exception {
+            ParameterResolver parameterResolver) throws Throwable {
 
-        Object[] arguments = new Object[this.parametersMetadata.length];
+        try {
+            Object[] arguments = new Object[this.parametersMetadata.length];
 
-        for (int i = 0; i < this.parametersMetadata.length; i++) {
-            arguments[i] = parameterResolver.resolveParameter(this.parametersMetadata[i]);
+            for (int i = 0; i < this.parametersMetadata.length; i++) {
+                arguments[i] = parameterResolver.resolveParameter(this.parametersMetadata[i]);
+            }
+
+            @SuppressWarnings("unchecked")
+            ResultType result = (ResultType) this.method.invoke(methodExecutionResult.getInstance(), arguments);
+
+            return result;
         }
-
-        @SuppressWarnings("unchecked")
-        ResultType result = (ResultType) this.method.invoke(methodExecutionResult.getInstance(), arguments);
-
-        return result;
+        catch (InvocationTargetException e) {
+            throw extractInternalException(e);
+        }
+        catch (Exception e) {
+            throw e;
+        }
     }
 
     /*

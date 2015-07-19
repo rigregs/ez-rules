@@ -16,7 +16,7 @@ public class SingleRuleRunner extends AbstractRuleRunner {
     }
 
     @Override
-    public WhenEnum execute(WorkflowState workflowState) throws Exception {
+    public WhenEnum execute(WorkflowState workflowState) throws Throwable {
 
         WhenEnum when = doExecuteWhen(workflowState);
 

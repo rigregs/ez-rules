@@ -68,21 +68,43 @@ public final class RulesEngine {
      * 
      * @param exchanges
      * @return
+     * @throws Throwable
      */
-    public RuleEngineExecutionResult execute(Object... exchanges) {
+    public RuleEngineExecutionResult execute(Object... exchanges) throws EngineException {
+
+        return execute(true, exchanges);
+    }
+
+    public RuleEngineExecutionResult execute(boolean throwException, Object... exchanges) throws EngineException {
 
         try {
             validateNullableExchanges(exchanges);
 
             WorkflowState workflowState = internalExecute(exchanges);
+            if (throwException && workflowState.getThrowable() != null) {
+                throw wrapToEngineException(workflowState.getThrowable());
+            }
 
-            Exception exception = workflowState.getException();
+            Throwable throwable = workflowState.getThrowable();
 
-            return new RuleEngineExecutionResult(exception == null, exception, workflowState.getExchangeManager());
+            return new RuleEngineExecutionResult(throwable == null, throwable != null
+                    ? wrapToEngineException(throwable)
+                    : null, workflowState.getExchangeManager());
         }
         catch (Exception e) {
-            return createRuleEngineExecutionResult(false, e);
+            if (throwException) {
+                throw wrapToEngineException(e);
+            }
+
+            return new RuleEngineExecutionResult(false, wrapToEngineException(e), null);
         }
+    }
+
+    private EngineException wrapToEngineException(Throwable throwable) {
+
+        return throwable instanceof EngineException
+                ? (EngineException) throwable
+                : new EngineException(throwable);
     }
 
     private void validateNullableExchanges(Object... exchanges) {
@@ -92,12 +114,7 @@ public final class RulesEngine {
         }
     }
 
-    private RuleEngineExecutionResult createRuleEngineExecutionResult(boolean success, Exception exception) {
-
-        return new RuleEngineExecutionResult(success, exception, null);
-    }
-
-    private WorkflowState internalExecute(Object... exchanges) throws Exception {
+    private WorkflowState internalExecute(Object... exchanges) throws EngineException {
 
         if (!this.validated) {
             ExceptionUtil.throwIllegalArgumentException(
@@ -111,10 +128,15 @@ public final class RulesEngine {
         return this.ruleEngineExecuter.execute(exchanges);
     }
 
-    private void createRuleEngineExecuter() throws Exception {
+    private void createRuleEngineExecuter() throws EngineException {
 
         this.ruleEngineExecuter = new RuleEngineExecuter();
-        this.ruleEngineExecuter.initialize(this.callbacks, this.rules, this.groupDefinitions);
+        try {
+            this.ruleEngineExecuter.initialize(this.callbacks, this.rules, this.groupDefinitions);
+        }
+        catch (Exception e) {
+            throw new EngineException(e);
+        }
     }
 
     /**
@@ -123,12 +145,17 @@ public final class RulesEngine {
      * @param executablesToRegister
      * @throws Exception
      */
-    public void registerExecutable(Object... executablesToRegister) throws Exception {
+    public void registerExecutable(Object... executablesToRegister) throws EngineException {
 
-        clearExecuter();
+        try {
+            clearExecuter();
 
-        for (Object executable : executablesToRegister) {
-            internalRegisterExecutable(executable);
+            for (Object executable : executablesToRegister) {
+                internalRegisterExecutable(executable);
+            }
+        }
+        catch (Exception e) {
+            throw new EngineException(e);
         }
     }
 
@@ -212,15 +239,20 @@ public final class RulesEngine {
      * @param executables
      * @throws Exception
      */
-    public void setExecutables(List<Object> executables) throws Exception {
+    public void setExecutables(List<Object> executables) throws EngineException {
 
-        clearExecuter();
-        clearExecutables();
+        try {
+            clearExecuter();
+            clearExecutables();
 
-        for (Object executable : executables) {
+            for (Object executable : executables) {
 
-            internalRegisterExecutable(executable);
-            this.executables.add(executable);
+                internalRegisterExecutable(executable);
+                this.executables.add(executable);
+            }
+        }
+        catch (Exception e) {
+            throw new EngineException(e);
         }
     }
 }

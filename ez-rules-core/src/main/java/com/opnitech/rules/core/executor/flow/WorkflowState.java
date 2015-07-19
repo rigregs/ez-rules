@@ -16,7 +16,7 @@ public final class WorkflowState {
 
     private final List<Object> callbacks;
 
-    private Exception exception;
+    private Throwable throwable;
 
     public WorkflowState(List<Object> callbacks, Object... exchanges) {
 
@@ -45,20 +45,20 @@ public final class WorkflowState {
     }
 
     /**
-     * Get the lasted exception happen in the rule execution
+     * Get the lasted Throwable happen in the rule execution
      * 
      * @return
      */
-    public Exception getException() {
+    public Throwable getThrowable() {
 
-        return this.exception;
+        return this.throwable;
     }
 
     /**
-     * @param exception
+     * @param Throwable
      */
-    public void setException(Exception exception) {
+    public void setThrowable(Throwable throwable) {
 
-        this.exception = exception;
+        this.throwable = throwable;
     }
 }

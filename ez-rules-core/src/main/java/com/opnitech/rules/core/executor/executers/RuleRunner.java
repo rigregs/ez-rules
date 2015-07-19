@@ -11,7 +11,7 @@ import com.opnitech.rules.core.executor.util.PriorityOrdered;
  */
 public interface RuleRunner extends PriorityOrdered {
 
-    WhenEnum execute(WorkflowState workflowState) throws Exception;
+    WhenEnum execute(WorkflowState workflowState) throws Throwable;
 
     void logRuleMetadata(Logger logger, Object producer, int level);
 }

@@ -18,7 +18,7 @@ public class AllGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     @Override
-    public WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Exception {
+    public WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable {
 
         WhenEnum checkAllExecutorsConditions = checkAllExecutorsConditions(workflowState, executors);
         if (ObjectUtils.notEqual(WhenEnum.ACCEPT, checkAllExecutorsConditions)) {
@@ -30,7 +30,7 @@ public class AllGroupRunnerStrategy implements GroupRunnerStrategy {
         return WhenEnum.ACCEPT;
     }
 
-    private void executeActions(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Exception {
+    private void executeActions(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable {
 
         for (GroupRuleRunner groupRuleExecuter : executors) {
             groupRuleExecuter.execute(workflowState);
@@ -38,7 +38,7 @@ public class AllGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     private WhenEnum checkAllExecutorsConditions(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors)
-            throws Exception {
+            throws Throwable {
 
         for (GroupRuleRunner groupRuleExecuter : executors) {
 

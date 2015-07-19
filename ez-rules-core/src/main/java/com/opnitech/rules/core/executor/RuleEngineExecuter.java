@@ -56,9 +56,9 @@ public class RuleEngineExecuter {
                 // TODO Rigre put some kind of trace here
             }
         }
-        catch (Exception exception) {
-            RuleEngineExecuter.LOGGER.error("Internal error executing the rules", exception);
-            workflowState.setException(exception);
+        catch (Throwable throwable) {
+            RuleEngineExecuter.LOGGER.error("Internal error executing the rules", throwable);
+            workflowState.setThrowable(throwable);
         }
 
         return workflowState;

@@ -16,7 +16,7 @@ public class GroupRuleRunner extends AbstractRuleRunner {
         super(rule);
     }
 
-    public WhenEnum executeWhen(WorkflowState workflowState) throws Exception {
+    public WhenEnum executeWhen(WorkflowState workflowState) throws Throwable {
 
         WhenEnum when = doExecuteWhen(workflowState);
         if (ObjectUtils.notEqual(WhenEnum.ACCEPT, when) && ObjectUtils.notEqual(WhenEnum.REJECT, when)) {
@@ -30,7 +30,7 @@ public class GroupRuleRunner extends AbstractRuleRunner {
     }
 
     @Override
-    public WhenEnum execute(WorkflowState workflowState) throws Exception {
+    public WhenEnum execute(WorkflowState workflowState) throws Throwable {
 
         doExecuteThen(workflowState);
 

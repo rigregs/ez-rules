@@ -13,11 +13,11 @@ public final class RuleEngineExecutionResult implements Serializable {
 
     private final boolean success;
 
-    private final Exception exception;
+    private final EngineException exception;
 
     private ExchangeManager exchangeManager;
 
-    public RuleEngineExecutionResult(boolean success, Exception exception, ExchangeManager exchangeManager) {
+    public RuleEngineExecutionResult(boolean success, EngineException exception, ExchangeManager exchangeManager) {
 
         this.success = success;
         this.exception = exception;
@@ -40,7 +40,7 @@ public final class RuleEngineExecutionResult implements Serializable {
      * 
      * @return
      */
-    public Exception getException() {
+    public EngineException getException() {
 
         return this.exception;
     }

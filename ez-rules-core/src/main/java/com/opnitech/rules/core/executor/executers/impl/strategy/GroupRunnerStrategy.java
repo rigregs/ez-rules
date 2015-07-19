@@ -10,5 +10,5 @@ import com.opnitech.rules.core.executor.util.PriorityList;
  */
 public interface GroupRunnerStrategy {
 
-    WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Exception;
+    WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable;
 }

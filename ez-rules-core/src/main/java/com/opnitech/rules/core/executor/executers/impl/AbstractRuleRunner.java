@@ -116,7 +116,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
         return new MethodMetadata(this.rule.getClass(), AnnotationUtil.resolveMethodWithAnnotation(this.rule, When.class));
     }
 
-    protected WhenEnum doExecuteWhen(WorkflowState workflowState) throws Exception {
+    protected WhenEnum doExecuteWhen(WorkflowState workflowState) throws Throwable {
 
         WhenExecutor whenExecutor = AbstractRuleRunner.WHEN_EXECUTORS.get(this.acceptExecutionMethodMetadata.getReturnType());
         Validate.notNull(whenExecutor);
@@ -124,7 +124,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
         return whenExecutor.executeWhen(workflowState, this.acceptExecutionMethodMetadata, this.rule);
     }
 
-    protected void doExecuteThen(WorkflowState workflowState) throws Exception {
+    protected void doExecuteThen(WorkflowState workflowState) throws Throwable {
 
         for (MethodMetadata methodMetadata : this.actionMethodMetadatas) {
 
@@ -150,7 +150,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
     private static interface WhenExecutor {
         WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
-                throws Exception;
+                throws Throwable;
     }
 
     private static class EnumWhenExecutor implements WhenExecutor {
@@ -161,7 +161,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
         @Override
         public WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
-                throws Exception {
+                throws Throwable {
 
             MethodRunnerResult<WhenEnum> methodExecutionResult = new MethodRunnerResult<>(rule);
 
@@ -180,7 +180,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
         @Override
         public WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
-                throws Exception {
+                throws Throwable {
 
             MethodRunnerResult<Boolean> methodExecutionResult = new MethodRunnerResult<>(rule);
 

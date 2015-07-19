@@ -17,7 +17,7 @@ public class StopFirstGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     @Override
-    public WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Exception {
+    public WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable {
 
         for (GroupRuleRunner groupRuleExecuter : executors) {
 

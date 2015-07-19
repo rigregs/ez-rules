@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 
+import com.opnitech.rules.core.EngineException;
 import com.opnitech.rules.core.RuleEngineExecutionResult;
 import com.opnitech.rules.core.RulesEngine;
 
@@ -15,24 +16,26 @@ import com.opnitech.rules.core.RulesEngine;
  */
 public class AbstractRuleEngineExecutorTest {
 
-    protected void validateExceptionRule(Object... executables) throws Exception {
+    protected Exception validateExceptionRule(Object... executables) {
 
         try {
             validateRule(executables);
             Assert.fail();
+
+            return null;
         }
-        catch (@SuppressWarnings("unused")
-        Exception exception) {
-            // We should be ok
+        catch (Exception exception) {
+            return exception;
         }
     }
 
-    protected void validateRule(Object... executables) throws Exception {
+    protected void validateRule(Object... executables) throws EngineException {
 
         validateWithPreconditionsRule(true, true, executables);
     }
 
-    protected void validateWithPreconditionsRule(boolean executeWhen, boolean executeAtLeastOneThen, Object... executables) throws Exception {
+    protected void validateWithPreconditionsRule(boolean executeWhen, boolean executeAtLeastOneThen, Object... executables)
+            throws EngineException {
 
         RulesEngine engine = new RulesEngine();
         engine.setExecutables(Arrays.asList(executables));
