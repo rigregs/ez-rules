@@ -12,14 +12,14 @@ Some of the features available in the framework are:
 
  * Rule grouping with different execution strategy patterns like (stop first run, or execute all)
 
- * Rules prioriation
+ * Rules prioritization
 
  * Generic Context Support, you can pass a set of context to the engine and define the parameters you want in you rules methods. The framework will resolve those parameters for you. 
 
 ## Project Details
 
 ### Project Web Site
-[http://rigregs.github.io/ez-rules/](http://rigregs.github.io/ez-rules/)
+[http://opnitech.com/content/products/ez-rules](http://opnitech.com/content/products/ez-rules)
 
 ### Continuous integration
 [Build Jenkins job @ CloudBees](https://buildhive.cloudbees.com/job/rigregs/job/ez-rules)
