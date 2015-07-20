@@ -106,13 +106,7 @@ public class RuleEngineExecuter {
             List<Object> ruleInstances = ClassUtil.createInstances(definedRules);
 
             for (Object rule : ruleInstances) {
-                Group ruleGroup = AnnotationUtil.resolveAnnotation(rule, Group.class);
-                if (ruleGroup == null) {
-                    registerSimpleRule(rule);
-                }
-                else {
-                    registerGroupRule(groupRuleExecuters, rule, ruleGroup);
-                }
+                registerRule(groupRuleExecuters, rule);
             }
         }
         else {
@@ -120,6 +114,17 @@ public class RuleEngineExecuter {
         }
 
         LoggerUtil.info(RuleEngineExecuter.LOGGER, 1, this, null, "Rules initialized...");
+    }
+
+    private void registerRule(Map<Class<?>, GroupRunner> groupRuleExecuters, Object rule) throws Exception {
+
+        Group ruleGroup = AnnotationUtil.resolveAnnotation(rule, Group.class);
+        if (ruleGroup == null) {
+            registerSimpleRule(rule);
+        }
+        else {
+            registerGroupRule(groupRuleExecuters, rule, ruleGroup);
+        }
     }
 
     private void registerGroupRule(Map<Class<?>, GroupRunner> groupRuleExecuters, Object rule, Group ruleGroup) throws Exception {
@@ -157,6 +162,11 @@ public class RuleEngineExecuter {
 
         this.callbacks = ClassUtil.createInstances(definedCallbacks);
 
+        logCallbacks();
+    }
+
+    private void logCallbacks() {
+
         if (RuleEngineExecuter.LOGGER.isInfoEnabled()) {
 
             if (CollectionUtils.isNotEmpty(this.callbacks)) {
@@ -186,12 +196,7 @@ public class RuleEngineExecuter {
             List<Object> groupDefinitions = ClassUtil.createInstances(definedGroupDefinitions);
             for (Object groupDefinition : groupDefinitions) {
 
-                GroupRunner groupRuleExecuter = new GroupRunner(groupDefinition);
-                LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Group. Name: {0}, Priority: {1}", groupDefinition,
-                        groupRuleExecuter.getPriority());
-
-                this.executors.add(groupRuleExecuter);
-                groupExecuters.put(groupDefinition.getClass(), groupRuleExecuter);
+                registerGroupRunner(groupExecuters, groupDefinition);
             }
         }
         else {
@@ -201,5 +206,15 @@ public class RuleEngineExecuter {
         LoggerUtil.info(RuleEngineExecuter.LOGGER, 1, this, null, "Groups initialized...");
 
         return groupExecuters;
+    }
+
+    private void registerGroupRunner(Map<Class<?>, GroupRunner> groupExecuters, Object groupDefinition) throws Exception {
+
+        GroupRunner groupRuleRunner = new GroupRunner(groupDefinition);
+        LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Group. Name: {0}, Priority: {1}", groupDefinition,
+                groupRuleRunner.getPriority());
+
+        this.executors.add(groupRuleRunner);
+        groupExecuters.put(groupDefinition.getClass(), groupRuleRunner);
     }
 }

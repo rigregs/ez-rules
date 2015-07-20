@@ -57,15 +57,20 @@ public final class MethodMetadata implements PriorityOrdered {
         if (this.parametersMetadata != null) {
 
             for (int i = 0; i < parameterTypes.length; i++) {
-                ParameterMetadata parameterMetadata = new ParameterMetadata(this, parameterTypes[i]);
+                createParameterMetadata(parameterTypes, parameterAnnotations, i);
+            }
+        }
+    }
 
-                this.parametersMetadata[i] = parameterMetadata;
+    private void createParameterMetadata(Class<?>[] parameterTypes, Annotation[][] parameterAnnotations, int i) {
 
-                if (ArrayUtils.isNotEmpty(parameterAnnotations[i])) {
-                    for (int j = 0; j < parameterAnnotations[i].length; j++) {
-                        parameterMetadata.registerAnnotation(parameterAnnotations[i][j]);
-                    }
-                }
+        ParameterMetadata parameterMetadata = new ParameterMetadata(this, parameterTypes[i]);
+
+        this.parametersMetadata[i] = parameterMetadata;
+
+        if (ArrayUtils.isNotEmpty(parameterAnnotations[i])) {
+            for (int j = 0; j < parameterAnnotations[i].length; j++) {
+                parameterMetadata.registerAnnotation(parameterAnnotations[i][j]);
             }
         }
     }
