@@ -72,10 +72,22 @@ public final class RulesEngine {
      */
     public RuleEngineExecutionResult execute(Object... exchanges) throws EngineException {
 
-        return execute(true, exchanges);
+        return internalExecute(true, exchanges);
     }
 
-    public RuleEngineExecutionResult execute(boolean throwException, Object... exchanges) throws EngineException {
+    /**
+     * Execute without trigger internal exceptions in the rules
+     * 
+     * @param exchanges
+     * @return
+     * @throws EngineException
+     */
+    public RuleEngineExecutionResult executeSilent(Object... exchanges) throws EngineException {
+
+        return internalExecute(false, exchanges);
+    }
+
+    public RuleEngineExecutionResult internalExecute(boolean throwException, Object... exchanges) throws EngineException {
 
         try {
             validateNullableExchanges(exchanges);

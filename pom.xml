@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>ez-rules-core</module>
+		<module>ez-rules-samples</module>
 	</modules>
 
 	<name>Easy Rules Framework</name>
@@ -62,7 +63,13 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>ez-rules-core</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>ez-rules-samples</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 
 			<!-- SLF4J -->
