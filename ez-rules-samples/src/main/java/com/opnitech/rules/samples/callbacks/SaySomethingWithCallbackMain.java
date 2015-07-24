@@ -9,7 +9,7 @@ import com.opnitech.rules.samples.callbacks.rules.SaySomethingWithCallbackRule;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class SaySomethingWithCallback {
+public class SaySomethingWithCallbackMain {
 
     public static void main(String[] args) throws EngineException {
 
