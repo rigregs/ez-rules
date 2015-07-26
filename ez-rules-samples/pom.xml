@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.opnitech.utils</groupId>
+		<groupId>com.opnitech</groupId>
 		<artifactId>ez-rules</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
