@@ -20,8 +20,11 @@ public final class ExceptionUtil {
      * Helper to throw a {@link IllegalArgumentException} exception.
      * 
      * @param message
+     *            Exception message
      * @param arguments
+     *            Arguments of the message, if any
      * @throws IllegalArgumentException
+     *             The generated exception
      */
     public static void throwIllegalArgumentException(String message, Object... arguments) throws IllegalArgumentException {
 

@@ -67,8 +67,15 @@ public final class RulesEngine {
      * process
      * 
      * @param exchanges
-     * @return
-     * @throws Throwable
+     *            Initial list of exchanges that the rules will use. The engine
+     *            will try to match the parameters to the rules method with the
+     *            exchanges you pass here, if match the value will be passed to
+     *            the rule execution
+     * @return The overall status of the rule execution. You can find if the
+     *         execution is success, the exception (if happen) and many other
+     *         information.
+     * @throws EngineException
+     *             If any exception occurs it get wrapped in a EngineException
      */
     public RuleEngineExecutionResult execute(Object... exchanges) throws EngineException {
 
@@ -79,8 +86,15 @@ public final class RulesEngine {
      * Execute without trigger internal exceptions in the rules
      * 
      * @param exchanges
-     * @return
+     *            Initial list of exchanges that the rules will use. The engine
+     *            will try to match the parameters to the rules method with the
+     *            exchanges you pass here, if match the value will be passed to
+     *            the rule execution
+     * @return The overall status of the rule execution. You can find if the
+     *         execution is success, the exception (if happen) and many other
+     *         information.
      * @throws EngineException
+     *             If any exception occurs it get wrapped in a EngineException
      */
     public RuleEngineExecutionResult executeSilent(Object... exchanges) throws EngineException {
 
@@ -155,7 +169,10 @@ public final class RulesEngine {
      * Allow to register an executable
      * 
      * @param executablesToRegister
-     * @throws Exception
+     *            Array of the executables to be registered. An executable can
+     *            be a Rule or Callback.
+     * @throws EngineException
+     *             Throw an exception if the executable isn't valid
      */
     public void registerExecutable(Object... executablesToRegister) throws EngineException {
 
@@ -237,7 +254,7 @@ public final class RulesEngine {
     /**
      * Allow to get all defined executables
      * 
-     * @return
+     * @return Return the list of available executables
      */
     public List<Object> getExecutables() {
 
@@ -249,7 +266,10 @@ public final class RulesEngine {
      * Executable can be a Rule, Callback or GroupDefinition.
      * 
      * @param executables
-     * @throws Exception
+     *            List of executables
+     * @throws EngineException
+     *             Throw an exception if at least one of the executables aren't
+     *             valid
      */
     public void setExecutables(List<Object> executables) throws EngineException {
 
