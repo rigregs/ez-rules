@@ -11,7 +11,7 @@
 
 	<groupId>com.opnitech.utils</groupId>
 	<artifactId>ez-rules</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 
 	<modules>
 		<module>ez-rules-core</module>
