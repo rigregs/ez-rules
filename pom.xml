@@ -3,15 +3,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- <parent> -->
-	<!-- <groupId>org.sonatype.oss</groupId> -->
-	<!-- <artifactId>oss-parent</artifactId> -->
-	<!-- <version>7</version> -->
-	<!-- </parent> -->
-
-	<groupId>com.opnitech</groupId>
+	<groupId>com.opnitech.rules</groupId>
 	<artifactId>ez-rules</artifactId>
-	<version>0.1-beta-SNAPSHOT</version>
+	<version>0.1-beta</version>
 
 	<modules>
 		<module>ez-rules-core</module>
@@ -19,11 +13,22 @@
 	</modules>
 
 	<name>Easy Rules Framework</name>
+	<description>Easy Rule is a light framework that allow the users to model the business behavior as rules</description>
+	<url>http://opnitech.com/content/documentation/ez-rules-documentation/</url>
 	<packaging>pom</packaging>
 
 	<prerequisites>
 		<maven>3.0.4</maven>
 	</prerequisites>
+
+	<developers>
+		<developer>
+			<id>rigregs</id>
+			<name>Rigre Gregorio Garciandia Sonora</name>
+			<organization>Opnitech</organization>
+			<organizationUrl>http://opnitech.com</organizationUrl>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -141,7 +146,7 @@
 				<configuration>
 					<serverId>com_opnitech</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 			<plugin>
