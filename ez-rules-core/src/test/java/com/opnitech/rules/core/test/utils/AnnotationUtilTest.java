@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.opnitech.rules.core.annotations.callback.Callback;
+import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.test.engine.test_workflow.callback.TestValidCallback;
 import com.opnitech.rules.core.test.utils.callback.TestInvalidCallback;
 import com.opnitech.rules.core.utils.AnnotationUtil;

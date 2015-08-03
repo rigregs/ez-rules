@@ -1,6 +1,6 @@
 package com.opnitech.rules.core.validators.impl;
 
-import com.opnitech.rules.core.annotations.callback.Callback;
+import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.utils.AnnotationUtil;
 import com.opnitech.rules.core.validators.RunnerDefinitionConditionValidator;
 

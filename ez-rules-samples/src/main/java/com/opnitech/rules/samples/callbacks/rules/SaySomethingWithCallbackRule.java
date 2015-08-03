@@ -1,6 +1,6 @@
 package com.opnitech.rules.samples.callbacks.rules;
 
-import com.opnitech.rules.core.annotations.callback.Callback;
+import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;

@@ -1,6 +1,6 @@
 package com.opnitech.rules.core.executor.executers.impl.resolvers;
 
-import com.opnitech.rules.core.annotations.callback.Callback;
+import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.reflection.MethodMetadata;
 import com.opnitech.rules.core.executor.reflection.ParameterMetadata;

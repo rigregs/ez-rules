@@ -1,6 +1,6 @@
 package com.opnitech.rules.core.test.engine.test_validators.rules.callback;
 
-import com.opnitech.rules.core.annotations.callback.Callback;
+import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
