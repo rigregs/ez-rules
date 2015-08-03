@@ -9,6 +9,9 @@ public class EngineException extends Exception {
 
     /**
      * Default constructor
+     * 
+     * @param cause
+     *            Internal error triggered by the engine
      */
     public EngineException(Throwable cause) {
         super(cause);

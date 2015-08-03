@@ -3,13 +3,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.opnitech.utils</groupId>
+		<groupId>com.opnitech.rules</groupId>
 		<artifactId>ez-rules</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.2-beta-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>ez-rules-samples</artifactId>
 	<name>Easy Rules Samples</name>
+
+	<developers>
+		<developer>
+			<id>rigregs</id>
+			<name>Rigre Gregorio Garciandia Sonora</name>
+			<organization>Opnitech</organization>
+			<organizationUrl>http://opnitech.com</organizationUrl>
+		</developer>
+	</developers>
 
 	<dependencies>
 		<!-- this project's own modules -->

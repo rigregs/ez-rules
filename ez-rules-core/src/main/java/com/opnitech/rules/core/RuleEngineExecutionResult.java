@@ -28,7 +28,7 @@ public final class RuleEngineExecutionResult implements Serializable {
      * Return the final result of the operation, if no exception occur will
      * return true
      * 
-     * @return
+     * @return Return the status of the rule execution
      */
     public boolean isSuccess() {
 
@@ -38,7 +38,7 @@ public final class RuleEngineExecutionResult implements Serializable {
     /**
      * Return the exception cause the process to stop.
      * 
-     * @return
+     * @return The exception occur during the execution
      */
     public EngineException getException() {
 

@@ -27,7 +27,8 @@ public final class ParameterMetadata {
      * Allow to check if an annotation is present in the parameter
      * 
      * @param annotationClass
-     * @return
+     *            Annotation to check in the parameter
+     * @return True if the annotation is present, false otherwise
      */
     public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
 
@@ -38,6 +39,7 @@ public final class ParameterMetadata {
      * Allow to register a parameter for the method parameter
      * 
      * @param annotation
+     *            Annotation to register as part of the parameter metatada
      */
     public void registerAnnotation(Annotation annotation) {
 
@@ -47,7 +49,7 @@ public final class ParameterMetadata {
     /**
      * Allow to get the parameter type
      * 
-     * @return
+     * @return Class type of the parameter
      */
     public Class<?> getParameterType() {
 
@@ -57,7 +59,7 @@ public final class ParameterMetadata {
     /**
      * Allow to get the method metadata
      * 
-     * @return
+     * @return Reference to the container method metadata
      */
     public MethodMetadata getMethodMetadata() {
 

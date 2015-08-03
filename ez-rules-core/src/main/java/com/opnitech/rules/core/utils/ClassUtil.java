@@ -17,12 +17,16 @@ public final class ClassUtil {
     }
 
     /**
-     * Return the list of instances base in a mixted list of classes, instances
-     * and class names
+     * Return the list of instances base in a mix list of classes, instances and
+     * class names
      * 
+     * @param <ObjectType>
+     *            Generic type of the instances
      * @param values
-     * @return
+     *            Mix list of classes, instances and class names
+     * @return List of instances
      * @throws Exception
+     *             Throw an exception if the instances cannot be created
      */
     public static <ObjectType> List<ObjectType> createInstances(List<ObjectType> values) throws Exception {
 
@@ -36,14 +40,18 @@ public final class ClassUtil {
     }
 
     /**
-     * Will create the instances of teh objects, if the value is a string will
+     * Will create the instances of the objects, if the value is a string will
      * try to convert it to a class and create the instance. If the value is a
-     * class will create the instance. If teh value is already an instance it
+     * class will create the instance. If the value is already an instance it
      * will just return the same value.
      * 
+     * @param <ObjectType>
+     *            Generic type of the instances
      * @param value
-     * @return
+     *            Instance, class name or class
+     * @return The instance
      * @throws Exception
+     *             Throw an exception if the instance cannot be created
      */
     @SuppressWarnings("unchecked")
     public static <ObjectType> ObjectType createInstance(Object value) throws Exception {
@@ -58,12 +66,17 @@ public final class ClassUtil {
     }
 
     /**
-     * If you pass a class value wil return the class, otherwise will try to get
-     * the class from the string re[presentation of the value
+     * If you pass a class value will return the class, otherwise will try to
+     * get the class from the string re[presentation of the value
      * 
+     * @param <ClassType>
+     *            The type of the returned class
      * @param value
-     * @return
+     *            Value that represent the class, can be the class or the class
+     *            name
+     * @return The class
      * @throws Exception
+     *             Throw an exception if the class cannot be created
      */
     @SuppressWarnings("unchecked")
     public static <ClassType> Class<ClassType> createClass(Object value) throws Exception {
@@ -80,9 +93,14 @@ public final class ClassUtil {
     /**
      * Create an instance from the class name
      * 
+     * @param <ObjectType>
+     *            Generic type of the instances
      * @param className
-     * @return
+     *            Class name of the instance will be created
+     * @return The created instance
      * @throws Exception
+     *             Throw an exception if something happen trying creating the
+     *             instance
      */
     @SuppressWarnings("unchecked")
     public static <ObjectType> ObjectType createInstance(String className) throws Exception {
@@ -95,9 +113,14 @@ public final class ClassUtil {
     /**
      * Create an instance from the class
      * 
+     * @param <ObjectType>
+     *            Generic type of the instances
      * @param clazz
-     * @return
+     *            The instance class
+     * @return The created instance
      * @throws Exception
+     *             Throw an exception if something happen trying creating the
+     *             instance
      */
     public static <ObjectType> ObjectType createInstance(Class<ObjectType> clazz) throws Exception {
 
@@ -109,9 +132,13 @@ public final class ClassUtil {
     /**
      * Resolve the first element of a class that match with the specified class
      * 
+     * @param <EntityType>
+     *            Entity generic type
      * @param entities
+     *            List of entities
      * @param entityClass
-     * @return
+     *            Class of the entity to be resolved
+     * @return The resolved entity
      */
     @SuppressWarnings("unchecked")
     public static <EntityType> EntityType resolveEntity(Class<?> entityClass, List<Object> entities) {
@@ -128,9 +155,13 @@ public final class ClassUtil {
     /**
      * Resolve all elements that match with the specified class
      * 
+     * @param <EntityType>
+     *            Entity generic type
      * @param entities
+     *            The list of entities to be resolved
      * @param entityClass
-     * @return
+     *            Class of the entity to be resolved
+     * @return List of the resolved entities
      */
     @SuppressWarnings("unchecked")
     public static <EntityType> List<EntityType> resolveEntities(Class<?> entityClass, List<Object> entities) {

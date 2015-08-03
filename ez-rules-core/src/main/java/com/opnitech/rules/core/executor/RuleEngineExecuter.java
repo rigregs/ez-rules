@@ -42,7 +42,8 @@ public class RuleEngineExecuter {
      * Manage the execution of the rule
      * 
      * @param exchanges
-     * @return
+     *            Allow to execute the rules with an specific array of exchanges
+     * @return The final workflow state of the rule execution
      */
     public WorkflowState execute(Object... exchanges) {
 
@@ -68,9 +69,13 @@ public class RuleEngineExecuter {
      * Initialize all the elements that allow the rule engine to work
      * 
      * @param definedCallbacks
+     *            List of defined callbacks
      * @param definedRules
+     *            List of defined rules
      * @param definedGroupDefinitions
+     *            List of defined group definitions
      * @throws Exception
+     *             Throw an exception if something fail in the initialization
      */
     public void initialize(List<Object> definedCallbacks, List<Object> definedRules, List<Object> definedGroupDefinitions)
             throws Exception {

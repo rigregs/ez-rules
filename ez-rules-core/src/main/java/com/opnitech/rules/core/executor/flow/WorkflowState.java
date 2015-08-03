@@ -27,7 +27,8 @@ public final class WorkflowState {
     /**
      * Get the Exchange Manager
      * 
-     * @return
+     * @return Return the exchange Manager allowing to change the state of the
+     *         rule Exchanger inside any rule.
      */
     public ExchangeManager getExchangeManager() {
 
@@ -37,7 +38,7 @@ public final class WorkflowState {
     /**
      * Get all defined callbacks
      * 
-     * @return
+     * @return Return the list of callbacks
      */
     public List<Object> getCallbacks() {
 
@@ -47,7 +48,7 @@ public final class WorkflowState {
     /**
      * Get the lasted Throwable happen in the rule execution
      * 
-     * @return
+     * @return Return the current exception happen inside the rule execution
      */
     public Throwable getThrowable() {
 
@@ -55,7 +56,8 @@ public final class WorkflowState {
     }
 
     /**
-     * @param Throwable
+     * @param throwable
+     *            The exception happen inside the rule engine execution
      */
     public void setThrowable(Throwable throwable) {
 

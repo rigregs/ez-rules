@@ -23,8 +23,11 @@ public final class AnnotationUtil {
      * Validate that all elements in the list have the same annotation type
      * 
      * @param possibleAnnotatedList
+     *            List of possible annotated instances to validate
      * @param annotationClass
+     *            Annotation to validate
      * @throws Exception
+     *             An exception if the validation fail
      */
     public static void validateAnnotationPresent(List<? extends Object> possibleAnnotatedList,
             Class<? extends Annotation> annotationClass) throws Exception {
@@ -40,8 +43,11 @@ public final class AnnotationUtil {
      * Validate that the element have an specific annotation
      * 
      * @param possibleAnnotated
+     *            Possible annotate instance
      * @param annotationClass
+     *            Annotation to validate
      * @throws Exception
+     *             An exception if the validation fail
      */
     public static void validateAnnotationPresent(Object possibleAnnotated, Class<? extends Annotation> annotationClass)
             throws Exception {
@@ -52,17 +58,22 @@ public final class AnnotationUtil {
     /**
      * Check if an annotation is presented in the element
      * 
-     * @param value
+     * @param possibleAnnotated
+     *            Possible annotate instance
      * @param annotationClass
-     * @return
+     *            Annotation to check
+     * @return True if the annotation exists, otherwise False.
      * @throws Exception
+     *             Throw an exception if something happen validating the
+     *             annotation
      */
-    public static boolean isAnnotationPresent(Object value, Class<? extends Annotation> annotationClass) throws Exception {
+    public static boolean isAnnotationPresent(Object possibleAnnotated, Class<? extends Annotation> annotationClass)
+            throws Exception {
 
-        Validate.notNull(value);
+        Validate.notNull(possibleAnnotated);
         Validate.notNull(annotationClass);
 
-        Class<?> possibleAnnotatedClass = ClassUtil.createClass(value);
+        Class<?> possibleAnnotatedClass = ClassUtil.createClass(possibleAnnotated);
 
         return possibleAnnotatedClass.isAnnotationPresent(annotationClass);
     }
@@ -70,30 +81,42 @@ public final class AnnotationUtil {
     /**
      * Retrieve the annotation from the element
      * 
-     * @param value
+     * @param <AnnotationType>
+     *            Annotation Type to resolve
+     * @param possibleAnnotated
+     *            Possible annotate instance
      * @param annotationClass
-     * @return
+     *            Annotation to check
+     * @return The annotation
      * @throws Exception
+     *             Throw an exception if something happen validating the
+     *             annotation
      */
-    public static <AnnotationType extends Annotation> AnnotationType resolveAnnotation(Object value,
+    public static <AnnotationType extends Annotation> AnnotationType resolveAnnotation(Object possibleAnnotated,
             Class<AnnotationType> annotationClass) throws Exception {
 
-        Validate.notNull(value);
+        Validate.notNull(possibleAnnotated);
         Validate.notNull(annotationClass);
 
-        return Method.class.isAssignableFrom(value.getClass())
-                ? ((Method) value).getAnnotation(annotationClass)
-                : ClassUtil.<Object> createClass(value).getAnnotation(annotationClass);
+        return Method.class.isAssignableFrom(possibleAnnotated.getClass())
+                ? ((Method) possibleAnnotated).getAnnotation(annotationClass)
+                : ClassUtil.<Object> createClass(possibleAnnotated).getAnnotation(annotationClass);
     }
 
     /**
      * Retrieve a method in the class that have one specific annotation, if more
      * than one method have the annotation will trigger a validation exception
      * 
+     * @param <AnnotationType>
+     *            Annotation Type to resolve
      * @param value
+     *            Instance of the class with annotated methods
      * @param annotationClass
-     * @return
+     *            Annotation to check
+     * @return Requested annotation method
      * @throws Exception
+     *             Throw an exception if something happen trying to retrieve the
+     *             annotation or if more than one method contain the annotation
      */
     public static <AnnotationType extends Annotation> Method resolveMethodWithAnnotation(Object value,
             Class<AnnotationType> annotationClass) throws Exception {
@@ -111,10 +134,16 @@ public final class AnnotationUtil {
     /**
      * Retrieve all the methods in the class that have one specific annotation
      * 
+     * @param <AnnotationType>
+     *            Annotation Type to resolve
      * @param value
+     *            Instance of the class with annotated methods
      * @param annotationClass
-     * @return
+     *            Annotation to check
+     * @return Requested annotation methods
      * @throws Exception
+     *             Throw an exception if something happen trying to retrieve the
+     *             annotation
      */
     public static <AnnotationType extends Annotation> List<Method> resolveMethodsWithAnnotation(Object value,
             Class<AnnotationType> annotationClass) throws Exception {

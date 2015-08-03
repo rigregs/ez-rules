@@ -76,11 +76,16 @@ public final class MethodMetadata implements PriorityOrdered {
     }
 
     /**
-     * Allow to execute the method represented by this methos metadata
+     * Allow to execute the method represented by this method metadata
      * 
+     * @param <ResultType>
+     *            Result Type of the method execution
      * @param methodExecutionResult
+     *            Method result context
      * @param parameterResolver
+     *            Helper to resolve the parameters
      * @throws Exception
+     *             Throw an exception if something happen in the execution
      */
     public <ResultType> void execute(MethodRunnerResult<ResultType> methodExecutionResult, ParameterResolver parameterResolver)
             throws Throwable {
@@ -133,8 +138,7 @@ public final class MethodMetadata implements PriorityOrdered {
 
     /*
      * (non-Javadoc)
-     * @see ca.cn.servicedelivery.carshipment.business.rules.core.util.
-     * PriorityOrdered#getPriority()
+     * @see com.opnitech.rules.core.executor.util.PriorityOrdered#getPriority()
      */
     @Override
     public int getPriority() {
@@ -145,7 +149,7 @@ public final class MethodMetadata implements PriorityOrdered {
     /**
      * Allow to get the original method definition
      * 
-     * @return
+     * @return Allow to retrieve the associated method
      */
     public Method getMethod() {
 
@@ -155,23 +159,33 @@ public final class MethodMetadata implements PriorityOrdered {
     /**
      * Allow to get the class that implement this method
      * 
-     * @return
+     * @return Return the owner class
      */
     public Class<?> getOwnerClass() {
 
         return this.ownerClass;
     }
 
+    /**
+     * @return The array of parameters metadata
+     */
     public ParameterMetadata[] getParametersMetadata() {
 
         return this.parametersMetadata;
     }
 
+    /**
+     * @return Return type of the method
+     */
     public Class<?> getReturnType() {
 
         return this.returnType;
     }
 
+    /**
+     * @param returnType
+     *            Set the return type of the method
+     */
     public void setReturnType(Class<?> returnType) {
 
         this.returnType = returnType;

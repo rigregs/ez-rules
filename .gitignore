@@ -12,4 +12,6 @@
 hs_err_pid*
 /.settings/
 /.project
+/target/
+/pom.xml.versionsBackup
 /.DS_Store

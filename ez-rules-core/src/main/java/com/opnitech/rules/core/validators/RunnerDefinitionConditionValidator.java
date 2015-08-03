@@ -10,8 +10,10 @@ public interface RunnerDefinitionConditionValidator {
      * will be execute for an specific executable
      * 
      * @param executable
-     * @return
+     *            Executable to be checked
+     * @return Return if the executable has been accepted
      * @throws Exception
+     *             Exception could happen during the validation
      */
     boolean acceptRunner(Object executable) throws Exception;
 }

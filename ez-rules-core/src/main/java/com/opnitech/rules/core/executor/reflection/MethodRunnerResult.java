@@ -19,7 +19,7 @@ public final class MethodRunnerResult<ResultType> {
     /**
      * Return of the executed method
      * 
-     * @return
+     * @return Method result
      */
     public ResultType getResult() {
 
@@ -30,6 +30,7 @@ public final class MethodRunnerResult<ResultType> {
      * Set result of the implemented method
      * 
      * @param result
+     *            Set method result
      */
     public void setResult(ResultType result) {
 
@@ -39,7 +40,7 @@ public final class MethodRunnerResult<ResultType> {
     /**
      * Original Object instance
      * 
-     * @return
+     * @return Allow to retrieve the instance where the method is beign executed
      */
     public Object getInstance() {
 

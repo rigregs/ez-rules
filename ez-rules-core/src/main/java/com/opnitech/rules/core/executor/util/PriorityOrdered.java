@@ -10,7 +10,7 @@ public interface PriorityOrdered {
     /**
      * Return the priority of the element
      * 
-     * @return
+     * @return Return the priority
      */
     int getPriority();
 }
