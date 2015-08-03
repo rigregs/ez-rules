@@ -1,7 +1,7 @@
 package com.opnitech.rules.core;
 
 /**
- * Allow to manage the exchange parameteres between all the rules in the engine
+ * Allow to manage the exchange parameters between all the rules in the engine
  * 
  * @author Rigre Gregorio Garciandia Sonora
  */

@@ -3,7 +3,7 @@ package com.opnitech.rules.core.test.engine.test_workflow.rule.workflow;
 import org.apache.commons.lang3.Validate;
 
 import com.opnitech.rules.core.ExchangeManager;
-import com.opnitech.rules.core.annotations.callback.Callback;
+import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;

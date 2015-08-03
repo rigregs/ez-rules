@@ -1,11 +1,10 @@
-package com.opnitech.rules.core.annotations.callback;
+package com.opnitech.rules.core.annotations.rule;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 
 /**

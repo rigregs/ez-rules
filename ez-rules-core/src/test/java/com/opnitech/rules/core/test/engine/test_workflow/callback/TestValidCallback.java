@@ -1,6 +1,6 @@
 package com.opnitech.rules.core.test.engine.test_workflow.callback;
 
-import com.opnitech.rules.core.annotations.callback.Callback;
+import com.opnitech.rules.core.annotations.rule.Callback;
 
 /**
  * @author Rigre Gregorio Garciandia Sonora
