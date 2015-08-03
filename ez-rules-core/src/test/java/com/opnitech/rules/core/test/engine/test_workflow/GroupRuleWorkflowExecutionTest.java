@@ -38,8 +38,7 @@ public class GroupRuleWorkflowExecutionTest {
         catch (EngineException e) {
             Assert.assertEquals(IllegalArgumentException.class, e.getCause().getClass());
         }
-        catch (@SuppressWarnings("unused")
-        Exception e) {
+        catch (Exception e) {
             Assert.fail();
         }
     }
