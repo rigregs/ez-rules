@@ -13,5 +13,5 @@ import org.apache.commons.lang3.StringUtils;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface Exchange {
-    String name() default StringUtils.EMPTY;
+    String value() default StringUtils.EMPTY;
 }

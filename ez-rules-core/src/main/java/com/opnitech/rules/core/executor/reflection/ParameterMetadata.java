@@ -35,6 +35,12 @@ public final class ParameterMetadata {
         return this.annotations.containsKey(annotationClass);
     }
 
+    @SuppressWarnings("unchecked")
+    public <AnnotationType extends Annotation> AnnotationType resolveAnnotation(Class<AnnotationType> annotationClass) {
+
+        return (AnnotationType) this.annotations.get(annotationClass);
+    }
+
     /**
      * Allow to register a parameter for the method parameter
      * 

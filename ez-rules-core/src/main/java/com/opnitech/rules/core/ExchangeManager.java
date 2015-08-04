@@ -16,7 +16,18 @@ public interface ExchangeManager {
      *            Class of the exchange that will be resolved
      * @return ExchangeType Type of the exchange
      */
-    <ExchangeType> ExchangeType resolveExchange(Class<ExchangeType> exchangeClass);
+    <ExchangeType> ExchangeType resolveExchangeByClass(Class<ExchangeType> exchangeClass);
+
+    /**
+     * Allow to resolve a exchange from a name
+     * 
+     * @param <ExchangeType>
+     *            Type of the exchange to be resolved
+     * @param name
+     *            Name of the exchange that will be resolved
+     * @return ExchangeType Type of the exchange
+     */
+    <ExchangeType> ExchangeType resolveExchangeByName(Object name);
 
     /**
      * Allow to add a new exchange

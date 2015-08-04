@@ -101,6 +101,20 @@ public final class RulesEngine {
         return internalExecute(false, exchanges);
     }
 
+    /**
+     * Allow to create a named Exchange
+     * 
+     * @param name
+     *            Exchange name
+     * @param value
+     *            Exchange value
+     * @return
+     */
+    public static NamedExchange namedExchange(Object name, Object value) {
+
+        return new NamedExchange(name, value);
+    }
+
     public RuleEngineExecutionResult internalExecute(boolean throwException, Object... exchanges) throws EngineException {
 
         try {
@@ -137,6 +151,10 @@ public final class RulesEngine {
 
         for (Object exchange : exchanges) {
             Validate.notNull(exchange);
+            if (NamedExchange.class.isAssignableFrom(exchange.getClass())) {
+                NamedExchange namedExchange = (NamedExchange) exchange;
+                Validate.notNull(namedExchange);
+            }
         }
     }
 

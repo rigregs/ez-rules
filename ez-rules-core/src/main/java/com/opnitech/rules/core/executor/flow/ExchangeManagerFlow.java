@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang3.Validate;
 
 import com.opnitech.rules.core.ExchangeManager;
+import com.opnitech.rules.core.NamedExchange;
 import com.opnitech.rules.core.utils.ClassUtil;
 
 /**
@@ -28,9 +29,21 @@ final class ExchangeManagerFlow implements ExchangeManager {
      * com.opnitech.rules.core.ExchangeManager#resolveExchange(java.lang.Class)
      */
     @Override
-    public <ExchangeType> ExchangeType resolveExchange(Class<ExchangeType> exchangeClass) {
+    public <ExchangeType> ExchangeType resolveExchangeByClass(Class<ExchangeType> exchangeClass) {
 
         return ClassUtil.<ExchangeType> resolveEntity(exchangeClass, this.exchanges.values());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#resolveExchange(java.lang.Class)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <ExchangeType> ExchangeType resolveExchangeByName(Object name) {
+
+        return (ExchangeType) this.exchanges.get(name);
     }
 
     /*
@@ -43,7 +56,13 @@ final class ExchangeManagerFlow implements ExchangeManager {
 
         Validate.notNull(exchange);
 
-        addExchange(exchange.getClass(), exchange);
+        if (NamedExchange.class.isAssignableFrom(exchange.getClass())) {
+            NamedExchange namedExchange = (NamedExchange) exchange;
+            addExchange(namedExchange.getName(), namedExchange.getValue());
+        }
+        else {
+            addExchange(exchange.getClass(), exchange);
+        }
 
     }
 
