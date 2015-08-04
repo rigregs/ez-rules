@@ -1,6 +1,7 @@
 package com.opnitech.rules.core.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
@@ -141,7 +142,7 @@ public final class ClassUtil {
      * @return The resolved entity
      */
     @SuppressWarnings("unchecked")
-    public static <EntityType> EntityType resolveEntity(Class<?> entityClass, List<Object> entities) {
+    public static <EntityType> EntityType resolveEntity(Class<?> entityClass, Collection<Object> entities) {
 
         for (Object entity : entities) {
             if (entity.getClass().isAssignableFrom(entityClass)) {

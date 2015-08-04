@@ -1,7 +1,7 @@
 package com.opnitech.rules.core.executor.flow;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
 
@@ -13,12 +13,12 @@ import com.opnitech.rules.core.utils.ClassUtil;
  */
 final class ExchangeManagerFlow implements ExchangeManager {
 
-    private final List<Object> exchanges = new ArrayList<>();
+    private final Map<Object, Object> exchanges = new HashMap<>();
 
     public ExchangeManagerFlow(Object... exchanges) {
 
         for (Object exchange : exchanges) {
-            this.exchanges.add(exchange);
+            addExchange(exchange);
         }
     }
 
@@ -30,7 +30,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
     @Override
     public <ExchangeType> ExchangeType resolveExchange(Class<ExchangeType> exchangeClass) {
 
-        return ClassUtil.<ExchangeType> resolveEntity(exchangeClass, this.exchanges);
+        return ClassUtil.<ExchangeType> resolveEntity(exchangeClass, this.exchanges.values());
     }
 
     /*
@@ -43,7 +43,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
 
         Validate.notNull(exchange);
 
-        this.exchanges.add(exchange);
+        this.exchanges.put(exchange.getClass(), exchange);
     }
 
     /*
@@ -56,7 +56,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
 
         Validate.notNull(exchange);
 
-        this.exchanges.remove(exchange);
+        this.exchanges.remove(exchange.getClass());
     }
 
     /*
@@ -72,7 +72,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
         addExchange(newExchange);
     }
 
-    public List<Object> getExchanges() {
+    public Map<Object, Object> getExchanges() {
 
         return this.exchanges;
     }
