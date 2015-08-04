@@ -43,7 +43,22 @@ final class ExchangeManagerFlow implements ExchangeManager {
 
         Validate.notNull(exchange);
 
-        this.exchanges.put(exchange.getClass(), exchange);
+        addExchange(exchange.getClass(), exchange);
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#addExchange(java.lang.Object,
+     * java.lang.Object)
+     */
+    @Override
+    public <ExchangeType> void addExchange(Object name, ExchangeType exchange) {
+
+        Validate.notNull(exchange);
+
+        this.exchanges.put(name, exchange);
     }
 
     /*
@@ -52,11 +67,23 @@ final class ExchangeManagerFlow implements ExchangeManager {
      * com.opnitech.rules.core.ExchangeManager#removeExchange(java.lang.Object)
      */
     @Override
-    public <ExchangeType> void removeExchange(ExchangeType exchange) {
+    public <ExchangeType> void removeExchangeByValue(ExchangeType exchange) {
 
         Validate.notNull(exchange);
 
         this.exchanges.remove(exchange.getClass());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#removeExchangeByName(java.lang.
+     * Object)
+     */
+    @Override
+    public void removeExchangeByName(Object name) {
+
+        this.exchanges.remove(name);
     }
 
     /*
@@ -68,8 +95,21 @@ final class ExchangeManagerFlow implements ExchangeManager {
     @Override
     public <ExchangeType> void replaceExchange(ExchangeType oldExchange, ExchangeType newExchange) {
 
-        removeExchange(oldExchange);
+        removeExchangeByValue(oldExchange);
         addExchange(newExchange);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#replaceExchange(java.lang.Object,
+     * java.lang.Object, java.lang.Object)
+     */
+    @Override
+    public <ExchangeType> void replaceExchange(Object name, ExchangeType oldExchange, ExchangeType newExchange) {
+
+        removeExchangeByValue(oldExchange);
+        addExchange(name, newExchange);
     }
 
     public Map<Object, Object> getExchanges() {
