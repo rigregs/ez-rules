@@ -207,6 +207,5 @@ public abstract class AbstractRuleRunner implements RuleRunner {
                     ? WhenEnum.ACCEPT
                     : WhenEnum.REJECT;
         }
-
     }
 }

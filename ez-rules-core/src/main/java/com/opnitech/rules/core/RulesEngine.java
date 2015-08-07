@@ -10,11 +10,13 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.executor.RuleEngineExecuter;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
+import com.opnitech.rules.core.utils.AnnotationUtil;
 import com.opnitech.rules.core.utils.ExceptionUtil;
 import com.opnitech.rules.core.utils.LoggerUtil;
 import com.opnitech.rules.core.validators.RunnerDefinitionConditionValidator;
@@ -215,6 +217,8 @@ public final class RulesEngine {
         registered |= internalRegisterExecutable(this.callbacks, value, Callback.class);
         registered |= internalRegisterExecutable(this.rules, value, Rule.class);
         registered |= internalRegisterExecutable(this.groupDefinitions, value, GroupDefinition.class);
+        registered |= internalRegisterExecutable(this.groupDefinitions, findGroupDefinitionFromRule(value),
+                GroupDefinition.class);
 
         if (!registered) {
             this.validated = false;
@@ -222,8 +226,21 @@ public final class RulesEngine {
         }
     }
 
+    private Object findGroupDefinitionFromRule(Object executable) throws Exception {
+
+        Group group = AnnotationUtil.resolveAnnotation(executable, Group.class);
+
+        return group != null
+                ? group.group()
+                : null;
+    }
+
     private boolean internalRegisterExecutable(List<Object> candidateExecutable, Object executable,
             Class<? extends Annotation> annotationClass) throws Exception {
+
+        if (executable == null) {
+            return false;
+        }
 
         RunnerDefinitionConditionValidator executableDefinitionConditionValidator = resolveExecutableDefinitionConditionValidator(
                 annotationClass);

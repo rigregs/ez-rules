@@ -44,7 +44,7 @@ public class GroupRuleWorkflowExecutionTest {
     }
 
     @Test
-    public void testTestStopFirstGroupDefinition() throws Throwable {
+    public void testStopFirstGroupDefinition() throws Throwable {
 
         final StopFirstGroupRule1 rule1 = new StopFirstGroupRule1();
         final StopFirstGroupRule2 rule2 = new StopFirstGroupRule2();
@@ -56,6 +56,29 @@ public class GroupRuleWorkflowExecutionTest {
             public void registerRules(RulesEngine rulesEngine) throws Exception {
 
                 rulesEngine.registerExecutable(TestStopFirstGroupDefinition.class);
+
+                rulesEngine.registerExecutable(rule3);
+                rulesEngine.registerExecutable(rule2);
+                rulesEngine.registerExecutable(rule1);
+            }
+        });
+
+        assertGroupRule(rule1, true, false);
+        assertGroupRule(rule2, true, true);
+        assertGroupRule(rule3, false, false);
+    }
+
+    @Test
+    public void testRuleGroupDefinitionNotDeclaredAsExecutable() throws Throwable {
+
+        final StopFirstGroupRule1 rule1 = new StopFirstGroupRule1();
+        final StopFirstGroupRule2 rule2 = new StopFirstGroupRule2();
+        final StopFirstGroupRule3 rule3 = new StopFirstGroupRule3();
+
+        testExecuteAllGroupDefinition(new RegisterexecutableCallback() {
+
+            @Override
+            public void registerRules(RulesEngine rulesEngine) throws Exception {
 
                 rulesEngine.registerExecutable(rule3);
                 rulesEngine.registerExecutable(rule2);
