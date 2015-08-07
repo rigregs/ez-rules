@@ -10,6 +10,7 @@
 	<modules>
 		<module>ez-rules-core</module>
 		<module>ez-rules-samples</module>
+		<module>ez-rules-script</module>
 	</modules>
 
 	<name>Easy Rules Framework</name>
@@ -39,17 +40,22 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 
 		<!-- plugins -->
-		<nexus-staging-maven-plugin.version>1.6.5</nexus-staging-maven-plugin.version>
-		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
-		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
-		<maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
-		<maven-release-plugin.version>2.5</maven-release-plugin.version>
+		<ez.nexus-staging-maven-plugin.version>1.6.5</ez.nexus-staging-maven-plugin.version>
+		<ez.maven-source-plugin.version>2.2.1</ez.maven-source-plugin.version>
+		<ez.maven-javadoc-plugin.version>2.9.1</ez.maven-javadoc-plugin.version>
+		<ez.maven-gpg-plugin.version>1.5</ez.maven-gpg-plugin.version>
+		<ez.maven-release-plugin.version>2.5</ez.maven-release-plugin.version>
+		<ez.maven-compiler-plugin.version>3.3</ez.maven-compiler-plugin.version>
+		<ez.groovy-eclipse-compiler-plugin.version>2.9.2-01</ez.groovy-eclipse-compiler-plugin.version>
+		<ez.build-helper-maven-plugin.version>1.9.1</ez.build-helper-maven-plugin.version>
+		<ez.maven-eclipse-plugin.version>2.10</ez.maven-eclipse-plugin.version>
 
 		<!-- project dependencies versions -->
-		<org.slf4j.version>1.7.12</org.slf4j.version>
-		<junit.version>4.4</junit.version>
-		<commons-lang.version>3.4</commons-lang.version>
-		<commons-collections.version>3.2.1</commons-collections.version>
+		<ez.org.slf4j.version>1.7.12</ez.org.slf4j.version>
+		<ez.junit.version>4.4</ez.junit.version>
+		<ez.commons-lang.version>3.4</ez.commons-lang.version>
+		<ez.commons-collections.version>3.2.1</ez.commons-collections.version>
+		<ez.groovy.version>2.4.4</ez.groovy.version>
 	</properties>
 
 	<scm>
@@ -106,19 +112,20 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>${org.slf4j.version}</version>
+				<version>${ez.org.slf4j.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
-				<version>${org.slf4j.version}</version>
+				<version>${ez.org.slf4j.version}</version>
 			</dependency>
 
 			<!-- Unit Tests -->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
+				<version>${ez.junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -126,22 +133,88 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>${commons-lang.version}</version>
+				<version>${ez.commons-lang.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>commons-collections</groupId>
 				<artifactId>commons-collections</artifactId>
-				<version>${commons-collections.version}</version>
+				<version>${ez.commons-collections.version}</version>
+			</dependency>
+
+			<!-- Groovy -->
+			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy-all</artifactId>
+				<version>${ez.groovy.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>${ez.nexus-staging-maven-plugin.version}</version>
+					<extensions>true</extensions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${ez.maven-source-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${ez.maven-javadoc-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${ez.maven-gpg-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${ez.maven-release-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${ez.maven-compiler-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.groovy</groupId>
+					<artifactId>groovy-eclipse-compiler</artifactId>
+					<version>${ez.groovy-eclipse-compiler-plugin.version}</version>
+					<extensions>true</extensions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${ez.build-helper-maven-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>${ez.maven-eclipse-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>${nexus-staging-maven-plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>com_opnitech</serverId>
@@ -149,10 +222,10 @@
 					<autoReleaseAfterClose>false</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>${maven-source-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -165,7 +238,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven-javadoc-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -178,7 +250,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>${maven-gpg-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -192,7 +263,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>${maven-release-plugin.version}</version>
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<useReleaseProfile>false</useReleaseProfile>
