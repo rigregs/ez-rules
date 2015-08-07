@@ -1,11 +1,13 @@
 package com.opnitech.rules.core.validators.impl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.RulePriority;
 import com.opnitech.rules.core.annotations.rule.Then;
@@ -49,22 +51,48 @@ public class RuleRunnerDefinitionValidator implements RunnerDefinitionConditionV
         checkValidWhenMethod(executable);
         checkValidThenMethod(executable);
         checkValidPriorityMethod(executable);
+        checkValidGroupMethod(executable);
+    }
+
+    private void checkValidGroupMethod(Object executable) throws Exception {
+
+        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, Group.class);
+
+        checkValidMethodCountWithQualifierAnnotation(Group.class, executable, methods);
+
+        if (CollectionUtils.isNotEmpty(methods)) {
+            Method groupMethod = methods.get(0);
+
+            checkValidMethodResultValue(executable, groupMethod, Class.class);
+            checkValidMethodWithZeroParameters(executable, groupMethod);
+            checkValidGroupAnnotation(executable, groupMethod);
+        }
+    }
+
+    private void checkValidGroupAnnotation(Object executable, Method groupMethod) throws Exception {
+
+        Group group = AnnotationUtil.resolveAnnotation(groupMethod, Group.class);
+        if (group.groupKey() != null) {
+            ExceptionUtil.throwIllegalArgumentException(
+                    "Invalid group definition method ''{0}'' in rule {1}. A group method should not define the group property",
+                    groupMethod.getName(), executable);
+        }
     }
 
     private void checkValidPriorityMethod(Object executable) throws Exception {
 
         List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, RulePriority.class);
 
-        checkValidPriorityMethodCount(executable, methods);
+        checkValidMethodCountWithQualifierAnnotation(RulePriority.class, executable, methods);
 
         if (CollectionUtils.isNotEmpty(methods)) {
             Method priorityMethod = methods.get(0);
             checkValidMethodResultValue(executable, priorityMethod, Integer.TYPE);
-            checkValidMethodParameters(executable, priorityMethod);
+            checkValidMethodWithZeroParameters(executable, priorityMethod);
         }
     }
 
-    private void checkValidMethodParameters(Object executable, Method priorityMethod) {
+    private void checkValidMethodWithZeroParameters(Object executable, Method priorityMethod) {
 
         if (ArrayUtils.isNotEmpty(priorityMethod.getParameterTypes())) {
             ExceptionUtil.throwIllegalArgumentException(
@@ -72,12 +100,13 @@ public class RuleRunnerDefinitionValidator implements RunnerDefinitionConditionV
         }
     }
 
-    private void checkValidPriorityMethodCount(Object executable, List<Method> methods) {
+    private void checkValidMethodCountWithQualifierAnnotation(Class<? extends Annotation> annotationClass, Object executable,
+            List<Method> methods) {
 
         if (CollectionUtils.isNotEmpty(methods) && methods.size() != 1) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "A rule can have 0 or 1 method annotated with a 'RulePriority' annotation, please check the method signature. Rule: {0}",
-                    executable);
+                    "A rule can have 0 or 1 method annotated with a ''{0}'' annotation, please check the method signature. Rule: {1}",
+                    annotationClass, executable);
         }
     }
 

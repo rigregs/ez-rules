@@ -7,7 +7,7 @@ import com.opnitech.rules.core.annotations.rule.Rule;
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Rule(priority = 2)
-@Group(group = ExecuteAllGroupDefinition.class)
+@Group(groupKey = ExecuteAllGroupDefinition.class)
 public class ExecuteAllFirstGroupRule2 extends AbstractGroupRule2 {
 
     public ExecuteAllFirstGroupRule2() {

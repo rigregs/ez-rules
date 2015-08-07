@@ -1,5 +1,6 @@
 package com.opnitech.rules.core.executor;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -123,7 +124,7 @@ public class RuleEngineExecuter {
 
     private void registerRule(Map<Class<?>, GroupRunner> groupRuleExecuters, Object rule) throws Exception {
 
-        Group ruleGroup = AnnotationUtil.resolveAnnotation(rule, Group.class);
+        Group ruleGroup = resolveRuleGroup(rule);
         if (ruleGroup == null) {
             registerSimpleRule(rule);
         }
@@ -132,9 +133,28 @@ public class RuleEngineExecuter {
         }
     }
 
+    private Group resolveRuleGroup(Object rule) throws Exception {
+
+        Group groupAnnotation = AnnotationUtil.resolveAnnotation(rule, Group.class);
+        if (groupAnnotation == null) {
+            groupAnnotation = resolveGroupAnnotationFromRuleMethod(rule);
+        }
+
+        return groupAnnotation;
+    }
+
+    private Group resolveGroupAnnotationFromRuleMethod(Object rule) throws Exception {
+
+        Method methodWithGroupAnnotation = AnnotationUtil.resolveMethodWithAnnotation(rule, Group.class);
+
+        return methodWithGroupAnnotation != null
+                ? (Group) methodWithGroupAnnotation.invoke(rule)
+                : null;
+    }
+
     private void registerGroupRule(Map<Class<?>, GroupRunner> groupRuleExecuters, Object rule, Group ruleGroup) throws Exception {
 
-        Class<?> groupDefinitionId = ruleGroup.group();
+        Class<?> groupDefinitionId = ruleGroup.groupKey();
 
         GroupRunner groupExecuter = groupRuleExecuters.get(groupDefinitionId);
         if (groupExecuter == null) {

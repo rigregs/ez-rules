@@ -231,7 +231,7 @@ public final class RulesEngine {
         Group group = AnnotationUtil.resolveAnnotation(executable, Group.class);
 
         return group != null
-                ? group.group()
+                ? group.groupKey()
                 : null;
     }
 
