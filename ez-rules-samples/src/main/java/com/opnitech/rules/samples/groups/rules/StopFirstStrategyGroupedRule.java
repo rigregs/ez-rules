@@ -10,7 +10,7 @@ import com.opnitech.rules.samples.groups.group.StopFirstGroupDefinition;
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Rule
-@Group(groupKey = StopFirstGroupDefinition.class)
+@Group(groupDefinitionClass = StopFirstGroupDefinition.class)
 public class StopFirstStrategyGroupedRule {
 
     private boolean canExecute;

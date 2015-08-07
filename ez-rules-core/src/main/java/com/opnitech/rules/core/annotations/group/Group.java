@@ -19,5 +19,7 @@ import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Group {
-    Class<?>groupKey();
+    String groupKey() default "";
+
+    Class<?>groupDefinitionClass();
 }

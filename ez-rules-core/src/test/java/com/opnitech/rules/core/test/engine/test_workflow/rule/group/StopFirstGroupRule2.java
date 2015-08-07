@@ -7,7 +7,7 @@ import com.opnitech.rules.core.annotations.rule.Rule;
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Rule(priority = 2)
-@Group(groupKey = TestStopFirstGroupDefinition.class)
+@Group(groupDefinitionClass = TestStopFirstGroupDefinition.class)
 public class StopFirstGroupRule2 extends AbstractGroupRule2 {
 
     public StopFirstGroupRule2() {

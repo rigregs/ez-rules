@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +85,7 @@ public class RuleEngineExecuter {
         LoggerUtil.info(RuleEngineExecuter.LOGGER, this, null, "Initializing Rule Engine...");
 
         initializeCallbacks(definedCallbacks);
-        Map<Class<?>, GroupRunner> groupRuleExecuters = createGroupRuleExecutors(definedGroupDefinitions);
+        Map<String, GroupRunner> groupRuleExecuters = createGroupRuleExecutors(definedGroupDefinitions);
 
         createRuleExecutors(definedRules, groupRuleExecuters);
 
@@ -102,7 +103,7 @@ public class RuleEngineExecuter {
         }
     }
 
-    private void createRuleExecutors(List<Object> definedRules, Map<Class<?>, GroupRunner> groupRuleExecuters) throws Exception {
+    private void createRuleExecutors(List<Object> definedRules, Map<String, GroupRunner> groupRuleExecuters) throws Exception {
 
         LoggerUtil.info(RuleEngineExecuter.LOGGER, 1, this, null, "Initializating rules...");
 
@@ -122,7 +123,7 @@ public class RuleEngineExecuter {
         LoggerUtil.info(RuleEngineExecuter.LOGGER, 1, this, null, "Rules initialized...");
     }
 
-    private void registerRule(Map<Class<?>, GroupRunner> groupRuleExecuters, Object rule) throws Exception {
+    private void registerRule(Map<String, GroupRunner> groupRuleExecuters, Object rule) throws Exception {
 
         Group ruleGroup = resolveRuleGroup(rule);
         if (ruleGroup == null) {
@@ -152,14 +153,21 @@ public class RuleEngineExecuter {
                 : null;
     }
 
-    private void registerGroupRule(Map<Class<?>, GroupRunner> groupRuleExecuters, Object rule, Group ruleGroup) throws Exception {
+    private void registerGroupRule(Map<String, GroupRunner> groupRuleExecuters, Object rule, Group ruleGroup) throws Exception {
 
-        Class<?> groupDefinitionId = ruleGroup.groupKey();
+        String groupKey = ruleGroup.groupKey();
+
+        String groupDefinitionId = StringUtils.isNotBlank(groupKey)
+                ? groupKey
+                : ruleGroup.groupDefinitionClass() != null
+                        ? ruleGroup.groupDefinitionClass().getName()
+                        : null;
 
         GroupRunner groupExecuter = groupRuleExecuters.get(groupDefinitionId);
         if (groupExecuter == null) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "Invalid rule group definition, rule define a group definition that does not exists: {0}", groupDefinitionId);
+                    "Invalid rule group definition, rule define a group definition that does not exists: {0}, Rule: {1}, Rule Group: {2}",
+                    groupDefinitionId, rule, ruleGroup);
         }
         else {
             GroupRuleRunner groupRuleExecuter = new GroupRuleRunner(rule);
@@ -209,11 +217,11 @@ public class RuleEngineExecuter {
         }
     }
 
-    private Map<Class<?>, GroupRunner> createGroupRuleExecutors(List<Object> definedGroupDefinitions) throws Exception {
+    private Map<String, GroupRunner> createGroupRuleExecutors(List<Object> definedGroupDefinitions) throws Exception {
 
         LoggerUtil.info(RuleEngineExecuter.LOGGER, 1, this, null, "Initializating groups...");
 
-        Map<Class<?>, GroupRunner> groupExecuters = new HashMap<>();
+        Map<String, GroupRunner> groupExecuters = new HashMap<>();
 
         if (CollectionUtils.isNotEmpty(definedGroupDefinitions)) {
             LoggerUtil.info(RuleEngineExecuter.LOGGER, 2, this, null, "Registered groups:");
@@ -233,13 +241,21 @@ public class RuleEngineExecuter {
         return groupExecuters;
     }
 
-    private void registerGroupRunner(Map<Class<?>, GroupRunner> groupExecuters, Object groupDefinition) throws Exception {
+    private void registerGroupRunner(Map<String, GroupRunner> groupExecuters, Object groupDefinition) throws Exception {
+
+        Object groupDefinitionInstance = ClassUtil.createInstance(groupDefinition);
 
         GroupRunner groupRuleRunner = new GroupRunner(groupDefinition);
-        LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Group. Name: {0}, Priority: {1}", groupDefinition,
-                groupRuleRunner.getPriority());
+        LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Group. Name: {0}, Group Instance: {1},Priority: {2}",
+                groupDefinition, groupDefinitionInstance, groupRuleRunner.getPriority());
 
         this.executors.add(groupRuleRunner);
-        groupExecuters.put(groupDefinition.getClass(), groupRuleRunner);
+        groupExecuters.put(resolveGroupKey(groupDefinitionInstance), groupRuleRunner);
+    }
+
+    private String resolveGroupKey(Object groupDefinitionInstance) {
+
+        // TOD Rigre here we need to check if the group support dynamic naming
+        return groupDefinitionInstance.getClass().getName();
     }
 }

@@ -10,7 +10,7 @@ import com.opnitech.rules.samples.groups.group.AllGroupDefinition;
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Rule
-@Group(groupKey = AllGroupDefinition.class)
+@Group(groupDefinitionClass = AllGroupDefinition.class)
 public class AllStrategyGroupedRule {
 
     private boolean canExecute;
