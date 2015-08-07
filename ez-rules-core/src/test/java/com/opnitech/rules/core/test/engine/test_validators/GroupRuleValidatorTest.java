@@ -24,7 +24,7 @@ public class GroupRuleValidatorTest extends AbstractRuleEngineExecutorTest {
     public void testValidRuleButNoGroupDefinition() throws Exception {
 
         // Group need to be defined
-        validateExceptionRule(new ValidGroupRule());
+        validateRule(new ValidGroupRule());
     }
 
     @Test
