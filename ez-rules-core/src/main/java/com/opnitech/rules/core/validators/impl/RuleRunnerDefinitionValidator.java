@@ -4,8 +4,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.opnitech.rules.core.annotations.rule.Rule;
+import com.opnitech.rules.core.annotations.rule.RulePriority;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
@@ -46,6 +48,37 @@ public class RuleRunnerDefinitionValidator implements RunnerDefinitionConditionV
 
         checkValidWhenMethod(executable);
         checkValidThenMethod(executable);
+        checkValidPriorityMethod(executable);
+    }
+
+    private void checkValidPriorityMethod(Object executable) throws Exception {
+
+        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, RulePriority.class);
+
+        checkValidPriorityMethodCount(executable, methods);
+
+        if (CollectionUtils.isNotEmpty(methods)) {
+            Method priorityMethod = methods.get(0);
+            checkValidMethodResultValue(executable, priorityMethod, Integer.TYPE);
+            checkValidMethodParameters(executable, priorityMethod);
+        }
+    }
+
+    private void checkValidMethodParameters(Object executable, Method priorityMethod) {
+
+        if (ArrayUtils.isNotEmpty(priorityMethod.getParameterTypes())) {
+            ExceptionUtil.throwIllegalArgumentException(
+                    "A priority method cannot have parameters, please check the method signature. Rule: {0}", executable);
+        }
+    }
+
+    private void checkValidPriorityMethodCount(Object executable, List<Method> methods) {
+
+        if (CollectionUtils.isNotEmpty(methods) && methods.size() != 1) {
+            ExceptionUtil.throwIllegalArgumentException(
+                    "A rule can have 0 or 1 method annotated with a 'RulePriority' annotation, please check the method signature. Rule: {0}",
+                    executable);
+        }
     }
 
     private void checkValidThenMethod(Object executable) throws Exception {

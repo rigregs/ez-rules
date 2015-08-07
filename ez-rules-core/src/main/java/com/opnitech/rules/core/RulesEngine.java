@@ -10,8 +10,8 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.opnitech.rules.core.annotations.callback.Callback;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
+import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.executor.RuleEngineExecuter;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
@@ -101,6 +101,20 @@ public final class RulesEngine {
         return internalExecute(false, exchanges);
     }
 
+    /**
+     * Allow to create a named Exchange
+     * 
+     * @param name
+     *            Exchange name
+     * @param value
+     *            Exchange value
+     * @return
+     */
+    public static NamedExchange namedExchange(Object name, Object value) {
+
+        return new NamedExchange(name, value);
+    }
+
     public RuleEngineExecutionResult internalExecute(boolean throwException, Object... exchanges) throws EngineException {
 
         try {
@@ -137,6 +151,10 @@ public final class RulesEngine {
 
         for (Object exchange : exchanges) {
             Validate.notNull(exchange);
+            if (NamedExchange.class.isAssignableFrom(exchange.getClass())) {
+                NamedExchange namedExchange = (NamedExchange) exchange;
+                Validate.notNull(namedExchange);
+            }
         }
     }
 

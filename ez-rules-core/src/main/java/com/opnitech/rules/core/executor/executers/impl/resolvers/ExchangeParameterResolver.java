@@ -1,5 +1,6 @@
 package com.opnitech.rules.core.executor.executers.impl.resolvers;
 
+import com.opnitech.rules.core.annotations.rule.Exchange;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.reflection.ParameterMetadata;
 
@@ -21,6 +22,9 @@ class ExchangeParameterResolver implements RunnerParameterResolver {
     @Override
     public Object resolveParameter(WorkflowState workflowState, ParameterMetadata methodParameterMetadata) {
 
-        return workflowState.getExchangeManager().resolveExchange(methodParameterMetadata.getParameterType());
+        return methodParameterMetadata.isAnnotationPresent(Exchange.class)
+                ? workflowState.getExchangeManager()
+                        .resolveExchangeByName(methodParameterMetadata.resolveAnnotation(Exchange.class).value())
+                : workflowState.getExchangeManager().resolveExchangeByClass(methodParameterMetadata.getParameterType());
     }
 }

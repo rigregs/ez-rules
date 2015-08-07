@@ -1,5 +1,6 @@
 package com.opnitech.rules.core.executor.executers.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 
 import com.opnitech.rules.core.annotations.rule.Rule;
+import com.opnitech.rules.core.annotations.rule.RulePriority;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
@@ -58,14 +60,29 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
         this.ruleAnnotation = AnnotationUtil.resolveAnnotation(rule, Rule.class);
 
-        this.priority = this.ruleAnnotation.priority();
+        this.priority = resolveRulePriority();
+    }
+
+    private int resolveRulePriority() throws Exception {
+
+        Method methodWithRulePriotityAnnotation = AnnotationUtil.resolveMethodWithAnnotation(this.rule, RulePriority.class);
+
+        return methodWithRulePriotityAnnotation == null
+                ? this.ruleAnnotation.priority()
+                : calculateRulePriority(methodWithRulePriotityAnnotation);
+    }
+
+    private int calculateRulePriority(Method methodWithRulePriotityAnnotation)
+            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        return (int) methodWithRulePriotityAnnotation.invoke(this.rule);
     }
 
     @Override
     public void logRuleMetadata(Logger logger, Object producer, int level) {
 
         LoggerUtil.info(logger, level, producer, null, "Simple Rule Executer. Rule class: {0}, Description: {1}, Priority: {2}",
-                this.rule.getClass(), this.ruleAnnotation.description(), this.ruleAnnotation.priority());
+                this.rule.getClass(), this.ruleAnnotation.description(), this.priority);
 
         logRuleMethodMetadata(logger, producer, level + 1);
     }

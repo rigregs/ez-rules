@@ -46,8 +46,7 @@ public class RuleInstantiationEngineExecutorTest extends AbstractRuleEngineExecu
             validateRule(AbstractHierarchyInstantiationRule.class);
             Assert.fail();
         }
-        catch (@SuppressWarnings("unused")
-        Exception exception) {
+        catch (Exception exception) {
             // We should be ok
         }
     }

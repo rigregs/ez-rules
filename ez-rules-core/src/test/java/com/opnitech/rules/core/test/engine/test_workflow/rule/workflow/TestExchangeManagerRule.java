@@ -95,7 +95,7 @@ public class TestExchangeManagerRule {
         Validate.notNull(exchange1);
         Validate.notNull(exchange2);
 
-        exchangeManager.removeExchange(exchange2);
+        exchangeManager.removeExchangeByValue(exchange2);
 
         this.actionExecuted++;
     }

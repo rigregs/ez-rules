@@ -1,11 +1,12 @@
 package com.opnitech.rules.core.executor.flow;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
 
 import com.opnitech.rules.core.ExchangeManager;
+import com.opnitech.rules.core.NamedExchange;
 import com.opnitech.rules.core.utils.ClassUtil;
 
 /**
@@ -13,12 +14,12 @@ import com.opnitech.rules.core.utils.ClassUtil;
  */
 final class ExchangeManagerFlow implements ExchangeManager {
 
-    private final List<Object> exchanges = new ArrayList<>();
+    private final Map<Object, Object> exchanges = new HashMap<>();
 
     public ExchangeManagerFlow(Object... exchanges) {
 
         for (Object exchange : exchanges) {
-            this.exchanges.add(exchange);
+            addExchange(exchange);
         }
     }
 
@@ -28,9 +29,21 @@ final class ExchangeManagerFlow implements ExchangeManager {
      * com.opnitech.rules.core.ExchangeManager#resolveExchange(java.lang.Class)
      */
     @Override
-    public <ExchangeType> ExchangeType resolveExchange(Class<ExchangeType> exchangeClass) {
+    public <ExchangeType> ExchangeType resolveExchangeByClass(Class<ExchangeType> exchangeClass) {
 
-        return ClassUtil.<ExchangeType> resolveEntity(exchangeClass, this.exchanges);
+        return ClassUtil.<ExchangeType> resolveEntity(exchangeClass, this.exchanges.values());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#resolveExchange(java.lang.Class)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <ExchangeType> ExchangeType resolveExchangeByName(Object name) {
+
+        return (ExchangeType) this.exchanges.get(name);
     }
 
     /*
@@ -43,7 +56,28 @@ final class ExchangeManagerFlow implements ExchangeManager {
 
         Validate.notNull(exchange);
 
-        this.exchanges.add(exchange);
+        if (NamedExchange.class.isAssignableFrom(exchange.getClass())) {
+            NamedExchange namedExchange = (NamedExchange) exchange;
+            addExchange(namedExchange.getName(), namedExchange.getValue());
+        }
+        else {
+            addExchange(exchange.getClass(), exchange);
+        }
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#addExchange(java.lang.Object,
+     * java.lang.Object)
+     */
+    @Override
+    public <ExchangeType> void addExchange(Object name, ExchangeType exchange) {
+
+        Validate.notNull(exchange);
+
+        this.exchanges.put(name, exchange);
     }
 
     /*
@@ -52,11 +86,23 @@ final class ExchangeManagerFlow implements ExchangeManager {
      * com.opnitech.rules.core.ExchangeManager#removeExchange(java.lang.Object)
      */
     @Override
-    public <ExchangeType> void removeExchange(ExchangeType exchange) {
+    public <ExchangeType> void removeExchangeByValue(ExchangeType exchange) {
 
         Validate.notNull(exchange);
 
-        this.exchanges.remove(exchange);
+        this.exchanges.remove(exchange.getClass());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#removeExchangeByName(java.lang.
+     * Object)
+     */
+    @Override
+    public void removeExchangeByName(Object name) {
+
+        this.exchanges.remove(name);
     }
 
     /*
@@ -68,11 +114,24 @@ final class ExchangeManagerFlow implements ExchangeManager {
     @Override
     public <ExchangeType> void replaceExchange(ExchangeType oldExchange, ExchangeType newExchange) {
 
-        removeExchange(oldExchange);
+        removeExchangeByValue(oldExchange);
         addExchange(newExchange);
     }
 
-    public List<Object> getExchanges() {
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#replaceExchange(java.lang.Object,
+     * java.lang.Object, java.lang.Object)
+     */
+    @Override
+    public <ExchangeType> void replaceExchange(Object name, ExchangeType oldExchange, ExchangeType newExchange) {
+
+        removeExchangeByValue(oldExchange);
+        addExchange(name, newExchange);
+    }
+
+    public Map<Object, Object> getExchanges() {
 
         return this.exchanges;
     }
