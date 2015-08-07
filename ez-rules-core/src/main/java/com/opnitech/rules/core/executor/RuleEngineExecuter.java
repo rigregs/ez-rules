@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.opnitech.rules.core.annotations.group.Group;
+import com.opnitech.rules.core.annotations.group.GroupKey;
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.executor.executers.RuleRunner;
 import com.opnitech.rules.core.executor.executers.impl.GroupRuleRunner;
@@ -250,12 +251,44 @@ public class RuleEngineExecuter {
                 groupDefinition, groupDefinitionInstance, groupRuleRunner.getPriority());
 
         this.executors.add(groupRuleRunner);
-        groupExecuters.put(resolveGroupKey(groupDefinitionInstance), groupRuleRunner);
+
+        String groupKey = resolveGroupKey(groupDefinitionInstance);
+
+        validateGroupKey(groupDefinition, groupKey, groupExecuters);
+
+        groupExecuters.put(groupKey, groupRuleRunner);
     }
 
-    private String resolveGroupKey(Object groupDefinitionInstance) {
+    private void validateGroupKey(Object groupDefinition, String groupKey, Map<String, GroupRunner> groupExecuters) {
 
-        // TOD Rigre here we need to check if the group support dynamic naming
-        return groupDefinitionInstance.getClass().getName();
+        validateBlankGroupKey(groupDefinition, groupKey);
+        validateDuplicateGroupKey(groupDefinition, groupKey, groupExecuters);
+    }
+
+    private void validateDuplicateGroupKey(Object groupDefinition, String groupKey, Map<String, GroupRunner> groupExecuters) {
+
+        if (groupExecuters.containsKey(groupKey)) {
+            ExceptionUtil.throwIllegalArgumentException(
+                    "Two Group Definition found with the same Group Key. Group Definition: {0}, Group Key: {1}", groupDefinition,
+                    groupKey);
+        }
+    }
+
+    private void validateBlankGroupKey(Object groupDefinition, String groupKey) {
+
+        if (StringUtils.isBlank(groupKey)) {
+            ExceptionUtil.throwIllegalArgumentException(
+                    "A group key method cannot return a blank String. Group Definition: {0}, Group Key: {1}", groupDefinition,
+                    groupKey);
+        }
+    }
+
+    private String resolveGroupKey(Object groupDefinitionInstance) throws Exception {
+
+        Method methodWithGroupKeyAnnotation = AnnotationUtil.resolveMethodWithAnnotation(groupDefinitionInstance, GroupKey.class);
+
+        return methodWithGroupKeyAnnotation != null
+                ? (String) methodWithGroupKeyAnnotation.invoke(groupDefinitionInstance)
+                : groupDefinitionInstance.getClass().getName();
     }
 }

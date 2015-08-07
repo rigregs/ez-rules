@@ -228,14 +228,22 @@ public final class RulesEngine {
 
     private Object findGroupDefinitionFromRule(Object executable) throws Exception {
 
+        if (!AnnotationUtil.isAnnotationPresent(executable, Rule.class)) {
+            return null;
+        }
+
         Group group = AnnotationUtil.resolveAnnotation(executable, Group.class);
 
-        return group != null
+        Class<?> groupDefinitionClass = group != null
                 ? group.groupDefinitionClass()
                 : null;
+
+        return this.groupDefinitions.contains(groupDefinitionClass)
+                ? null
+                : groupDefinitionClass;
     }
 
-    private boolean internalRegisterExecutable(List<Object> candidateExecutable, Object executable,
+    private boolean internalRegisterExecutable(List<Object> candidateExecutables, Object executable,
             Class<? extends Annotation> annotationClass) throws Exception {
 
         if (executable == null) {
@@ -247,10 +255,10 @@ public final class RulesEngine {
 
         if (executableDefinitionConditionValidator.acceptRunner(executable)) {
             if (executableDefinitionConditionValidator instanceof RunnerDefinitionValidator) {
-                ((RunnerDefinitionValidator) executableDefinitionConditionValidator).validate(executable);
+                ((RunnerDefinitionValidator) executableDefinitionConditionValidator).validate(candidateExecutables, executable);
             }
 
-            candidateExecutable.add(executable);
+            candidateExecutables.add(executable);
 
             if (RulesEngine.LOGGER.isInfoEnabled()) {
 

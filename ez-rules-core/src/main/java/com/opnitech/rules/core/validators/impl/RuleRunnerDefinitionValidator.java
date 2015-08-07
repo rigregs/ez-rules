@@ -46,7 +46,7 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
      * ExecutableDefinitionValidator#validate(java.lang.Object)
      */
     @Override
-    public void validate(Object executable) throws Exception {
+    public void validate(List<Object> candidateExecutables, Object executable) throws Exception {
 
         checkValidWhenMethod(executable);
         checkValidThenMethod(executable);
