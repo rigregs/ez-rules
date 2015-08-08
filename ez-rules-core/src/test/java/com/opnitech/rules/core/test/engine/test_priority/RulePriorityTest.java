@@ -15,25 +15,30 @@ import com.opnitech.rules.core.test.engine.test_priority.rules.TestInvalidResult
 public class RulePriorityTest extends AbstractRuleEngineExecutorTest {
 
     @Test
-    public void validateTestBooleanPriorityRule() throws EngineException {
+    public void testTestBooleanPriorityRule() throws EngineException {
 
         validateRule(new TestBooleanPriorityRule());
     }
+    @Test
+    public void testTestBooleanPriorityRuleAsClass() throws EngineException {
+
+        validateExceptionRule(TestBooleanPriorityRule.class);
+    }
 
     @Test
-    public void validateTestInvalidResultBooleanPriorityRule() throws EngineException {
+    public void testTestInvalidResultBooleanPriorityRule() throws EngineException {
 
         validateExceptionRule(new TestInvalidResultBooleanPriorityRule());
     }
 
     @Test
-    public void validateTestInvalidParameterBooleanPriorityRule() throws EngineException {
+    public void testTestInvalidParameterBooleanPriorityRule() throws EngineException {
 
         validateExceptionRule(new TestInvalidParameterBooleanPriorityRule());
     }
 
     @Test
-    public void validateTestInvalidMultipleBooleanPriorityRule() throws EngineException {
+    public void testTestInvalidMultipleBooleanPriorityRule() throws EngineException {
 
         validateExceptionRule(new TestInvalidMultipleBooleanPriorityRule());
     }

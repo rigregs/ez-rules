@@ -1,6 +1,5 @@
 package com.opnitech.rules.core.executor.executers.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +10,10 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 
 import com.opnitech.rules.core.annotations.rule.Rule;
-import com.opnitech.rules.core.annotations.rule.RulePriority;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
-import com.opnitech.rules.core.executor.executers.RuleRunner;
+import com.opnitech.rules.core.executor.executers.Runner;
 import com.opnitech.rules.core.executor.executers.impl.resolvers.SingleRuleParameterResolver;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.reflection.MethodMetadata;
@@ -28,7 +26,7 @@ import com.opnitech.rules.core.utils.LoggerUtil;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public abstract class AbstractRuleRunner implements RuleRunner {
+public abstract class AbstractRuleRunner extends AbstractRunner implements Runner {
 
     private static final Map<Class<?>, WhenExecutor> WHEN_EXECUTORS = new HashMap<>();
 
@@ -59,23 +57,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
         createActionMethodMetadatas();
 
         this.ruleAnnotation = AnnotationUtil.resolveAnnotation(rule, Rule.class);
-
-        this.priority = resolveRulePriority();
-    }
-
-    private int resolveRulePriority() throws Exception {
-
-        Method methodWithRulePriotityAnnotation = AnnotationUtil.resolveMethodWithAnnotation(this.rule, RulePriority.class);
-
-        return methodWithRulePriotityAnnotation == null
-                ? this.ruleAnnotation.priority()
-                : calculateRulePriority(methodWithRulePriotityAnnotation);
-    }
-
-    private int calculateRulePriority(Method methodWithRulePriotityAnnotation)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-
-        return (int) methodWithRulePriotityAnnotation.invoke(this.rule);
+        this.priority = resolvePriority(this.rule, this.ruleAnnotation.priority());
     }
 
     @Override
@@ -101,8 +83,8 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
     private void logMethodsState(Logger logger, Object producer, int level, MethodMetadata methodMetadata) {
 
-        LoggerUtil.info(logger, level, producer, null, "Method. Name: ''{0}'', Priority: ''{1}''", methodMetadata.getMethod().getName(),
-                methodMetadata.getPriority());
+        LoggerUtil.info(logger, level, producer, null, "Method. Name: ''{0}'', Priority: ''{1}''",
+                methodMetadata.getMethod().getName(), methodMetadata.getPriority());
 
         logMethodParametersState(logger, producer, level + 1, methodMetadata);
     }

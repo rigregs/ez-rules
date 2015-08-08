@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.opnitech.rules.core.annotations.group.GroupKey;
+import com.opnitech.rules.core.annotations.rule.Priority;
 import com.opnitech.rules.core.utils.AnnotationUtil;
 import com.opnitech.rules.core.utils.ExceptionUtil;
 
@@ -69,6 +70,20 @@ public abstract class AbstractValidator {
         checkGroupKeyMethod(executable, methods);
     }
 
+    protected void checkValidPriorityMethod(Object executable) throws Exception {
+
+        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, Priority.class);
+
+        checkValidMethodCountWithQualifierAnnotation(Priority.class, executable, methods);
+
+        if (CollectionUtils.isNotEmpty(methods)) {
+            Method priorityMethod = methods.get(0);
+            checkValidMethodResultValue(executable, priorityMethod, Integer.TYPE);
+            checkValidMethodWithZeroParameters(executable, priorityMethod);
+            checkExecutableType(executable, priorityMethod, Priority.class);
+        }
+    }
+
     private void checkGroupKeyMethod(Object executable, List<Method> methods) {
 
         if (CollectionUtils.isNotEmpty(methods)) {
@@ -77,16 +92,16 @@ public abstract class AbstractValidator {
             checkValidMethodResultValue(executable, groupKeyMethod, String.class);
             checkValidMethodWithZeroParameters(executable, groupKeyMethod);
 
-            checkExecutableType(executable, groupKeyMethod);
+            checkExecutableType(executable, groupKeyMethod, GroupKey.class);
         }
     }
 
-    private void checkExecutableType(Object executable, Method groupKeyMethod) {
+    private void checkExecutableType(Object executable, Method method, Class<? extends Annotation> annotationClass) {
 
         if (Class.class.isAssignableFrom(executable.getClass())) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "You cannot register a 'Executable' as a class that contain a method with the GroupKey annotation. You need to register the definition as instance executable. 'Executable': ''{0}'', Method: ''{1}''",
-                    executable, groupKeyMethod.getName());
+                    "You cannot register a 'Executable' as a class that contain a method with the ''{0}'' annotation. You need to register the definition as instance executable. 'Executable': ''{1}'', Method: ''{2}''",
+                    annotationClass, executable, method.getName());
         }
     }
 

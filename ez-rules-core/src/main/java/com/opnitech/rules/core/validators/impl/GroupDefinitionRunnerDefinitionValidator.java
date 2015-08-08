@@ -43,6 +43,7 @@ public class GroupDefinitionRunnerDefinitionValidator extends AbstractValidator
 
         checkUniqueExecutor(candidateExecutables, GroupDefinition.class, executable);
         validateExecutionStrategy(executable);
+        checkValidPriorityMethod(executable);
 
         checkGroupKeyMethods(executable);
     }

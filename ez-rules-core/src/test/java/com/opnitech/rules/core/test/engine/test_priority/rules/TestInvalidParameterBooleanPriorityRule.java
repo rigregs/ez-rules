@@ -1,7 +1,7 @@
 package com.opnitech.rules.core.test.engine.test_priority.rules;
 
 import com.opnitech.rules.core.annotations.rule.Rule;
-import com.opnitech.rules.core.annotations.rule.RulePriority;
+import com.opnitech.rules.core.annotations.rule.Priority;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.test.engine.AbstractRule;
@@ -16,7 +16,7 @@ public class TestInvalidParameterBooleanPriorityRule extends AbstractRule<Boolea
         super(true);
     }
 
-    @RulePriority
+    @Priority
     public int priority(int something) {
 
         return 5;

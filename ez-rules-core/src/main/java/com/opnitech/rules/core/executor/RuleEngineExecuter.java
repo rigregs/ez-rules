@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.group.GroupKey;
 import com.opnitech.rules.core.enums.WhenEnum;
-import com.opnitech.rules.core.executor.executers.RuleRunner;
+import com.opnitech.rules.core.executor.executers.Runner;
 import com.opnitech.rules.core.executor.executers.impl.GroupRuleRunner;
 import com.opnitech.rules.core.executor.executers.impl.GroupRunner;
 import com.opnitech.rules.core.executor.executers.impl.SingleRuleRunner;
@@ -35,7 +35,7 @@ public class RuleEngineExecuter {
 
     private List<Object> callbacks = new ArrayList<>();
 
-    private PriorityList<RuleRunner> executors = new PriorityList<>();
+    private PriorityList<Runner> executors = new PriorityList<>();
 
     public RuleEngineExecuter() {
         // Default constructor
@@ -53,7 +53,7 @@ public class RuleEngineExecuter {
         WorkflowState workflowState = new WorkflowState(this.callbacks, exchanges);
 
         try {
-            for (RuleRunner ruleExecuter : this.executors) {
+            for (Runner ruleExecuter : this.executors) {
 
                 WhenEnum acceptExecution = ruleExecuter.execute(workflowState);
                 Validate.notNull(acceptExecution);
@@ -99,7 +99,7 @@ public class RuleEngineExecuter {
 
         LoggerUtil.info(RuleEngineExecuter.LOGGER, 1, this, null, "Final rule engine state:");
 
-        for (RuleRunner executer : this.executors) {
+        for (Runner executer : this.executors) {
             executer.logRuleMetadata(RuleEngineExecuter.LOGGER, this, 2);
         }
     }

@@ -9,7 +9,7 @@ import com.opnitech.rules.core.executor.util.PriorityOrdered;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public interface RuleRunner extends PriorityOrdered {
+public interface Runner extends PriorityOrdered {
 
     WhenEnum execute(WorkflowState workflowState) throws Throwable;
 

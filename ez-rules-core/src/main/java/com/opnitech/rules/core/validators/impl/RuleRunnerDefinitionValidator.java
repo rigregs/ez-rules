@@ -8,7 +8,6 @@ import org.apache.commons.collections.CollectionUtils;
 import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.group.GroupKey;
 import com.opnitech.rules.core.annotations.rule.Rule;
-import com.opnitech.rules.core.annotations.rule.RulePriority;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
@@ -56,7 +55,16 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
         checkValidThenMethod(executable);
         checkValidPriorityMethod(executable);
 
+        checkGroupKeyMethod(executable);
+    }
+
+    private void checkGroupKeyMethod(Object executable) throws Exception {
+
         checkGroupKeyMethods(executable);
+        checkAmbiguosGroupKey(executable);
+    }
+
+    private void checkAmbiguosGroupKey(Object executable) throws Exception {
 
         List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, GroupKey.class);
         if (CollectionUtils.isNotEmpty(methods)) {
@@ -65,19 +73,6 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
                         "Invalid group definition in rule ''{0}''. Group definitin is ambiguos due you have a ''Group'' annotation and ''GroupKey'' annotation in the method ''{1}''. A rule can provide only one way to identify the group where it belong",
                         executable, methods.iterator().next().getName());
             }
-        }
-    }
-
-    private void checkValidPriorityMethod(Object executable) throws Exception {
-
-        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, RulePriority.class);
-
-        checkValidMethodCountWithQualifierAnnotation(RulePriority.class, executable, methods);
-
-        if (CollectionUtils.isNotEmpty(methods)) {
-            Method priorityMethod = methods.get(0);
-            checkValidMethodResultValue(executable, priorityMethod, Integer.TYPE);
-            checkValidMethodWithZeroParameters(executable, priorityMethod);
         }
     }
 

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.enums.WhenEnum;
-import com.opnitech.rules.core.executor.executers.RuleRunner;
+import com.opnitech.rules.core.executor.executers.Runner;
 import com.opnitech.rules.core.executor.executers.impl.strategy.AllGroupRunnerStrategy;
 import com.opnitech.rules.core.executor.executers.impl.strategy.GroupRunnerStrategy;
 import com.opnitech.rules.core.executor.executers.impl.strategy.StopFirstGroupRunnerStrategy;
@@ -22,7 +22,7 @@ import com.opnitech.rules.core.utils.LoggerUtil;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class GroupRunner implements RuleRunner {
+public class GroupRunner extends AbstractRunner implements Runner {
 
     private static final Map<ExecutionStrategyEnum, GroupRunnerStrategy> STRATEGIES = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class GroupRunner implements RuleRunner {
         AnnotationUtil.validateAnnotationPresent(this.groupDefinition, GroupDefinition.class);
 
         this.groupDefinitionAnnotation = AnnotationUtil.resolveAnnotation(this.groupDefinition, GroupDefinition.class);
-        this.priority = this.groupDefinitionAnnotation.priority();
+        this.priority = resolvePriority(groupDefinition, this.groupDefinitionAnnotation.priority());
 
         this.executerStrategy = resolveStrategy();
     }
