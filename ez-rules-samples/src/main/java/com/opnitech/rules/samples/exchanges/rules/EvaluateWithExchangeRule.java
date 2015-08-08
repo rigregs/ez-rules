@@ -8,10 +8,10 @@ import com.opnitech.rules.core.annotations.rule.When;
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Rule
-public class SaySomethingWithExchangeRule {
+public class EvaluateWithExchangeRule {
 
     @When
-    public boolean canISaySomething(Boolean answer) {
+    public boolean canIEvaluate(Boolean answer) {
 
         return answer != null
                 ? answer
@@ -19,7 +19,7 @@ public class SaySomethingWithExchangeRule {
     }
 
     @Then
-    public void saySomething(String something) {
+    public void evaluate(String something) {
 
         System.out.println(something);
     }

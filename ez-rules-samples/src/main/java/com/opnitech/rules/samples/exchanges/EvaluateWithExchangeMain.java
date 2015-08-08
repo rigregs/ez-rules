@@ -2,12 +2,12 @@ package com.opnitech.rules.samples.exchanges;
 
 import com.opnitech.rules.core.EngineException;
 import com.opnitech.rules.core.RulesEngine;
-import com.opnitech.rules.samples.exchanges.rules.SaySomethingWithExchangeRule;
+import com.opnitech.rules.samples.exchanges.rules.EvaluateWithExchangeRule;
 
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class SaySomethingWithExchangeMain {
+public class EvaluateWithExchangeMain {
 
     public static void main(String[] args) throws EngineException {
 
@@ -19,11 +19,11 @@ public class SaySomethingWithExchangeMain {
 
         RulesEngine rulesEngine = new RulesEngine();
 
-        rulesEngine.registerExecutable(SaySomethingWithExchangeRule.class);
+        rulesEngine.registerExecutable(EvaluateWithExchangeRule.class);
 
-        System.out.println("This execution shouldn't say anything");
+        System.out.println("This execution should not evaluate");
         System.out.println("****");
-        rulesEngine.execute(Boolean.FALSE);
+        rulesEngine.execute(Boolean.FALSE, "Evaluation");
         System.out.println("****");
     }
 
@@ -31,11 +31,11 @@ public class SaySomethingWithExchangeMain {
 
         RulesEngine rulesEngine = new RulesEngine();
 
-        rulesEngine.registerExecutable(SaySomethingWithExchangeRule.class);
+        rulesEngine.registerExecutable(EvaluateWithExchangeRule.class);
 
-        System.out.println("Let's actually say something");
+        System.out.println("This should print from the callback");
         System.out.println("****");
-        rulesEngine.execute(Boolean.TRUE, "Finally I'm allowed to talk!!!");
+        rulesEngine.execute(Boolean.TRUE, "Evaluation");
         System.out.println("****");
     }
 }

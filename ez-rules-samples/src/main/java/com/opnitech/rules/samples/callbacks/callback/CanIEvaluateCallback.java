@@ -6,11 +6,11 @@ import com.opnitech.rules.core.annotations.rule.Callback;
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Callback
-public class CanISaySomethingCallback {
+public class CanIEvaluateCallback {
 
     private boolean answer;
 
-    public CanISaySomethingCallback(boolean answer) {
+    public CanIEvaluateCallback(boolean answer) {
         this.answer = answer;
     }
 

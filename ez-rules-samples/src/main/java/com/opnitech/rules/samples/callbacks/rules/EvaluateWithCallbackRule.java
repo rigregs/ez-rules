@@ -4,24 +4,24 @@ import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
-import com.opnitech.rules.samples.callbacks.callback.CanISaySomethingCallback;
-import com.opnitech.rules.samples.callbacks.callback.SaySomethingCallback;
+import com.opnitech.rules.samples.callbacks.callback.CanIEvaluateCallback;
+import com.opnitech.rules.samples.callbacks.callback.EvaluateCallback;
 
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Rule
-public class SaySomethingWithCallbackRule {
+public class EvaluateWithCallbackRule {
 
     @When
-    public boolean when(@Callback CanISaySomethingCallback callback) {
+    public boolean when(@Callback CanIEvaluateCallback callback) {
 
         return callback.isAnswer();
     }
 
     @Then
-    public void then(@Callback SaySomethingCallback callback) {
+    public void then(@Callback EvaluateCallback callback) {
 
-        System.out.println(callback.getSomething());
+        System.out.println(callback.getEvaluation());
     }
 }
