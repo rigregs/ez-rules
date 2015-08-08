@@ -1,12 +1,14 @@
 package com.opnitech.rules.core.executor.flow;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 
+import com.opnitech.rules.core.ExchangeBuilder;
 import com.opnitech.rules.core.ExchangeManager;
-import com.opnitech.rules.core.NamedExchange;
 import com.opnitech.rules.core.utils.ClassUtil;
 
 /**
@@ -56,14 +58,34 @@ final class ExchangeManagerFlow implements ExchangeManager {
 
         Validate.notNull(exchange);
 
-        if (NamedExchange.class.isAssignableFrom(exchange.getClass())) {
-            NamedExchange namedExchange = (NamedExchange) exchange;
-            addExchange(namedExchange.getName(), namedExchange.getValue());
+        if (ExchangeBuilder.class.isAssignableFrom(exchange.getClass())) {
+            handleExchangeBuilder(exchange);
+        }
+        else if (ExchangeBuilder.NamedExchange.class.isAssignableFrom(exchange.getClass())) {
+            handleNamedExchange(exchange);
         }
         else {
             addExchange(exchange.getClass(), exchange);
         }
 
+    }
+
+    private <ExchangeType> void handleExchangeBuilder(ExchangeType exchange) {
+
+        ExchangeBuilder exchangeBuilder = (ExchangeBuilder) exchange;
+
+        List<?> exchanges = exchangeBuilder.getExchanges();
+        if (CollectionUtils.isNotEmpty(exchanges)) {
+            for (Object internalExchange : exchanges) {
+                addExchange(internalExchange);
+            }
+        }
+    }
+
+    private <ExchangeType> void handleNamedExchange(ExchangeType exchange) {
+
+        ExchangeBuilder.NamedExchange namedExchange = (ExchangeBuilder.NamedExchange) exchange;
+        addExchange(namedExchange.getName(), namedExchange.getValue());
     }
 
     /*

@@ -10,6 +10,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.opnitech.rules.core.ExchangeBuilder.NamedExchange;
 import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.annotations.rule.Callback;
@@ -103,21 +104,7 @@ public final class RulesEngine {
         return internalExecute(false, exchanges);
     }
 
-    /**
-     * Allow to create a named Exchange
-     * 
-     * @param name
-     *            Exchange name
-     * @param value
-     *            Exchange value
-     * @return
-     */
-    public static NamedExchange namedExchange(Object name, Object value) {
-
-        return new NamedExchange(name, value);
-    }
-
-    public RuleEngineExecutionResult internalExecute(boolean throwException, Object... exchanges) throws EngineException {
+    private RuleEngineExecutionResult internalExecute(boolean throwException, Object... exchanges) throws EngineException {
 
         try {
             validateNullableExchanges(exchanges);
