@@ -10,7 +10,6 @@
 	<modules>
 		<module>ez-rules-core</module>
 		<module>ez-rules-samples</module>
-		<module>ez-rules-script</module>
 	</modules>
 
 	<name>Easy Rules Framework</name>
