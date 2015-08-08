@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Allow to create the parameters taht can be injected in the rules
+ * 
  * @author Rigre Gregorio Garciandia Sonora
  */
 public class ExchangeBuilder {
@@ -14,6 +16,9 @@ public class ExchangeBuilder {
         // Default constructor
     }
 
+    /**
+     * @return The exchange builder
+     */
     public static ExchangeBuilder create() {
 
         return new ExchangeBuilder();
