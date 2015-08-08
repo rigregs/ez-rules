@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.rule.Rule;
@@ -48,10 +47,14 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
     @Override
     public void validate(List<Object> candidateExecutables, Object executable) throws Exception {
 
+        validateUniqueExecutor(candidateExecutables, Rule.class, executable);
+
         checkValidWhenMethod(executable);
         checkValidThenMethod(executable);
         checkValidPriorityMethod(executable);
         checkValidGroupMethod(executable);
+
+        validateGroupKeyMethods(executable);
     }
 
     private void checkValidGroupMethod(Object executable) throws Exception {
@@ -65,16 +68,16 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
 
             checkValidMethodResultValue(executable, groupMethod, Class.class);
             checkValidMethodWithZeroParameters(executable, groupMethod);
-            checkValidGroupAnnotation(executable, groupMethod);
+            checkValidGroupnnotation(executable, groupMethod);
         }
     }
 
-    private void checkValidGroupAnnotation(Object executable, Method groupMethod) throws Exception {
+    private void checkValidGroupnnotation(Object executable, Method groupMethod) throws Exception {
 
         Group group = AnnotationUtil.resolveAnnotation(groupMethod, Group.class);
-        if (group.groupDefinitionClass() != null || StringUtils.isNotBlank(group.groupKey())) {
+        if (group.groupDefinitionClass() == null) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "Invalid group definition method ''{0}'' in rule {1}. A group method should not define the group properties",
+                    "Invalid group definition method ''{0}'' in rule ''{1}''. A group key method should define the 'groupDefinitionClass' property",
                     groupMethod.getName(), executable);
         }
     }
@@ -104,7 +107,7 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
 
         if (CollectionUtils.isEmpty(methods)) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "A rule must have at least one method annotated with a 'Then' annotation, please check the method signature. Rule: {0}",
+                    "A rule must have at least one method annotated with a 'Then' annotation, please check the method signature. Rule: ''{0}''",
                     executable);
         }
     }
@@ -121,7 +124,7 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
 
         if (CollectionUtils.isEmpty(methods) || methods.size() > 1) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "A rule must have one method annotated with a 'When' annotation, please check the method signature. Rule: {0}",
+                    "A rule must have one method annotated with a 'When' annotation, please check the method signature. Rule: ''{0}''",
                     executable);
         }
     }

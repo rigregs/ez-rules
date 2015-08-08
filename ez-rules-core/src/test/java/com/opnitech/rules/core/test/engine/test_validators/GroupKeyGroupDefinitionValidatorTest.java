@@ -13,7 +13,7 @@ import com.opnitech.rules.core.test.engine.test_validators.group.ValidGroupKeyGr
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class GroupKeyRuleValidatorTest extends AbstractRuleEngineExecutorTest {
+public class GroupKeyGroupDefinitionValidatorTest extends AbstractRuleEngineExecutorTest {
 
     @Test
     public void testValidGroupDefinition() throws EngineException {

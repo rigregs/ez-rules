@@ -81,8 +81,9 @@ public abstract class AbstractRuleRunner implements RuleRunner {
     @Override
     public void logRuleMetadata(Logger logger, Object producer, int level) {
 
-        LoggerUtil.info(logger, level, producer, null, "Simple Rule Executer. Rule class: {0}, Description: {1}, Priority: {2}",
-                this.rule.getClass(), this.ruleAnnotation.description(), this.priority);
+        LoggerUtil.info(logger, level, producer, null,
+                "Simple Rule Executer. Rule class: ''{0}'', Description: ''{1}'', Priority: ''{2}''", this.rule.getClass(),
+                this.ruleAnnotation.description(), this.priority);
 
         logRuleMethodMetadata(logger, producer, level + 1);
     }
@@ -100,7 +101,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
     private void logMethodsState(Logger logger, Object producer, int level, MethodMetadata methodMetadata) {
 
-        LoggerUtil.info(logger, level, producer, null, "Method. Name: {0}, Priority: {1}", methodMetadata.getMethod().getName(),
+        LoggerUtil.info(logger, level, producer, null, "Method. Name: ''{0}'', Priority: ''{1}''", methodMetadata.getMethod().getName(),
                 methodMetadata.getPriority());
 
         logMethodParametersState(logger, producer, level + 1, methodMetadata);
@@ -112,7 +113,7 @@ public abstract class AbstractRuleRunner implements RuleRunner {
 
         if (ArrayUtils.isNotEmpty(parametersMetadata)) {
             for (ParameterMetadata methodParameterMetadata : parametersMetadata) {
-                LoggerUtil.info(logger, level, producer, null, "Method Param. Type: {0}",
+                LoggerUtil.info(logger, level, producer, null, "Method Param. Type: ''{0}''",
                         methodParameterMetadata.getParameterType());
             }
         }

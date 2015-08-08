@@ -222,7 +222,8 @@ public final class RulesEngine {
 
         if (!registered) {
             this.validated = false;
-            ExceptionUtil.throwIllegalArgumentException("Invalid argument trying to register a Rule Engine Element: {0}", value);
+            ExceptionUtil.throwIllegalArgumentException("Invalid argument trying to register a Rule Engine Element: ''{0}''",
+                    value);
         }
     }
 
@@ -262,8 +263,8 @@ public final class RulesEngine {
 
             if (RulesEngine.LOGGER.isInfoEnabled()) {
 
-                LoggerUtil.info(RulesEngine.LOGGER, this, this.description, "Register Executable. Type: {0}, Executable:{1}",
-                        annotationClass, executable);
+                LoggerUtil.info(RulesEngine.LOGGER, this, this.description,
+                        "Register Executable. Type: ''{0}'', Executable:''{1}''", annotationClass, executable);
             }
 
             return true;

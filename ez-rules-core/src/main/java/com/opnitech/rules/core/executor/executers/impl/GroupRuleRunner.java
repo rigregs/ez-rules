@@ -22,8 +22,8 @@ public class GroupRuleRunner extends AbstractRuleRunner {
         if (ObjectUtils.notEqual(WhenEnum.ACCEPT, when) && ObjectUtils.notEqual(WhenEnum.REJECT, when)) {
 
             ExceptionUtil.throwIllegalArgumentException(
-                    "Invalid condition result for a group fule. Expected: {0} or {1}, but was {2} Rule: {3}", WhenEnum.ACCEPT,
-                    WhenEnum.REJECT, when, getRule());
+                    "Invalid condition result for a group fule. Expected: ''{0}'' or ''{1}'', but was ''{2}'' Rule: ''{3}''",
+                    WhenEnum.ACCEPT, WhenEnum.REJECT, when, getRule());
         }
 
         return when;

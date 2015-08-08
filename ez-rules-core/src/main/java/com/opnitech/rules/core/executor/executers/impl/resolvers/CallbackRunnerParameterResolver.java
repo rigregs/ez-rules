@@ -30,7 +30,7 @@ class CallbackRunnerParameterResolver implements RunnerParameterResolver {
         if (callback == null) {
             MethodMetadata methodMetadata = methodParameterMetadata.getMethodMetadata();
 
-            ExceptionUtil.throwIllegalArgumentException("Callback can not be found. Class: {0} , Method: {1}",
+            ExceptionUtil.throwIllegalArgumentException("Callback can not be found. Class: ''{0}'' , Method: ''{1}''",
                     methodMetadata.getOwnerClass().getName(), methodMetadata.getMethod().getName());
         }
 

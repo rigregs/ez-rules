@@ -156,7 +156,9 @@ public class RuleEngineExecuter {
 
     private void registerGroupRule(Map<String, GroupRunner> groupRuleExecuters, Object rule, Group ruleGroup) throws Exception {
 
-        String groupKey = ruleGroup.groupKey();
+        String groupKey = ruleGroup.groupDefinitionClass() != null
+                ? ruleGroup.groupDefinitionClass().getName()
+                : null;
 
         String groupDefinitionId = StringUtils.isNotBlank(groupKey)
                 ? groupKey
@@ -167,13 +169,14 @@ public class RuleEngineExecuter {
         GroupRunner groupExecuter = groupRuleExecuters.get(groupDefinitionId);
         if (groupExecuter == null) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "Invalid rule group definition, rule define a group definition that does not exists: {0}, Rule: {1}, Rule Group: {2}",
+                    "Invalid rule group definition, rule define a group definition that does not exists: ''{0}'', Rule: ''{1}'', Rule Group: ''{2}''",
                     groupDefinitionId, rule, ruleGroup);
         }
         else {
             GroupRuleRunner groupRuleExecuter = new GroupRuleRunner(rule);
 
-            LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Group Rule. Description: {0}, Class {1}, Priority: {2}",
+            LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null,
+                    "Group Rule. Description: ''{0}'', Class ''{1}'', Priority: ''{2}''",
                     groupRuleExecuter.getRuleAnnotation().description(), rule, groupRuleExecuter.getPriority());
 
             groupExecuter.addExecuter(groupRuleExecuter);
@@ -184,7 +187,8 @@ public class RuleEngineExecuter {
 
         SingleRuleRunner singleRuleExecuter = new SingleRuleRunner(rule);
 
-        LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Simple Rule. Description: {0}, Class {1}, Priority: {2}",
+        LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null,
+                "Simple Rule. Description: ''{0}'', Class ''{1}'', Priority: ''{2}''",
                 singleRuleExecuter.getRuleAnnotation().description(), rule, singleRuleExecuter.getPriority());
 
         this.executors.add(singleRuleExecuter);
@@ -207,7 +211,7 @@ public class RuleEngineExecuter {
 
                 LoggerUtil.info(RuleEngineExecuter.LOGGER, 2, this, null, "Registered callbacks:");
                 for (Object callback : this.callbacks) {
-                    LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Callback: {0}", callback);
+                    LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Callback: ''{0}''", callback);
                 }
             }
             else {
@@ -247,8 +251,9 @@ public class RuleEngineExecuter {
         Object groupDefinitionInstance = ClassUtil.createInstance(groupDefinition);
 
         GroupRunner groupRuleRunner = new GroupRunner(groupDefinition);
-        LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null, "Group. Name: {0}, Group Instance: {1},Priority: {2}",
-                groupDefinition, groupDefinitionInstance, groupRuleRunner.getPriority());
+        LoggerUtil.info(RuleEngineExecuter.LOGGER, 3, this, null,
+                "Group. Name: ''{0}'', Group Instance: ''{1}'' ,Priority: ''{2}''", groupDefinition, groupDefinitionInstance,
+                groupRuleRunner.getPriority());
 
         this.executors.add(groupRuleRunner);
 
@@ -269,8 +274,8 @@ public class RuleEngineExecuter {
 
         if (groupExecuters.containsKey(groupKey)) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "Two Group Definition found with the same Group Key. Group Definition: {0}, Group Key: {1}", groupDefinition,
-                    groupKey);
+                    "Two Group Definition found with the same Group Key. Group Definition: ''{0}'', Group Key: ''{1}''",
+                    groupDefinition, groupKey);
         }
     }
 
@@ -278,8 +283,8 @@ public class RuleEngineExecuter {
 
         if (StringUtils.isBlank(groupKey)) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "A group key method cannot return a blank String. Group Definition: {0}, Group Key: {1}", groupDefinition,
-                    groupKey);
+                    "A group key method cannot return a blank String. Group Definition: ''{0}'', Group Key: ''{1}''",
+                    groupDefinition, groupKey);
         }
     }
 

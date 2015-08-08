@@ -56,7 +56,8 @@ public class GroupRunner implements RuleRunner {
     @Override
     public void logRuleMetadata(Logger logger, Object producer, int level) {
 
-        LoggerUtil.info(logger, level, producer, null, "Group Rule Executer. Rule class: {0}, Description: {1}, Priority: {2}",
+        LoggerUtil.info(logger, level, producer, null,
+                "Group Rule Executer. Rule class: ''{0}'', Description: ''{1}'', Priority: ''{2}''",
                 this.groupDefinition.getClass(), this.groupDefinitionAnnotation.description(),
                 this.groupDefinitionAnnotation.priority());
 
