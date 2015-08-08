@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -52,6 +54,8 @@ public final class RulesEngine {
     private List<Object> groupDefinitions = new ArrayList<>();
 
     private RuleEngineExecuter ruleEngineExecuter;
+
+    private Lock ruleEngineExecuterLock = new ReentrantLock();
 
     private final String description;
 
@@ -163,12 +167,22 @@ public final class RulesEngine {
 
     private void createRuleEngineExecuter() throws EngineException {
 
-        this.ruleEngineExecuter = new RuleEngineExecuter();
         try {
-            this.ruleEngineExecuter.initialize(this.callbacks, this.rules, this.groupDefinitions);
+            this.ruleEngineExecuterLock.lock();
+
+            if (this.ruleEngineExecuter == null) {
+
+                this.ruleEngineExecuter = new RuleEngineExecuter();
+                try {
+                    this.ruleEngineExecuter.initialize(this.callbacks, this.rules, this.groupDefinitions);
+                }
+                catch (Exception e) {
+                    throw new EngineException(e);
+                }
+            }
         }
-        catch (Exception e) {
-            throw new EngineException(e);
+        finally {
+            this.ruleEngineExecuterLock.unlock();
         }
     }
 
@@ -271,7 +285,13 @@ public final class RulesEngine {
 
     private void clearExecuter() {
 
-        this.ruleEngineExecuter = null;
+        try {
+            this.ruleEngineExecuterLock.lock();
+            this.ruleEngineExecuter = null;
+        }
+        finally {
+            this.ruleEngineExecuterLock.unlock();
+        }
     }
 
     private void clearExecutables() {

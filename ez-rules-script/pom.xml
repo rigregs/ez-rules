@@ -21,6 +21,12 @@
 	</developers>
 
 	<dependencies>
+		<!-- this project's own modules -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ez-rules-core</artifactId>
+		</dependency>
+
 		<!-- SLF4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
