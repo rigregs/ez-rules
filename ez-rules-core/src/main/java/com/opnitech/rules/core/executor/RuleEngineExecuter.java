@@ -126,51 +126,51 @@ public class RuleEngineExecuter {
 
     private void registerRule(Map<String, GroupRunner> groupRuleExecuters, Object rule) throws Exception {
 
-        Group ruleGroup = resolveRuleGroup(rule);
-        if (ruleGroup == null) {
+        String ruleGroupKey = resolveRuleGroupKey(rule);
+        if (ruleGroupKey == null) {
             registerSimpleRule(rule);
         }
         else {
-            registerGroupRule(groupRuleExecuters, rule, ruleGroup);
+            registerGroupRule(groupRuleExecuters, rule, ruleGroupKey);
         }
     }
 
-    private Group resolveRuleGroup(Object rule) throws Exception {
+    private String resolveRuleGroupKey(Object rule) throws Exception {
 
         Group groupAnnotation = AnnotationUtil.resolveAnnotation(rule, Group.class);
-        if (groupAnnotation == null) {
-            groupAnnotation = resolveGroupAnnotationFromRuleMethod(rule);
+        if (groupAnnotation != null) {
+            return groupAnnotation.groupDefinitionClass().getName();
         }
 
-        return groupAnnotation;
+        return resolveGroupKeyFromRuleMethod(rule);
     }
 
-    private Group resolveGroupAnnotationFromRuleMethod(Object rule) throws Exception {
+    private String resolveGroupKeyFromRuleMethod(Object rule) throws Exception {
 
-        Method methodWithGroupAnnotation = AnnotationUtil.resolveMethodWithAnnotation(rule, Group.class);
+        Method methodWithGroupAnnotation = AnnotationUtil.resolveMethodWithAnnotation(rule, GroupKey.class);
 
-        return methodWithGroupAnnotation != null
-                ? (Group) methodWithGroupAnnotation.invoke(rule)
-                : null;
+        if (methodWithGroupAnnotation == null) {
+            return null;
+        }
+
+        String groupKey = (String) methodWithGroupAnnotation.invoke(rule);
+
+        if (StringUtils.isBlank(groupKey)) {
+            ExceptionUtil.throwIllegalArgumentException(
+                    "Invalid Group Key method in the rule. A group method cannot return a blank String. Rule: ''{0}'', Group Key Method: ''{1}''",
+                    rule, methodWithGroupAnnotation.getName());
+        }
+
+        return groupKey;
     }
 
-    private void registerGroupRule(Map<String, GroupRunner> groupRuleExecuters, Object rule, Group ruleGroup) throws Exception {
+    private void registerGroupRule(Map<String, GroupRunner> groupRuleExecuters, Object rule, String groupKey) throws Exception {
 
-        String groupKey = ruleGroup.groupDefinitionClass() != null
-                ? ruleGroup.groupDefinitionClass().getName()
-                : null;
-
-        String groupDefinitionId = StringUtils.isNotBlank(groupKey)
-                ? groupKey
-                : ruleGroup.groupDefinitionClass() != null
-                        ? ruleGroup.groupDefinitionClass().getName()
-                        : null;
-
-        GroupRunner groupExecuter = groupRuleExecuters.get(groupDefinitionId);
+        GroupRunner groupExecuter = groupRuleExecuters.get(groupKey);
         if (groupExecuter == null) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "Invalid rule group definition, rule define a group definition that does not exists: ''{0}'', Rule: ''{1}'', Rule Group: ''{2}''",
-                    groupDefinitionId, rule, ruleGroup);
+                    "Invalid rule group definition, rule define a group definition that does not exists: Rule: ''{0}'', groupKey: ''{1}''",
+                    rule, groupKey);
         }
         else {
             GroupRuleRunner groupRuleExecuter = new GroupRuleRunner(rule);
@@ -288,12 +288,12 @@ public class RuleEngineExecuter {
         }
     }
 
-    private String resolveGroupKey(Object groupDefinitionInstance) throws Exception {
+    private String resolveGroupKey(Object executerInstance) throws Exception {
 
-        Method methodWithGroupKeyAnnotation = AnnotationUtil.resolveMethodWithAnnotation(groupDefinitionInstance, GroupKey.class);
+        Method methodWithGroupKeyAnnotation = AnnotationUtil.resolveMethodWithAnnotation(executerInstance, GroupKey.class);
 
         return methodWithGroupKeyAnnotation != null
-                ? (String) methodWithGroupKeyAnnotation.invoke(groupDefinitionInstance)
-                : groupDefinitionInstance.getClass().getName();
+                ? (String) methodWithGroupKeyAnnotation.invoke(executerInstance)
+                : executerInstance.getClass().getName();
     }
 }

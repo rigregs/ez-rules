@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 
 import com.opnitech.rules.core.annotations.group.Group;
+import com.opnitech.rules.core.annotations.group.GroupKey;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.RulePriority;
 import com.opnitech.rules.core.annotations.rule.Then;
@@ -30,8 +31,9 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
 
     /*
      * (non-Javadoc)
-     * @see ca.cn.servicedelivery.carshipment.business.rules.validators.
-     * ExecutableDefinitionConditionValidator#accept(java.lang.Object)
+     * @see
+     * com.opnitech.rules.core.validators.RunnerDefinitionConditionValidator#
+     * acceptRunner(java.lang.Object)
      */
     @Override
     public boolean acceptRunner(Object executable) throws Exception {
@@ -41,44 +43,28 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
 
     /*
      * (non-Javadoc)
-     * @see ca.cn.servicedelivery.carshipment.business.rules.validators.
-     * ExecutableDefinitionValidator#validate(java.lang.Object)
+     * @see
+     * com.opnitech.rules.core.validators.RunnerDefinitionValidator#validate(
+     * java.util.List, java.lang.Object)
      */
     @Override
     public void validate(List<Object> candidateExecutables, Object executable) throws Exception {
 
-        validateUniqueExecutor(candidateExecutables, Rule.class, executable);
+        checkUniqueExecutor(candidateExecutables, Rule.class, executable);
 
         checkValidWhenMethod(executable);
         checkValidThenMethod(executable);
         checkValidPriorityMethod(executable);
-        checkValidGroupMethod(executable);
 
-        validateGroupKeyMethods(executable);
-    }
+        checkGroupKeyMethods(executable);
 
-    private void checkValidGroupMethod(Object executable) throws Exception {
-
-        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, Group.class);
-
-        checkValidMethodCountWithQualifierAnnotation(Group.class, executable, methods);
-
+        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, GroupKey.class);
         if (CollectionUtils.isNotEmpty(methods)) {
-            Method groupMethod = methods.get(0);
-
-            checkValidMethodResultValue(executable, groupMethod, Class.class);
-            checkValidMethodWithZeroParameters(executable, groupMethod);
-            checkValidGroupnnotation(executable, groupMethod);
-        }
-    }
-
-    private void checkValidGroupnnotation(Object executable, Method groupMethod) throws Exception {
-
-        Group group = AnnotationUtil.resolveAnnotation(groupMethod, Group.class);
-        if (group.groupDefinitionClass() == null) {
-            ExceptionUtil.throwIllegalArgumentException(
-                    "Invalid group definition method ''{0}'' in rule ''{1}''. A group key method should define the 'groupDefinitionClass' property",
-                    groupMethod.getName(), executable);
+            if (AnnotationUtil.isAnnotationPresent(executable, Group.class)) {
+                ExceptionUtil.throwIllegalArgumentException(
+                        "Invalid group definition in rule ''{0}''. Group definitin is ambiguos due you have a ''Group'' annotation and ''GroupKey'' annotation in the method ''{1}''. A rule can provide only one way to identify the group where it belong",
+                        executable, methods.iterator().next().getName());
+            }
         }
     }
 

@@ -22,8 +22,9 @@ public class GroupDefinitionRunnerDefinitionValidator extends AbstractValidator
 
     /*
      * (non-Javadoc)
-     * @see ca.cn.servicedelivery.carshipment.business.rules.validators.
-     * ExecutableDefinitionConditionValidator#accept(java.lang.Object)
+     * @see
+     * com.opnitech.rules.core.validators.RunnerDefinitionConditionValidator#
+     * acceptRunner(java.lang.Object)
      */
     @Override
     public boolean acceptRunner(Object executable) throws Exception {
@@ -40,10 +41,10 @@ public class GroupDefinitionRunnerDefinitionValidator extends AbstractValidator
     @Override
     public void validate(List<Object> candidateExecutables, Object executable) throws Exception {
 
-        validateUniqueExecutor(candidateExecutables, GroupDefinition.class, executable);
+        checkUniqueExecutor(candidateExecutables, GroupDefinition.class, executable);
         validateExecutionStrategy(executable);
 
-        validateGroupKeyMethods(executable);
+        checkGroupKeyMethods(executable);
     }
 
     private void validateExecutionStrategy(Object executable) throws Exception {

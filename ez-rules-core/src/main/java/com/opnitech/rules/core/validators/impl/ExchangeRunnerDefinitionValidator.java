@@ -17,8 +17,9 @@ public class ExchangeRunnerDefinitionValidator implements RunnerDefinitionCondit
 
     /*
      * (non-Javadoc)
-     * @see ca.cn.servicedelivery.carshipment.business.rules.validators.
-     * ExecutableDefinitionConditionValidator#accept(java.lang.Object)
+     * @see
+     * com.opnitech.rules.core.validators.RunnerDefinitionConditionValidator#
+     * acceptRunner(java.lang.Object)
      */
     @Override
     public boolean acceptRunner(Object executable) throws Exception {

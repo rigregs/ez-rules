@@ -20,7 +20,7 @@ public abstract class AbstractValidator {
         // Default constructor
     }
 
-    protected void validateUniqueExecutor(List<Object> candidateExecutables, Class<? extends Annotation> annotationClass,
+    protected void checkUniqueExecutor(List<Object> candidateExecutables, Class<? extends Annotation> annotationClass,
             Object executable) {
 
         if (candidateExecutables.contains(executable)) {
@@ -61,15 +61,15 @@ public abstract class AbstractValidator {
         }
     }
 
-    protected void validateGroupKeyMethods(Object executable) throws Exception {
+    protected void checkGroupKeyMethods(Object executable) throws Exception {
 
         List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, GroupKey.class);
 
         checkValidMethodCountWithQualifierAnnotation(GroupKey.class, executable, methods);
-        validateGroupKeyMethod(executable, methods);
+        checkGroupKeyMethod(executable, methods);
     }
 
-    private void validateGroupKeyMethod(Object executable, List<Method> methods) {
+    private void checkGroupKeyMethod(Object executable, List<Method> methods) {
 
         if (CollectionUtils.isNotEmpty(methods)) {
             Method groupKeyMethod = methods.get(0);
@@ -77,15 +77,15 @@ public abstract class AbstractValidator {
             checkValidMethodResultValue(executable, groupKeyMethod, String.class);
             checkValidMethodWithZeroParameters(executable, groupKeyMethod);
 
-            validateExecutableType(executable, groupKeyMethod);
+            checkExecutableType(executable, groupKeyMethod);
         }
     }
 
-    private void validateExecutableType(Object executable, Method groupKeyMethod) {
+    private void checkExecutableType(Object executable, Method groupKeyMethod) {
 
         if (Class.class.isAssignableFrom(executable.getClass())) {
             ExceptionUtil.throwIllegalArgumentException(
-                    "Invalid Group Definition. You cannot register a 'Executable' as a class that contain a method with the GroupKey annotation. You need to register the definition as instance executable. 'Executable': ''{0}'', Method: ''{1}''",
+                    "You cannot register a 'Executable' as a class that contain a method with the GroupKey annotation. You need to register the definition as instance executable. 'Executable': ''{0}'', Method: ''{1}''",
                     executable, groupKeyMethod.getName());
         }
     }
