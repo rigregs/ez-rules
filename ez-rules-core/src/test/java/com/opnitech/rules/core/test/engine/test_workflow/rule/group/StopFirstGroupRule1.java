@@ -8,7 +8,7 @@ import com.opnitech.rules.core.enums.WhenEnum;
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Rule(priority = 1, description = "STOPFIRSTGROUPRULE1")
-@Group(groupDefinitionClass = TestStopFirstGroupDefinition.class)
+@Group(TestStopFirstGroupDefinition.class)
 public class StopFirstGroupRule1 extends AbstractGroupRule1 {
 
     public StopFirstGroupRule1() {

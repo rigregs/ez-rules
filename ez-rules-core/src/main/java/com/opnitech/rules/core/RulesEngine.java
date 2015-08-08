@@ -236,7 +236,7 @@ public final class RulesEngine {
         Group group = AnnotationUtil.resolveAnnotation(executable, Group.class);
 
         Class<?> groupDefinitionClass = group != null
-                ? group.groupDefinitionClass()
+                ? group.value()
                 : null;
 
         return this.groupDefinitions.contains(groupDefinitionClass)

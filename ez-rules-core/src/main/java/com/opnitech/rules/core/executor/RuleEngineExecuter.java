@@ -139,7 +139,7 @@ public class RuleEngineExecuter {
 
         Group groupAnnotation = AnnotationUtil.resolveAnnotation(rule, Group.class);
         if (groupAnnotation != null) {
-            return groupAnnotation.groupDefinitionClass().getName();
+            return groupAnnotation.value().getName();
         }
 
         return resolveGroupKeyFromRuleMethod(rule);

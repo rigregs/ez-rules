@@ -13,7 +13,7 @@ import com.opnitech.rules.core.test.engine.test_when.rules.TestBooleanPrimitiveW
  * @author Rigre Gregorio Garciandia Sonora
  */
 @Rule
-@Group(groupDefinitionClass = InvalidGroupDefinition.class)
+@Group(InvalidGroupDefinition.class)
 public class InvalidGroupRule extends AbstractRule<WhenEnum> {
 
     public InvalidGroupRule() {

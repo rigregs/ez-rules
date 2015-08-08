@@ -6,7 +6,7 @@ import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-@GroupDefinition(ruleExecutionStrategy = ExecutionStrategyEnum.ALL)
+@GroupDefinition(ExecutionStrategyEnum.ALL)
 public class AllGroupDefinition {
     // Nop
 }

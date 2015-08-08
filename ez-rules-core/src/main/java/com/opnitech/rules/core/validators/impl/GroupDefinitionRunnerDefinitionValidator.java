@@ -50,7 +50,7 @@ public class GroupDefinitionRunnerDefinitionValidator extends AbstractValidator
     private void validateExecutionStrategy(Object executable) throws Exception {
 
         GroupDefinition groupDefinition = AnnotationUtil.resolveAnnotation(executable, GroupDefinition.class);
-        if (groupDefinition.ruleExecutionStrategy() == null) {
+        if (groupDefinition.value() == null) {
             ExceptionUtil.throwIllegalArgumentException(
                     "Invalid Group Execution Strategy in the Group Definition. You are trying to register a Group Definition without a valid Rule Execution Strategy. Group Definition: ''{0}''",
                     executable);

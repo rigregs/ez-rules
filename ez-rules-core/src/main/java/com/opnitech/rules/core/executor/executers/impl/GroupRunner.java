@@ -70,7 +70,7 @@ public class GroupRunner implements RuleRunner {
 
     private GroupRunnerStrategy resolveStrategy() {
 
-        GroupRunnerStrategy strategy = GroupRunner.STRATEGIES.get(this.groupDefinitionAnnotation.ruleExecutionStrategy());
+        GroupRunnerStrategy strategy = GroupRunner.STRATEGIES.get(this.groupDefinitionAnnotation.value());
         Validate.notNull(strategy);
 
         return strategy;

@@ -23,5 +23,5 @@ public @interface GroupDefinition {
 
     int priority() default 0;
 
-    ExecutionStrategyEnum ruleExecutionStrategy() default ExecutionStrategyEnum.STOP_FIRST;
+    ExecutionStrategyEnum value() default ExecutionStrategyEnum.STOP_FIRST;
 }
