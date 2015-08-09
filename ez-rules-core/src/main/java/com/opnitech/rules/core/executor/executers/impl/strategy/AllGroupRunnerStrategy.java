@@ -22,7 +22,7 @@ public class AllGroupRunnerStrategy implements GroupRunnerStrategy {
 
         WhenEnum allRunnerWhen = checkAllRunnerWhen(workflowState, executors);
         if (ObjectUtils.notEqual(WhenEnum.ACCEPT, allRunnerWhen)) {
-            return WhenEnum.REJECT;
+            return allRunnerWhen;
         }
 
         executeActions(workflowState, executors);
@@ -41,8 +41,9 @@ public class AllGroupRunnerStrategy implements GroupRunnerStrategy {
 
         for (GroupRuleRunner groupRuleExecuter : executors) {
 
-            if (ObjectUtils.notEqual(WhenEnum.ACCEPT, groupRuleExecuter.executeWhen(workflowState))) {
-                return WhenEnum.REJECT;
+            WhenEnum executeWhen = groupRuleExecuter.executeWhen(workflowState);
+            if (ObjectUtils.notEqual(WhenEnum.ACCEPT, executeWhen)) {
+                return executeWhen;
             }
         }
 

@@ -12,6 +12,7 @@ import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.executor.executers.Runner;
 import com.opnitech.rules.core.executor.executers.impl.strategy.AllGroupRunnerStrategy;
+import com.opnitech.rules.core.executor.executers.impl.strategy.AllPossibleGroupRunnerStrategy;
 import com.opnitech.rules.core.executor.executers.impl.strategy.GroupRunnerStrategy;
 import com.opnitech.rules.core.executor.executers.impl.strategy.StopFirstGroupRunnerStrategy;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
@@ -28,6 +29,7 @@ public class GroupRunner extends AbstractRunner implements Runner {
 
     static {
         GroupRunner.STRATEGIES.put(ExecutionStrategyEnum.STOP_FIRST, new StopFirstGroupRunnerStrategy());
+        GroupRunner.STRATEGIES.put(ExecutionStrategyEnum.ALL_POSSIBLE, new AllPossibleGroupRunnerStrategy());
         GroupRunner.STRATEGIES.put(ExecutionStrategyEnum.ALL, new AllGroupRunnerStrategy());
     }
 

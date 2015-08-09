@@ -14,8 +14,14 @@ public enum ExecutionStrategyEnum {
     STOP_FIRST,
 
     /**
+     * Will execute all possible rules that accept the criteria, if at least one
+     * rule is accepted then the whole group return accepted
+     */
+    ALL_POSSIBLE,
+
+    /**
      * All the rules need to be accepted so all the rules will ran, if one rule
-     * is refjected the whole group won't be executed
+     * is rejected the whole group won't be executed
      */
     ALL
 }

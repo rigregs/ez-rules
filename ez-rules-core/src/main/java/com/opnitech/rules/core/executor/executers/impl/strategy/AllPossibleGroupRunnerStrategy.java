@@ -10,27 +10,34 @@ import com.opnitech.rules.core.executor.util.PriorityList;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class StopFirstGroupRunnerStrategy implements GroupRunnerStrategy {
+public class AllPossibleGroupRunnerStrategy implements GroupRunnerStrategy {
 
-    public StopFirstGroupRunnerStrategy() {
+    public AllPossibleGroupRunnerStrategy() {
         // Default constructor
     }
 
     @Override
     public WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable {
 
+        WhenEnum finalResult = WhenEnum.REJECT;
+
         for (GroupRuleRunner groupRuleExecuter : executors) {
 
             WhenEnum executeWhen = groupRuleExecuter.executeWhen(workflowState);
-            if (executeWhen.getPriority() < 0) {
-                return executeWhen;
+
+            if (!Objects.equals(executeWhen, finalResult)) {
+                finalResult = WhenEnum.fromPriority(Math.min(finalResult.getPriority(), executeWhen.getPriority()));
+            }
+
+            if (finalResult.getPriority() < 0) {
+                return finalResult;
             }
 
             if (Objects.equals(WhenEnum.ACCEPT, executeWhen)) {
-                return groupRuleExecuter.execute(workflowState);
+                groupRuleExecuter.execute(workflowState);
             }
         }
 
-        return WhenEnum.REJECT;
+        return finalResult;
     }
 }
