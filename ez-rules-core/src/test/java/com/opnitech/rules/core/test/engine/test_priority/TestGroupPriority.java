@@ -21,13 +21,13 @@ public class TestGroupPriority extends AbstractRuleEngineExecutorTest {
     }
 
     @Test
-    public void testValidGroupPriorityAsClass() throws EngineException {
+    public void testValidGroupPriorityAsClass() {
 
         validateExceptionRule(ValidGroupPriority.class);
     }
 
     @Test
-    public void testInvalidGroupPriorityMultiplePriorityRule() throws EngineException {
+    public void testInvalidGroupPriorityMultiplePriorityRule() {
 
         validateExceptionRule(new InvalidGroupPriorityMultiplePriorityRule());
     }

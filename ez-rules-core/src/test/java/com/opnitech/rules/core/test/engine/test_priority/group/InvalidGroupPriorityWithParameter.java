@@ -14,7 +14,7 @@ public class InvalidGroupPriorityWithParameter {
     }
 
     @Priority
-    public int priority(boolean somethig) {
+    public int priority(@SuppressWarnings("unused") boolean somethig) {
 
         return 0;
     }

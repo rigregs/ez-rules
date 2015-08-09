@@ -10,9 +10,10 @@ public class GroupMethodRuleWorkflowExecutionTest {
     public GroupMethodRuleWorkflowExecutionTest() {
         // Default constructor
     }
-    
+
     @Test
     public void testValidMethodGroup() {
-        
+
+        // NOP
     }
 }

@@ -14,7 +14,7 @@ public class InvalidGroupPriorityResult {
     }
 
     @Priority
-    public long priority(boolean somethig) {
+    public long priority(@SuppressWarnings("unused") boolean somethig) {
 
         return 0;
     }

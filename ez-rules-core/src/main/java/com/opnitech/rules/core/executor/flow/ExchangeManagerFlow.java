@@ -74,9 +74,9 @@ final class ExchangeManagerFlow implements ExchangeManager {
 
         ExchangeBuilder exchangeBuilder = (ExchangeBuilder) exchange;
 
-        List<?> exchanges = exchangeBuilder.getExchanges();
-        if (CollectionUtils.isNotEmpty(exchanges)) {
-            for (Object internalExchange : exchanges) {
+        List<?> builderExchanges = exchangeBuilder.getExchanges();
+        if (CollectionUtils.isNotEmpty(builderExchanges)) {
+            for (Object internalExchange : builderExchanges) {
                 addExchange(internalExchange);
             }
         }

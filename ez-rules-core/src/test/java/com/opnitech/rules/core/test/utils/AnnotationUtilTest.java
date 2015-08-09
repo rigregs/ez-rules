@@ -49,7 +49,8 @@ public class AnnotationUtilTest {
 
             Assert.fail();
         }
-        catch (IllegalArgumentException e) {
+        catch (@SuppressWarnings("unused")
+        IllegalArgumentException exception) {
             // We're good
         }
     }
@@ -65,7 +66,8 @@ public class AnnotationUtilTest {
                 }), Callback.class);
             Assert.fail();
         }
-        catch (IllegalArgumentException e) {
+        catch (@SuppressWarnings("unused")
+        IllegalArgumentException exception) {
             // We're good
         }
     }

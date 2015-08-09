@@ -10,7 +10,7 @@ import com.opnitech.rules.core.annotations.group.GroupKey;
 public class InvalidKeyWithParameterGroupKeyGroupDefinition {
 
     @GroupKey
-    public String groupKey(String something) {
+    public String groupKey(@SuppressWarnings("unused") String something) {
 
         return "TEST";
     }

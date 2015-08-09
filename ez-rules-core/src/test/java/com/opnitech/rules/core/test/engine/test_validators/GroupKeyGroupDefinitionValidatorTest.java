@@ -22,7 +22,7 @@ public class GroupKeyGroupDefinitionValidatorTest extends AbstractRuleEngineExec
     }
 
     @Test
-    public void testDuplicateValidGroupDefinition() throws EngineException {
+    public void testDuplicateValidGroupDefinition() {
 
         validateExceptionRule(ValidGroupDefinition.class, ValidGroupDefinition.class);
     }

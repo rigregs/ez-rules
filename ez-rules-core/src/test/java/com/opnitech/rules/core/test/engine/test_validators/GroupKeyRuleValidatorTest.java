@@ -21,7 +21,7 @@ public class GroupKeyRuleValidatorTest extends AbstractRuleEngineExecutorTest {
     }
 
     @Test
-    public void testValidGroupKeyGroupDefinitionException() throws EngineException {
+    public void testValidGroupKeyGroupDefinitionException() {
 
         validateExceptionRule(new ValidGroupKeyGroupDefinition("TEST"), new ValidGroupRuleWithValidGroupKey("TEST1"));
     }
@@ -33,31 +33,31 @@ public class GroupKeyRuleValidatorTest extends AbstractRuleEngineExecutorTest {
     }
 
     @Test
-    public void testValidGroupRuleWithValidGroupKey() throws EngineException {
+    public void testValidGroupRuleWithValidGroupKey() {
 
         validateExceptionRule(new ValidGroupRuleWithValidGroupKey("TEST"));
     }
 
     @Test
-    public void testValidGroupRuleWithValidGroupKeyButNullResult() throws EngineException {
+    public void testValidGroupRuleWithValidGroupKeyButNullResult() {
 
         validateExceptionRule(new ValidGroupRuleWithValidGroupKey(null));
     }
 
     @Test
-    public void testValidGroupRuleWithValidGroupKeyButBlankResult() throws EngineException {
+    public void testValidGroupRuleWithValidGroupKeyButBlankResult() {
 
         validateExceptionRule(new ValidGroupRuleWithValidGroupKey(" "));
     }
 
     @Test
-    public void testValidGroupRuleWithValidGroupKeyButEmptyResult() throws EngineException {
+    public void testValidGroupRuleWithValidGroupKeyButEmptyResult() {
 
         validateExceptionRule(new ValidGroupRuleWithValidGroupKey(StringUtils.EMPTY));
     }
 
     @Test
-    public void testInvalidClassValidGroupRuleWithValidGroupKey() throws EngineException {
+    public void testInvalidClassValidGroupRuleWithValidGroupKey() {
 
         validateExceptionRule(ValidGroupRuleWithValidGroupKey.class);
     }

@@ -19,26 +19,27 @@ public class RulePriorityTest extends AbstractRuleEngineExecutorTest {
 
         validateRule(new TestBooleanPriorityRule());
     }
+
     @Test
-    public void testTestBooleanPriorityRuleAsClass() throws EngineException {
+    public void testTestBooleanPriorityRuleAsClass() {
 
         validateExceptionRule(TestBooleanPriorityRule.class);
     }
 
     @Test
-    public void testTestInvalidResultBooleanPriorityRule() throws EngineException {
+    public void testTestInvalidResultBooleanPriorityRule() {
 
         validateExceptionRule(new TestInvalidResultBooleanPriorityRule());
     }
 
     @Test
-    public void testTestInvalidParameterBooleanPriorityRule() throws EngineException {
+    public void testTestInvalidParameterBooleanPriorityRule() {
 
         validateExceptionRule(new TestInvalidParameterBooleanPriorityRule());
     }
 
     @Test
-    public void testTestInvalidMultipleBooleanPriorityRule() throws EngineException {
+    public void testTestInvalidMultipleBooleanPriorityRule() {
 
         validateExceptionRule(new TestInvalidMultipleBooleanPriorityRule());
     }

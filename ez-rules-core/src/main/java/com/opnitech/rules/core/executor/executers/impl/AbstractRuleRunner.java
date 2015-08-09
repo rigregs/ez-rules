@@ -13,7 +13,6 @@ import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
-import com.opnitech.rules.core.executor.executers.Runner;
 import com.opnitech.rules.core.executor.executers.impl.resolvers.SingleRuleParameterResolver;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.reflection.MethodMetadata;
@@ -26,7 +25,7 @@ import com.opnitech.rules.core.utils.LoggerUtil;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public abstract class AbstractRuleRunner extends AbstractRunner implements Runner {
+public abstract class AbstractRuleRunner extends AbstractRunner {
 
     private static final Map<Class<?>, WhenExecutor> WHEN_EXECUTORS = new HashMap<>();
 

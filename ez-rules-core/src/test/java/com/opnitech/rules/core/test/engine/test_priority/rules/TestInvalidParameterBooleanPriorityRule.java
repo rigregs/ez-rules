@@ -1,7 +1,7 @@
 package com.opnitech.rules.core.test.engine.test_priority.rules;
 
-import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Priority;
+import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.test.engine.AbstractRule;
@@ -17,7 +17,7 @@ public class TestInvalidParameterBooleanPriorityRule extends AbstractRule<Boolea
     }
 
     @Priority
-    public int priority(int something) {
+    public int priority(@SuppressWarnings("unused") int something) {
 
         return 5;
     }
@@ -31,5 +31,6 @@ public class TestInvalidParameterBooleanPriorityRule extends AbstractRule<Boolea
     @Then
     public void then() {
 
-        doExecuteThen(TestInvalidParameterBooleanPriorityRule.class.getEnclosingMethod());    }
+        doExecuteThen(TestInvalidParameterBooleanPriorityRule.class.getEnclosingMethod());
+    }
 }

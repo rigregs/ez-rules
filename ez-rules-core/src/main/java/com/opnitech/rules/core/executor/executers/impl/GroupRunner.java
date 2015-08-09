@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.enums.WhenEnum;
-import com.opnitech.rules.core.executor.executers.Runner;
 import com.opnitech.rules.core.executor.executers.impl.strategy.AllGroupRunnerStrategy;
 import com.opnitech.rules.core.executor.executers.impl.strategy.AllPossibleGroupRunnerStrategy;
 import com.opnitech.rules.core.executor.executers.impl.strategy.GroupRunnerStrategy;
@@ -23,7 +22,7 @@ import com.opnitech.rules.core.utils.LoggerUtil;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class GroupRunner extends AbstractRunner implements Runner {
+public class GroupRunner extends AbstractRunner {
 
     private static final Map<ExecutionStrategyEnum, GroupRunnerStrategy> STRATEGIES = new HashMap<>();
 
