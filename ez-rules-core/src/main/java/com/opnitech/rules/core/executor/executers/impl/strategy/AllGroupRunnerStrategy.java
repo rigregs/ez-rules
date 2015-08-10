@@ -3,7 +3,8 @@ package com.opnitech.rules.core.executor.executers.impl.strategy;
 import org.apache.commons.lang3.ObjectUtils;
 
 import com.opnitech.rules.core.enums.WhenEnum;
-import com.opnitech.rules.core.executor.executers.impl.GroupRuleRunner;
+import com.opnitech.rules.core.executor.executers.Runner;
+import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.util.PriorityList;
 
@@ -18,35 +19,36 @@ public class AllGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     @Override
-    public WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable {
+    public WhenResult doExecution(WorkflowState workflowState, PriorityList<Runner> executors) throws Throwable {
 
-        WhenEnum allRunnerWhen = checkAllRunnerWhen(workflowState, executors);
-        if (ObjectUtils.notEqual(WhenEnum.ACCEPT, allRunnerWhen)) {
+        WhenResult allRunnerWhen = checkAllRunnerWhen(workflowState, executors);
+        if (ObjectUtils.notEqual(WhenEnum.ACCEPT, allRunnerWhen.getWhenEnum())) {
             return allRunnerWhen;
         }
 
         executeActions(workflowState, executors);
 
-        return WhenEnum.ACCEPT;
+        return new WhenResult(WhenEnum.ACCEPT);
     }
 
-    private void executeActions(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable {
+    private void executeActions(WorkflowState workflowState, PriorityList<Runner> executors) throws Throwable {
 
-        for (GroupRuleRunner groupRuleExecuter : executors) {
+        for (Runner groupRuleExecuter : executors) {
             groupRuleExecuter.execute(workflowState);
         }
     }
 
-    private WhenEnum checkAllRunnerWhen(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable {
+    private WhenResult checkAllRunnerWhen(WorkflowState workflowState, PriorityList<Runner> executors) throws Throwable {
 
-        for (GroupRuleRunner groupRuleExecuter : executors) {
+        for (Runner runner : executors) {
 
-            WhenEnum executeWhen = groupRuleExecuter.executeWhen(workflowState);
-            if (ObjectUtils.notEqual(WhenEnum.ACCEPT, executeWhen)) {
+            WhenResult executeWhen = runner.executeWhen(workflowState);
+
+            if (ObjectUtils.notEqual(WhenEnum.ACCEPT, executeWhen.getWhenEnum())) {
                 return executeWhen;
             }
         }
 
-        return WhenEnum.ACCEPT;
+        return new WhenResult(WhenEnum.ACCEPT);
     }
 }

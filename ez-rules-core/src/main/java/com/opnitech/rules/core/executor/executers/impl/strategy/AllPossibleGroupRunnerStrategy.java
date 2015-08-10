@@ -3,7 +3,8 @@ package com.opnitech.rules.core.executor.executers.impl.strategy;
 import java.util.Objects;
 
 import com.opnitech.rules.core.enums.WhenEnum;
-import com.opnitech.rules.core.executor.executers.impl.GroupRuleRunner;
+import com.opnitech.rules.core.executor.executers.Runner;
+import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.util.PriorityList;
 
@@ -17,27 +18,27 @@ public class AllPossibleGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     @Override
-    public WhenEnum doExecution(WorkflowState workflowState, PriorityList<GroupRuleRunner> executors) throws Throwable {
+    public WhenResult doExecution(WorkflowState workflowState, PriorityList<Runner> executors) throws Throwable {
 
         WhenEnum finalResult = WhenEnum.REJECT;
 
-        for (GroupRuleRunner groupRuleExecuter : executors) {
+        for (Runner runner : executors) {
 
-            WhenEnum executeWhen = groupRuleExecuter.executeWhen(workflowState);
+            WhenResult executeWhen = runner.executeWhen(workflowState);
 
             if (!Objects.equals(executeWhen, finalResult)) {
-                finalResult = WhenEnum.fromPriority(Math.min(finalResult.getPriority(), executeWhen.getPriority()));
+                finalResult = WhenEnum.fromPriority(Math.min(finalResult.getPriority(), executeWhen.getWhenEnum().getPriority()));
             }
 
             if (finalResult.getPriority() < 0) {
-                return finalResult;
+                return new WhenResult(finalResult);
             }
 
-            if (Objects.equals(WhenEnum.ACCEPT, executeWhen)) {
-                groupRuleExecuter.execute(workflowState);
+            if (Objects.equals(WhenEnum.ACCEPT, executeWhen.getWhenEnum())) {
+                runner.execute(workflowState);
             }
         }
 
-        return finalResult;
+        return new WhenResult(finalResult);
     }
 }

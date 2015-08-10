@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.opnitech.rules.core.RuleEngineExecutionResult;
 import com.opnitech.rules.core.RulesEngine;
-import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.test.engine.test_workflow.callback.TestValidCallback;
 import com.opnitech.rules.core.test.engine.test_workflow.exchanges.Exchange1;
 import com.opnitech.rules.core.test.engine.test_workflow.exchanges.Exchange2;
@@ -142,29 +141,5 @@ public class RuleWorkflowExecutionTest {
         }
 
         Assert.assertEquals(TestExchangeManagerRule.ACTION_COUNT, rule.getActionExecuted());
-    }
-
-    @Test
-    public void testMultiRule() throws Exception {
-
-        Exchange1 exchange1 = new Exchange1("TEST");
-
-        TestAcceptSimpleRule acceptRule1 = new TestAcceptSimpleRule(WhenEnum.ACCEPT);
-        TestAcceptSimpleRule acceptRule2 = new TestAcceptSimpleRule(WhenEnum.ACCEPT);
-
-        RulesEngine rulesEngine = new RulesEngine();
-        rulesEngine.registerExecutable(acceptRule1);
-        rulesEngine.registerExecutable(acceptRule2);
-
-        RuleEngineExecutionResult execute = rulesEngine.execute(exchange1);
-        if (execute.getException() != null) {
-            throw execute.getException();
-        }
-
-        Assert.assertTrue(acceptRule1.isExecuteCondition());
-        Assert.assertTrue(acceptRule1.isExecuteAction());
-
-        Assert.assertTrue(acceptRule2.isExecuteCondition());
-        Assert.assertTrue(acceptRule2.isExecuteAction());
     }
 }

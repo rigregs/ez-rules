@@ -1,18 +1,15 @@
 package com.opnitech.rules.core.executor.executers.impl;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Then;
-import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
+import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.executers.impl.resolvers.SingleRuleParameterResolver;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.reflection.MethodMetadata;
@@ -27,19 +24,7 @@ import com.opnitech.rules.core.utils.LoggerUtil;
  */
 public abstract class AbstractRuleRunner extends AbstractRunner {
 
-    private static final Map<Class<?>, WhenExecutor> WHEN_EXECUTORS = new HashMap<>();
-
-    static {
-        AbstractRuleRunner.WHEN_EXECUTORS.put(WhenEnum.class, new EnumWhenExecutor());
-        AbstractRuleRunner.WHEN_EXECUTORS.put(Boolean.class, new BooleanWhenExecutor());
-        AbstractRuleRunner.WHEN_EXECUTORS.put(boolean.class, new BooleanWhenExecutor());
-    }
-
     private final int priority;
-
-    private final Object rule;
-
-    private final MethodMetadata acceptExecutionMethodMetadata;
 
     private final PriorityList<MethodMetadata> actionMethodMetadatas = new PriorityList<>();
 
@@ -47,23 +32,35 @@ public abstract class AbstractRuleRunner extends AbstractRunner {
 
     public AbstractRuleRunner(Object rule) throws Exception {
 
-        this.rule = rule;
+        super(rule);
 
-        AnnotationUtil.validateAnnotationPresent(this.rule, Rule.class);
-
-        this.acceptExecutionMethodMetadata = createAcceptExecutionMethodMetadata();
+        AnnotationUtil.validateAnnotationPresent(rule, Rule.class);
 
         createActionMethodMetadatas();
 
         this.ruleAnnotation = AnnotationUtil.resolveAnnotation(rule, Rule.class);
-        this.priority = resolvePriority(this.rule, this.ruleAnnotation.priority());
+        this.priority = resolvePriority(this.ruleAnnotation.priority());
+    }
+
+    @Override
+    public WhenResult execute(WorkflowState workflowState) throws Throwable {
+
+        doExecuteThen(workflowState);
+
+        return new WhenResult(WhenEnum.ACCEPT);
+    }
+
+    @Override
+    protected WhenResult createWhenResult(WhenEnum whenEnum) {
+
+        return new WhenResult(whenEnum);
     }
 
     @Override
     public void logRuleMetadata(Logger logger, Object producer, int level) {
 
         LoggerUtil.info(logger, level, producer, null,
-                "Simple Rule Executer. Rule class: ''{0}'', Description: ''{1}'', Priority: ''{2}''", this.rule.getClass(),
+                "Simple Rule Executer. Rule class: ''{0}'', Description: ''{1}'', Priority: ''{2}''", getExecutable().getClass(),
                 this.ruleAnnotation.description(), this.priority);
 
         logRuleMethodMetadata(logger, producer, level + 1);
@@ -72,7 +69,7 @@ public abstract class AbstractRuleRunner extends AbstractRunner {
     private void logRuleMethodMetadata(Logger logger, Object producer, int level) {
 
         LoggerUtil.info(logger, level, producer, null, "Accept method...");
-        logMethodsState(logger, producer, level + 1, this.acceptExecutionMethodMetadata);
+        logMethodsState(logger, producer, level + 1, getAcceptExecutionMethodMetadata());
 
         LoggerUtil.info(logger, level, producer, null, "Then methods...");
         for (MethodMetadata methodMetadata : this.actionMethodMetadatas) {
@@ -102,32 +99,21 @@ public abstract class AbstractRuleRunner extends AbstractRunner {
 
     private void createActionMethodMetadatas() throws Exception {
 
-        List<Method> actionMethods = AnnotationUtil.resolveMethodsWithAnnotation(this.rule, Then.class);
+        Object executable = getExecutable();
+
+        List<Method> actionMethods = AnnotationUtil.resolveMethodsWithAnnotation(executable, Then.class);
         for (Method method : actionMethods) {
             Then actionAnnotation = AnnotationUtil.resolveAnnotation(method, Then.class);
 
-            this.actionMethodMetadatas.add(new MethodMetadata(this.rule.getClass(), method, actionAnnotation.priority()));
+            this.actionMethodMetadatas.add(new MethodMetadata(executable.getClass(), method, actionAnnotation.priority()));
         }
-    }
-
-    private MethodMetadata createAcceptExecutionMethodMetadata() throws Exception {
-
-        return new MethodMetadata(this.rule.getClass(), AnnotationUtil.resolveMethodWithAnnotation(this.rule, When.class));
-    }
-
-    protected WhenEnum doExecuteWhen(WorkflowState workflowState) throws Throwable {
-
-        WhenExecutor whenExecutor = AbstractRuleRunner.WHEN_EXECUTORS.get(this.acceptExecutionMethodMetadata.getReturnType());
-        Validate.notNull(whenExecutor);
-
-        return whenExecutor.executeWhen(workflowState, this.acceptExecutionMethodMetadata, this.rule);
     }
 
     protected void doExecuteThen(WorkflowState workflowState) throws Throwable {
 
         for (MethodMetadata methodMetadata : this.actionMethodMetadatas) {
 
-            methodMetadata.execute(new MethodRunnerResult<Void>(this.rule), new SingleRuleParameterResolver(workflowState));
+            methodMetadata.execute(new MethodRunnerResult<Void>(getExecutable()), new SingleRuleParameterResolver(workflowState));
         }
     }
 
@@ -137,57 +123,8 @@ public abstract class AbstractRuleRunner extends AbstractRunner {
         return this.priority;
     }
 
-    protected Object getRule() {
-
-        return this.rule;
-    }
-
     public Rule getRuleAnnotation() {
 
         return this.ruleAnnotation;
-    }
-
-    private static interface WhenExecutor {
-        WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
-                throws Throwable;
-    }
-
-    private static class EnumWhenExecutor implements WhenExecutor {
-
-        public EnumWhenExecutor() {
-            // Default constructor
-        }
-
-        @Override
-        public WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
-                throws Throwable {
-
-            MethodRunnerResult<WhenEnum> methodExecutionResult = new MethodRunnerResult<>(rule);
-
-            acceptExecutionMethodMetadata.execute(methodExecutionResult, new SingleRuleParameterResolver(workflowState));
-
-            return methodExecutionResult.getResult();
-        }
-
-    }
-
-    private static class BooleanWhenExecutor implements WhenExecutor {
-
-        public BooleanWhenExecutor() {
-            // Default constructor
-        }
-
-        @Override
-        public WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
-                throws Throwable {
-
-            MethodRunnerResult<Boolean> methodExecutionResult = new MethodRunnerResult<>(rule);
-
-            acceptExecutionMethodMetadata.execute(methodExecutionResult, new SingleRuleParameterResolver(workflowState));
-
-            return methodExecutionResult.getResult()
-                    ? WhenEnum.ACCEPT
-                    : WhenEnum.REJECT;
-        }
     }
 }

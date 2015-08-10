@@ -17,6 +17,7 @@ import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.annotations.rule.Rule;
+import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.executor.RuleEngineExecuter;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.utils.AnnotationUtil;
@@ -59,13 +60,21 @@ public final class RulesEngine {
 
     private final String description;
 
+    private final ExecutionStrategyEnum executionStrategy;
+
     public RulesEngine() {
 
-        this(RulesEngine.class.getSimpleName());
+        this(ExecutionStrategyEnum.ALL, RulesEngine.class.getSimpleName());
     }
 
-    public RulesEngine(String description) {
+    public RulesEngine(ExecutionStrategyEnum executionStrategy) {
 
+        this(executionStrategy, RulesEngine.class.getSimpleName());
+    }
+
+    public RulesEngine(ExecutionStrategyEnum executionStrategy, String description) {
+
+        this.executionStrategy = executionStrategy;
         this.description = description;
     }
 
@@ -172,7 +181,7 @@ public final class RulesEngine {
 
             if (this.ruleEngineExecuter == null) {
 
-                this.ruleEngineExecuter = new RuleEngineExecuter();
+                this.ruleEngineExecuter = new RuleEngineExecuter(this.executionStrategy);
                 try {
                     this.ruleEngineExecuter.initialize(this.callbacks, this.rules, this.groupDefinitions);
                 }
