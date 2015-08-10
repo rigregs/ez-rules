@@ -20,42 +20,6 @@ public final class AnnotationUtil {
     }
 
     /**
-     * Validate that all elements in the list have the same annotation type
-     * 
-     * @param possibleAnnotatedList
-     *            List of possible annotated instances to validate
-     * @param annotationClass
-     *            Annotation to validate
-     * @throws Exception
-     *             An exception if the validation fail
-     */
-    public static void validateAnnotationPresent(List<? extends Object> possibleAnnotatedList,
-            Class<? extends Annotation> annotationClass) throws Exception {
-
-        if (CollectionUtils.isNotEmpty(possibleAnnotatedList)) {
-            for (Object possibleAnnotated : possibleAnnotatedList) {
-                AnnotationUtil.validateAnnotationPresent(possibleAnnotated, annotationClass);
-            }
-        }
-    }
-
-    /**
-     * Validate that the element have an specific annotation
-     * 
-     * @param possibleAnnotated
-     *            Possible annotate instance
-     * @param annotationClass
-     *            Annotation to validate
-     * @throws Exception
-     *             An exception if the validation fail
-     */
-    public static void validateAnnotationPresent(Object possibleAnnotated, Class<? extends Annotation> annotationClass)
-            throws Exception {
-
-        Validate.isTrue(AnnotationUtil.isAnnotationPresent(possibleAnnotated, annotationClass));
-    }
-
-    /**
      * Check if an annotation is presented in the element
      * 
      * @param possibleAnnotated

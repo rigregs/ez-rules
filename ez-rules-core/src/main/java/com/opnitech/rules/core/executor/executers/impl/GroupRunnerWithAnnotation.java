@@ -2,6 +2,7 @@ package com.opnitech.rules.core.executor.executers.impl;
 
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.utils.AnnotationUtil;
+import com.opnitech.rules.core.utils.AnnotationValidatorUtil;
 
 /**
  * @author Rigre Gregorio Garciandia Sonora
@@ -14,7 +15,7 @@ public class GroupRunnerWithAnnotation extends AbstractGroupRunner {
 
         super(groupDefinition);
 
-        AnnotationUtil.validateAnnotationPresent(groupDefinition, GroupDefinition.class);
+        AnnotationValidatorUtil.validateAnnotationPresent(groupDefinition, GroupDefinition.class);
 
         this.groupDefinitionAnnotation = AnnotationUtil.resolveAnnotation(groupDefinition, GroupDefinition.class);
 

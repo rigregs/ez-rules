@@ -1,7 +1,5 @@
 package com.opnitech.rules.core.test.utils;
 
-import java.util.Arrays;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,48 +25,5 @@ public class AnnotationUtilTest {
 
         Assert.assertFalse(AnnotationUtil.isAnnotationPresent(new TestInvalidCallback(), Callback.class));
         Assert.assertFalse(AnnotationUtil.isAnnotationPresent(TestInvalidCallback.class, Callback.class));
-    }
-
-    @Test
-    public void testWithListValid() throws Exception {
-
-        AnnotationUtil.validateAnnotationPresent(Arrays.asList(new Class<?>[]
-            {
-                TestValidCallback.class
-            }), Callback.class);
-    }
-
-    @Test
-    public void testWithListInvalid() throws Exception {
-
-        try {
-            AnnotationUtil.validateAnnotationPresent(Arrays.asList(new Class<?>[]
-                {
-                    TestInvalidCallback.class
-                }), Callback.class);
-
-            Assert.fail();
-        }
-        catch (@SuppressWarnings("unused")
-        IllegalArgumentException exception) {
-            // We're good
-        }
-    }
-
-    @Test
-    public void testWithListCombined() throws Exception {
-
-        try {
-            AnnotationUtil.validateAnnotationPresent(Arrays.asList(new Class<?>[]
-                {
-                    TestValidCallback.class,
-                    TestInvalidCallback.class
-                }), Callback.class);
-            Assert.fail();
-        }
-        catch (@SuppressWarnings("unused")
-        IllegalArgumentException exception) {
-            // We're good
-        }
     }
 }

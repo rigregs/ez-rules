@@ -17,6 +17,7 @@ import com.opnitech.rules.core.executor.reflection.MethodRunnerResult;
 import com.opnitech.rules.core.executor.reflection.ParameterMetadata;
 import com.opnitech.rules.core.executor.util.PriorityList;
 import com.opnitech.rules.core.utils.AnnotationUtil;
+import com.opnitech.rules.core.utils.AnnotationValidatorUtil;
 import com.opnitech.rules.core.utils.LoggerUtil;
 
 /**
@@ -34,7 +35,7 @@ public abstract class AbstractRuleRunner extends AbstractRunner {
 
         super(rule);
 
-        AnnotationUtil.validateAnnotationPresent(rule, Rule.class);
+        AnnotationValidatorUtil.validateAnnotationPresent(rule, Rule.class);
 
         createActionMethodMetadatas();
 
