@@ -5,11 +5,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 
 import com.opnitech.rules.core.annotations.group.GroupKey;
 import com.opnitech.rules.core.annotations.rule.Priority;
 import com.opnitech.rules.core.utils.AnnotationUtil;
+import com.opnitech.rules.core.utils.AnnotationValidatorUtil;
 import com.opnitech.rules.core.utils.ExceptionUtil;
 
 /**
@@ -21,7 +21,7 @@ public abstract class AbstractValidator {
         // Default constructor
     }
 
-    protected void checkUniqueExecutor(List<Object> candidateExecutables, Class<? extends Annotation> annotationClass,
+    protected void validateUniqueExecutor(List<Object> candidateExecutables, Class<? extends Annotation> annotationClass,
             Object executable) {
 
         if (candidateExecutables.contains(executable)) {
@@ -31,106 +31,33 @@ public abstract class AbstractValidator {
         }
     }
 
-    protected void checkValidMethodWithZeroParameters(Object executable, Method method) {
+    protected void validateGroupKeyMethods(Object executable) throws Exception {
 
-        if (ArrayUtils.isNotEmpty(method.getParameterTypes())) {
-            ExceptionUtil.throwIllegalArgumentException(
-                    "A priority method cannot have parameters, please check the method signature. Rule: ''{0}''", executable);
-        }
-    }
-
-    protected void checkValidMethodCountWithQualifierAnnotation(Class<? extends Annotation> annotationClass, Object executable,
-            List<Method> methods) {
-
-        if (CollectionUtils.isNotEmpty(methods) && methods.size() != 1) {
-            ExceptionUtil.throwIllegalArgumentException(
-                    "A rule can have 0 or 1 method annotated with a ''{0}'' annotation, please check the method signature. Rule: ''{1}''",
-                    annotationClass, executable);
-        }
-    }
-
-    protected void checkValidMethodResultValue(Object executable, Method method, Class<?>... expectedResultValues) {
-
-        Class<?> returnType = method.getReturnType();
-
-        Class<?> assignable = findAssignable(returnType, expectedResultValues);
-
-        if (assignable == null) {
-            ExceptionUtil.throwIllegalArgumentException(
-                    "Return type of a condition method inside a rule should be one of those types: ''{0}''. Rule: ''{1}''. Current result type: ''{2}''. Method: ''{3}''",
-                    generateExpectedResultValues(expectedResultValues), executable, returnType, method.getName());
-        }
-    }
-
-    protected void checkGroupKeyMethods(Object executable) throws Exception {
+        AnnotationValidatorUtil.validateAnnotatedMethods(executable, GroupKey.class, 0, 1, false, String.class);
 
         List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, GroupKey.class);
-
-        checkValidMethodCountWithQualifierAnnotation(GroupKey.class, executable, methods);
-        checkGroupKeyMethod(executable, methods);
+        if (CollectionUtils.isNotEmpty(methods)) {
+            validateExecutableType(executable, methods.get(0), Priority.class);
+        }
     }
 
-    protected void checkValidPriorityMethod(Object executable) throws Exception {
+    protected void validateValidPriorityMethod(Object executable) throws Exception {
+
+        AnnotationValidatorUtil.validateAnnotatedMethods(executable, Priority.class, 0, 1, false, Integer.TYPE);
 
         List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, Priority.class);
 
-        checkValidMethodCountWithQualifierAnnotation(Priority.class, executable, methods);
-
         if (CollectionUtils.isNotEmpty(methods)) {
-            Method priorityMethod = methods.get(0);
-            checkValidMethodResultValue(executable, priorityMethod, Integer.TYPE);
-            checkValidMethodWithZeroParameters(executable, priorityMethod);
-            checkExecutableType(executable, priorityMethod, Priority.class);
+            validateExecutableType(executable, methods.get(0), Priority.class);
         }
     }
 
-    private void checkGroupKeyMethod(Object executable, List<Method> methods) {
-
-        if (CollectionUtils.isNotEmpty(methods)) {
-            Method groupKeyMethod = methods.get(0);
-
-            checkValidMethodResultValue(executable, groupKeyMethod, String.class);
-            checkValidMethodWithZeroParameters(executable, groupKeyMethod);
-
-            checkExecutableType(executable, groupKeyMethod, GroupKey.class);
-        }
-    }
-
-    private void checkExecutableType(Object executable, Method method, Class<? extends Annotation> annotationClass) {
+    private void validateExecutableType(Object executable, Method method, Class<? extends Annotation> annotationClass) {
 
         if (Class.class.isAssignableFrom(executable.getClass())) {
             ExceptionUtil.throwIllegalArgumentException(
                     "You cannot register a 'Executable' as a class that contain a method with the ''{0}'' annotation. You need to register the definition as instance executable. 'Executable': ''{1}'', Method: ''{2}''",
                     annotationClass, executable, method.getName());
         }
-    }
-
-    private String generateExpectedResultValues(Class<?>[] expectedResultValues) {
-
-        StringBuffer buffer = new StringBuffer();
-
-        boolean firstTime = true;
-        for (Class<?> clazz : expectedResultValues) {
-            if (!firstTime) {
-                buffer.append(", ");
-            }
-
-            buffer.append(clazz.getName());
-
-            firstTime = false;
-        }
-
-        return buffer.toString();
-    }
-
-    private Class<?> findAssignable(Class<?> returnType, Class<?>[] expectedResultValues) {
-
-        for (Class<?> expectedResultValue : expectedResultValues) {
-            if (expectedResultValue.isAssignableFrom(returnType)) {
-                return expectedResultValue;
-            }
-        }
-
-        return null;
     }
 }

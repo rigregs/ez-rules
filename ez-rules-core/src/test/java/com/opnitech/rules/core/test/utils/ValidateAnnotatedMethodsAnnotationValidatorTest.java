@@ -6,6 +6,7 @@ import java.text.MessageFormat;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.test.utils.annotation.CorrectAnnotatedRule;
@@ -17,48 +18,72 @@ import com.opnitech.rules.core.utils.AnnotationValidatorUtil;
 public class ValidateAnnotatedMethodsAnnotationValidatorTest {
 
     @Test
-    public void testCorrectWhenAnnotation() throws Exception {
+    public void testCorrectWhenAnnotationCount() throws Exception {
 
-        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, 0, 1, WhenEnum.class,
+        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, 0, 1, true, WhenEnum.class,
                 Boolean.class, boolean.class);
-        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, 1, 1, WhenEnum.class,
+        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, 1, 1, true, WhenEnum.class,
                 Boolean.class, boolean.class);
-        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, Integer.MAX_VALUE, 1,
+        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, Integer.MIN_VALUE, 1, true,
                 WhenEnum.class, Boolean.class, boolean.class);
-        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, 1, Integer.MAX_VALUE,
+        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, 1, Integer.MAX_VALUE, true,
                 WhenEnum.class, Boolean.class, boolean.class);
-        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, Integer.MAX_VALUE,
-                Integer.MAX_VALUE, WhenEnum.class, Boolean.class, boolean.class);
+        AnnotationValidatorUtil.validateAnnotatedMethods(CorrectAnnotatedRule.class, When.class, Integer.MIN_VALUE,
+                Integer.MAX_VALUE, true, WhenEnum.class, Boolean.class, boolean.class);
     }
 
     @Test
-    public void testCorrectAnnotationInvalidMin() throws Exception {
+    public void testRangeCorrectAnnotationInvalidMin() throws Exception {
 
-        validfateException("minCount>=2", CorrectAnnotatedRule.class, When.class, 2, 3, WhenEnum.class, Boolean.class,
+        validateException("minCount>=2", CorrectAnnotatedRule.class, When.class, 2, 3, true, WhenEnum.class, Boolean.class,
                 boolean.class);
     }
 
     @Test
-    public void testCorrectAnnotationInvalidMax() throws Exception {
+    public void testRangeCorrectAnnotationInvalidMax() throws Exception {
 
-        validfateException("maxCount<=0", CorrectAnnotatedRule.class, When.class, 0, 0, WhenEnum.class, Boolean.class,
+        validateException("maxCount<=0", CorrectAnnotatedRule.class, When.class, 0, 0, true, WhenEnum.class, Boolean.class,
                 boolean.class);
     }
 
     @Test
-    public void testCorrectAnnotationInvalidRange() throws Exception {
+    public void testRangeCorrectAnnotationInvalidInterval() throws Exception {
 
-        validfateException("minExpectedMethodCount<=maxExpectedMethodCount", CorrectAnnotatedRule.class, When.class, 1, 0,
+        validateException("minExpectedMethodCount<=maxExpectedMethodCount", CorrectAnnotatedRule.class, When.class, 1, 0, true,
                 WhenEnum.class, Boolean.class, boolean.class);
     }
 
-    private void validfateException(String expectedExceptionContent, Object possibleAnnotated,
+    @Test
+    public void testParameterCorrectAnnotationValidIntervalParamCount() throws Exception {
+
+        validateException("minExpectedMethodCount<=maxExpectedMethodCount", CorrectAnnotatedRule.class, When.class, 1, 0, true,
+                WhenEnum.class, Boolean.class, boolean.class);
+        validateException("minExpectedMethodCount<=maxExpectedMethodCount", CorrectAnnotatedRule.class, Then.class, 1, 0, false,
+                WhenEnum.class, Boolean.class, boolean.class);
+    }
+
+    @Test
+    public void testParameterCorrectAnnotationInvalidIntervalParamCount() throws Exception {
+
+        validateException("parameterCount=0", CorrectAnnotatedRule.class, When.class, 0, 1, false, WhenEnum.class, Boolean.class,
+                boolean.class);
+    }
+
+    @Test
+    public void testResultTypeCorrectAnnotationInvalidResult() throws Exception {
+
+        validateException("returnType not found", CorrectAnnotatedRule.class, When.class, 0, 1, true, Boolean.class,
+                boolean.class);
+    }
+
+    private void validateException(String expectedExceptionContent, Object possibleAnnotated,
             Class<? extends Annotation> annotationClass, int minExpectedMethodCount, int maxExpectedMethodCount,
-            Class<?>... possibleReturnTypes) throws Exception {
+            boolean allowParameters, Class<?>... possibleReturnTypes) throws Exception {
 
         try {
             AnnotationValidatorUtil.validateAnnotatedMethods(possibleAnnotated, annotationClass, minExpectedMethodCount,
-                    maxExpectedMethodCount, possibleReturnTypes);
+                    maxExpectedMethodCount, allowParameters, possibleReturnTypes);
+            Assert.fail();
         }
         catch (IllegalArgumentException exception) {
             Assert.assertTrue(MessageFormat.format("Cannot find ''{0}'' in the error message ''{1}''.", expectedExceptionContent,

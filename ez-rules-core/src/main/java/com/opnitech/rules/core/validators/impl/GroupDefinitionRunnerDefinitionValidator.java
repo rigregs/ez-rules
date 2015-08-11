@@ -3,7 +3,10 @@ package com.opnitech.rules.core.validators.impl;
 import java.util.List;
 
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
+import com.opnitech.rules.core.annotations.rule.When;
+import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.utils.AnnotationUtil;
+import com.opnitech.rules.core.utils.AnnotationValidatorUtil;
 import com.opnitech.rules.core.utils.ExceptionUtil;
 import com.opnitech.rules.core.validators.RunnerDefinitionConditionValidator;
 import com.opnitech.rules.core.validators.RunnerDefinitionValidator;
@@ -41,11 +44,14 @@ public class GroupDefinitionRunnerDefinitionValidator extends AbstractValidator
     @Override
     public void validate(List<Object> candidateExecutables, Object executable) throws Exception {
 
-        checkUniqueExecutor(candidateExecutables, GroupDefinition.class, executable);
-        validateExecutionStrategy(executable);
-        checkValidPriorityMethod(executable);
+        AnnotationValidatorUtil.validateAnnotatedMethods(executable, When.class, 0, 1, true, WhenEnum.class, Boolean.class,
+                boolean.class);
 
-        checkGroupKeyMethods(executable);
+        validateUniqueExecutor(candidateExecutables, GroupDefinition.class, executable);
+        validateExecutionStrategy(executable);
+        validateValidPriorityMethod(executable);
+
+        validateGroupKeyMethods(executable);
     }
 
     private void validateExecutionStrategy(Object executable) throws Exception {

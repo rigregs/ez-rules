@@ -63,43 +63,107 @@ public final class AnnotationValidatorUtil {
      *            Minimum expected number of occurrences of the method
      * @param maxExpectedMethodCount
      *            Maximum expected number of occurrences of the method
+     * @param allowParameters
+     *            Check if the method can have parameters
      * @param possibleReturnTypes
      *            Possible return types allowed for the method
      * @throws Exception
      *             An exception if the validation fail
      */
     public static void validateAnnotatedMethods(Object possibleAnnotated, Class<? extends Annotation> annotationClass,
-            int minExpectedMethodCount, int maxExpectedMethodCount, Class<?>... possibleReturnTypes) throws Exception {
+            int minExpectedMethodCount, int maxExpectedMethodCount, boolean allowParameters, Class<?>... possibleReturnTypes)
+                    throws Exception {
 
         Validate.notNull(possibleAnnotated);
         Validate.notNull(annotationClass);
         Validate.isTrue(ArrayUtils.isNotEmpty(possibleReturnTypes));
-        Validate.isTrue(minExpectedMethodCount >= 0);
-        Validate.isTrue(maxExpectedMethodCount >= 0);
-        Validate.isTrue(
-                minExpectedMethodCount == Integer.MAX_VALUE || maxExpectedMethodCount == Integer.MAX_VALUE
-                        || minExpectedMethodCount <= maxExpectedMethodCount,
-                buildMessage(possibleAnnotated, annotationClass, "minExpectedMethodCount<=maxExpectedMethodCount",
-                        new StringBuffer(" (").append(minExpectedMethodCount).append("<=").append(maxExpectedMethodCount)
-                                .append("").toString()));
+        Validate.isTrue(minExpectedMethodCount == Integer.MIN_VALUE || minExpectedMethodCount >= 0);
+        Validate.isTrue(maxExpectedMethodCount == Integer.MAX_VALUE || maxExpectedMethodCount >= 0);
 
-        List<Method> resolveMethodsWithAnnotation = AnnotationUtil.resolveMethodsWithAnnotation(possibleAnnotated,
-                annotationClass);
+        validateMinMaxValues(possibleAnnotated, annotationClass, minExpectedMethodCount, maxExpectedMethodCount);
 
-        validateMethosCount(possibleAnnotated, annotationClass, minExpectedMethodCount, maxExpectedMethodCount,
-                resolveMethodsWithAnnotation);
+        List<Method> methodsWithAnnotation = AnnotationUtil.resolveMethodsWithAnnotation(possibleAnnotated, annotationClass);
+
+        validateMethodsCount(possibleAnnotated, annotationClass, minExpectedMethodCount, maxExpectedMethodCount,
+                methodsWithAnnotation);
+
+        if (CollectionUtils.isNotEmpty(methodsWithAnnotation)) {
+            validateMethodsParameters(possibleAnnotated, annotationClass, methodsWithAnnotation, allowParameters);
+            validateMethodResultValue(possibleAnnotated, annotationClass, methodsWithAnnotation, possibleReturnTypes);
+        }
     }
 
-    private static void validateMethosCount(Object possibleAnnotated, Class<? extends Annotation> annotationClass,
-            int minExpectedMethodCount, int maxExpectedMethodCount, List<Method> resolveMethodsWithAnnotation) {
+    private static void validateMethodResultValue(Object possibleAnnotated, Class<? extends Annotation> annotationClass,
+            List<Method> methodsWithAnnotation, Class<?>... possibleReturnTypes) {
 
-        Validate.isTrue(
-                minExpectedMethodCount == Integer.MAX_VALUE || resolveMethodsWithAnnotation.size() >= minExpectedMethodCount,
-                buildMessage(possibleAnnotated, annotationClass, "minCount>=", Integer.toString(minExpectedMethodCount)));
+        if (ArrayUtils.isNotEmpty(possibleReturnTypes)) {
+            for (Method method : methodsWithAnnotation) {
+                Class<?> returnType = method.getReturnType();
 
-        Validate.isTrue(
-                maxExpectedMethodCount == Integer.MAX_VALUE || resolveMethodsWithAnnotation.size() <= maxExpectedMethodCount,
-                buildMessage(possibleAnnotated, annotationClass, "maxCount<=", Integer.toString(maxExpectedMethodCount)));
+                Class<?> assignable = findAssignableClass(returnType, possibleReturnTypes);
+                if (assignable == null) {
+                    ExceptionUtil.throwIllegalArgumentException(buildMessage(possibleAnnotated, annotationClass,
+                            "returnType not found in ", ArrayUtils.toString(possibleReturnTypes)));
+                }
+            }
+        }
+    }
+
+    private static Class<?> findAssignableClass(Class<?> returnType, Class<?>... expectedResultValues) {
+
+        for (Class<?> expectedResultValue : expectedResultValues) {
+            if (expectedResultValue.isAssignableFrom(returnType)) {
+                return expectedResultValue;
+            }
+        }
+
+        return null;
+    }
+
+    private static void validateMethodsParameters(Object possibleAnnotated, Class<? extends Annotation> annotationClass,
+            List<Method> methodsWithAnnotation, boolean allowParameters) {
+
+        if (!allowParameters) {
+            for (Method method : methodsWithAnnotation) {
+
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                if (ArrayUtils.isNotEmpty(parameterTypes)) {
+                    ExceptionUtil.throwIllegalArgumentException(buildMessage(possibleAnnotated, annotationClass,
+                            "parameterCount=0", buildCondition(0, parameterTypes.length, "=")));
+                }
+            }
+        }
+    }
+
+    private static void validateMethodsCount(Object possibleAnnotated, Class<? extends Annotation> annotationClass,
+            int minExpectedMethodCount, int maxExpectedMethodCount, List<Method> methodsWithAnnotation) {
+
+        if (!(minExpectedMethodCount == Integer.MIN_VALUE || methodsWithAnnotation.size() >= minExpectedMethodCount)) {
+            ExceptionUtil.throwIllegalArgumentException(
+                    buildMessage(possibleAnnotated, annotationClass, "minCount>=", Integer.toString(minExpectedMethodCount)));
+        }
+
+        if (!(maxExpectedMethodCount == Integer.MAX_VALUE || methodsWithAnnotation.size() <= maxExpectedMethodCount)) {
+            ExceptionUtil.throwIllegalArgumentException(
+                    buildMessage(possibleAnnotated, annotationClass, "maxCount<=", Integer.toString(maxExpectedMethodCount)));
+        }
+    }
+
+    private static void validateMinMaxValues(Object possibleAnnotated, Class<? extends Annotation> annotationClass,
+            int minExpectedMethodCount, int maxExpectedMethodCount) {
+
+        if (!(minExpectedMethodCount == Integer.MIN_VALUE || maxExpectedMethodCount == Integer.MAX_VALUE
+                || minExpectedMethodCount <= maxExpectedMethodCount)) {
+
+            ExceptionUtil.throwIllegalArgumentException(
+                    buildMessage(possibleAnnotated, annotationClass, "minExpectedMethodCount<=maxExpectedMethodCount",
+                            buildCondition(minExpectedMethodCount, maxExpectedMethodCount, "<=")));
+        }
+    }
+
+    private static String buildCondition(Object expectedValue, Object realValue, String operation) {
+
+        return new StringBuffer(" (").append(expectedValue).append(operation).append(realValue).append(") ").toString();
     }
 
     private static String buildMessage(Object possibleAnnotated, Class<? extends Annotation> annotationClass, String criteria,

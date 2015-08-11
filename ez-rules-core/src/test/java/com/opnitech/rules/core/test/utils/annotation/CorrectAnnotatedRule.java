@@ -12,7 +12,7 @@ import com.opnitech.rules.core.enums.WhenEnum;
 public class CorrectAnnotatedRule {
 
     @When
-    public WhenEnum when() {
+    public WhenEnum when(@SuppressWarnings("unused") String someParameter) {
 
         return WhenEnum.ACCEPT;
     }

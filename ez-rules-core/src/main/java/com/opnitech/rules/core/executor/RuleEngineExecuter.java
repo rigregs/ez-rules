@@ -269,7 +269,7 @@ public class RuleEngineExecuter {
             String groupParentKey = groupParentKeys.get(groupKey);
             AbstractGroupRunner groupRunner = groupExecuterEntry.getValue();
 
-            AbstractGroupRunner parentGroupRunner = Objects.equals(GroupDefinition.DEFAULT_GROUP_PARENT_KEY, groupParentKey)
+            AbstractGroupRunner parentGroupRunner = Objects.equals(Void.class.getName(), groupParentKey)
                     ? this.mainGroupRunner
                     : groupExecuters.get(groupParentKey);
             Validate.notNull(parentGroupRunner);
@@ -285,8 +285,7 @@ public class RuleEngineExecuter {
                 String groupKey = parentKeyEntry.getKey();
                 String groupParentKey = parentKeyEntry.getValue();
 
-                if (!Objects.equals(GroupDefinition.DEFAULT_GROUP_PARENT_KEY, groupParentKey)
-                        && !groupExecuters.containsKey(groupParentKey)) {
+                if (!Objects.equals(Void.class.getName(), groupParentKey) && !groupExecuters.containsKey(groupParentKey)) {
                     ExceptionUtil.throwIllegalArgumentException(
                             "Invalid Group Parent Definition. A group have a parent key defined that cannot be found inside the group keys. Parent Key ''{0}'', Group Key: ''{1}'', Group: ''{2}''",
                             groupParentKey, groupKey, groupExecuters.get(groupKey));

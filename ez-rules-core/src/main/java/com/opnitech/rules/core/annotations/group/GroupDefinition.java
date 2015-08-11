@@ -19,13 +19,11 @@ import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 @Target(ElementType.TYPE)
 public @interface GroupDefinition {
 
-    public static final String DEFAULT_GROUP_PARENT_KEY = GroupDefinition.class.getName();
-
     String description() default StringUtils.EMPTY;
 
     int priority() default 0;
 
-    Class<?>groupParentKey() default GroupDefinition.class;
+    Class<?>groupParentKey() default Void.class;
 
     ExecutionStrategyEnum value() default ExecutionStrategyEnum.STOP_FIRST;
 }

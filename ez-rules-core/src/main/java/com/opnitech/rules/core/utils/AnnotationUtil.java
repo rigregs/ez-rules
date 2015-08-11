@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -120,9 +121,11 @@ public final class AnnotationUtil {
         List<Method> methods = new ArrayList<>();
 
         Method[] classMethods = clazz.getMethods();
-        for (Method method : classMethods) {
-            if (method.isAnnotationPresent(annotationClass)) {
-                methods.add(method);
+        if (ArrayUtils.isNotEmpty(classMethods)) {
+            for (Method method : classMethods) {
+                if (method.isAnnotationPresent(annotationClass)) {
+                    methods.add(method);
+                }
             }
         }
 
