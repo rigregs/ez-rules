@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.opnitech.rules</groupId>
 		<artifactId>ez-rules</artifactId>
-		<version>0.2-beta</version>
+		<version>0.3-beta-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>ez-rules-samples</artifactId>
