@@ -25,7 +25,7 @@ public class GroupWithWhenAnnotationValidatorTest {
     private static final int GROUP_EXECUTE_WHEN_INDEX = 2;
 
     @Test
-    public void testValidWhenGroup() throws EngineException {
+    public void testValidWhenGroupWithAllStrategy() throws EngineException {
 
         testGroupWithWhen(ExecutionStrategyEnum.ALL, new Object[][]
             {
@@ -43,6 +43,61 @@ public class GroupWithWhenAnnotationValidatorTest {
                         },
                 {
                     "TEST_GROUP_KEY",
+                    true,
+                    true
+                        }
+            });
+    }
+
+    // @Test
+    public void testValidWhenGroupWithAllStopFirst() throws EngineException {
+
+        testGroupWithWhen(ExecutionStrategyEnum.STOP_FIRST, new Object[][]
+            {
+                {
+                    "TEST_GROUP_KEY",
+                    WhenEnum.ACCEPT,
+                    true
+                        }
+            }, new Object[][]
+            {
+                {
+                    "TEST_GROUP_KEY",
+                    true,
+                    true
+                        },
+                {
+                    "TEST_GROUP_KEY",
+                    true,
+                    false
+                        }
+            });
+    }
+
+    @Test
+    public void testValidWhenGroupWithAllStopFirstWithTwoGroups() throws EngineException {
+
+        testGroupWithWhen(ExecutionStrategyEnum.STOP_FIRST, new Object[][]
+            {
+                {
+                    "TEST_GROUP_KEY_1",
+                    WhenEnum.ACCEPT,
+                    false
+                        },
+                {
+                    "TEST_GROUP_KEY_2",
+                    WhenEnum.ACCEPT,
+                    true
+                        }
+            }, new Object[][]
+            {
+                {
+                    "TEST_GROUP_KEY_1",
+                    false,
+                    false
+                        },
+                {
+                    "TEST_GROUP_KEY_2",
                     true,
                     true
                         }
@@ -85,8 +140,9 @@ public class GroupWithWhenAnnotationValidatorTest {
     private void assertRulesAfterExecution(Object[][] ruleDataArray, ValidGroupRuleWithValidGroupKey[] rules) {
 
         for (int i = 0; i < rules.length; i++) {
-            Assert.assertEquals(((Boolean) ruleDataArray[i][RULE_EXECUTE_WHEN_INDEX]).booleanValue(), rules[i].isExcuteWhen());
-            Assert.assertEquals(((Boolean) ruleDataArray[i][RULE_EXECUTE_THEN_INDEX]).booleanValue(),
+            Assert.assertEquals(Integer.toString(i), ((Boolean) ruleDataArray[i][RULE_EXECUTE_WHEN_INDEX]).booleanValue(),
+                    rules[i].isExcuteWhen());
+            Assert.assertEquals(Integer.toString(i), ((Boolean) ruleDataArray[i][RULE_EXECUTE_THEN_INDEX]).booleanValue(),
                     !rules[i].getExecuteThens().isEmpty());
         }
     }
@@ -94,7 +150,7 @@ public class GroupWithWhenAnnotationValidatorTest {
     private void assertGroupsAfterExecution(Object[][] groupDataArray, ValidGroupDefinitionWithWhenAnnotation[] groups) {
 
         for (int i = 0; i < groups.length; i++) {
-            Assert.assertEquals(((Boolean) groupDataArray[i][GROUP_EXECUTE_WHEN_INDEX]).booleanValue(),
+            Assert.assertEquals(Integer.toString(i), ((Boolean) groupDataArray[i][GROUP_EXECUTE_WHEN_INDEX]).booleanValue(),
                     groups[i].isExecuteWhen());
         }
     }
