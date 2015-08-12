@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import com.opnitech.rules.core.EngineException;
 import com.opnitech.rules.core.test.engine.AbstractRuleEngineExecutorTest;
+import com.opnitech.rules.core.test.engine.test_validators.group.InvalidGroupKeyDuplicateGroupDefinition;
+import com.opnitech.rules.core.test.engine.test_validators.group.InvalidGroupKeyDuplicateWithAnnotationGroupDefinition;
 import com.opnitech.rules.core.test.engine.test_validators.group.InvalidKeyResultGroupKeyGroupDefinition;
 import com.opnitech.rules.core.test.engine.test_validators.group.InvalidKeyWithParameterGroupKeyGroupDefinition;
 import com.opnitech.rules.core.test.engine.test_validators.group.ValidGroupDefinition;
@@ -37,6 +39,12 @@ public class GroupKeyGroupDefinitionValidatorTest extends AbstractRuleEngineExec
     public void testInvalidGroupKeyGroupDefinitionBlankResult() throws Exception {
 
         validateExceptionRule(new ValidGroupKeyGroupDefinition(" "));
+    }
+
+    @Test
+    public void testInvalidGroupKeyGroupDefinitionAsClass() throws Exception {
+
+        validateExceptionRule(ValidGroupKeyGroupDefinition.class);
     }
 
     @Test
@@ -73,5 +81,17 @@ public class GroupKeyGroupDefinitionValidatorTest extends AbstractRuleEngineExec
     public void testInvalidKeyResultGroupKeyGroupDefinition() throws Exception {
 
         validateExceptionRule(new InvalidKeyResultGroupKeyGroupDefinition());
+    }
+
+    @Test
+    public void testInvalidGroupKeyDuplicateGroupDefinition() throws Exception {
+
+        validateExceptionRule(new InvalidGroupKeyDuplicateGroupDefinition());
+    }
+
+    @Test
+    public void testInvalidGroupKeyDuplicateWithAnnotationGroupDefinition() throws Exception {
+
+        validateExceptionRule(new InvalidGroupKeyDuplicateWithAnnotationGroupDefinition());
     }
 }
