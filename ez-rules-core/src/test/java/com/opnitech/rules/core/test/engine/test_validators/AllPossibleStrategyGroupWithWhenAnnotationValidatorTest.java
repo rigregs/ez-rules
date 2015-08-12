@@ -18,6 +18,7 @@ public class AllPossibleStrategyGroupWithWhenAnnotationValidatorTest extends Abs
             {
                 {
                     ExecutionStrategyEnum.ALL_POSSIBLE,
+                    "",
                     "TEST_GROUP_KEY",
                     WhenEnum.ACCEPT,
                     true
@@ -46,12 +47,14 @@ public class AllPossibleStrategyGroupWithWhenAnnotationValidatorTest extends Abs
             {
                 {
                     ExecutionStrategyEnum.ALL_POSSIBLE,
+                    "",
                     "TEST_GROUP_KEY_1",
                     WhenEnum.REJECT,
                     true
                         },
                 {
                     ExecutionStrategyEnum.ALL_POSSIBLE,
+                    "",
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
                     true
@@ -92,12 +95,14 @@ public class AllPossibleStrategyGroupWithWhenAnnotationValidatorTest extends Abs
             {
                 {
                     ExecutionStrategyEnum.ALL_POSSIBLE,
+                    "",
                     "TEST_GROUP_KEY_1",
                     WhenEnum.REJECT,
                     true
                         },
                 {
                     ExecutionStrategyEnum.ALL,
+                    "",
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
                     true
@@ -144,12 +149,14 @@ public class AllPossibleStrategyGroupWithWhenAnnotationValidatorTest extends Abs
             {
                 {
                     ExecutionStrategyEnum.ALL_POSSIBLE,
+                    "",
                     "TEST_GROUP_KEY_1",
                     WhenEnum.ACCEPT,
                     true
                         },
                 {
                     ExecutionStrategyEnum.ALL_POSSIBLE,
+                    "",
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
                     true
@@ -190,12 +197,14 @@ public class AllPossibleStrategyGroupWithWhenAnnotationValidatorTest extends Abs
             {
                 {
                     ExecutionStrategyEnum.ALL_POSSIBLE,
+                    "",
                     "TEST_GROUP_KEY_1",
                     WhenEnum.ACCEPT,
                     true
                         },
                 {
                     ExecutionStrategyEnum.ALL,
+                    "",
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
                     true

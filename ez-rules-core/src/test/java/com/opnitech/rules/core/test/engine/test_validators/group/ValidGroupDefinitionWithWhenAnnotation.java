@@ -1,8 +1,11 @@
 package com.opnitech.rules.core.test.engine.test_validators.group;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.annotations.group.GroupDefinitionExecutionStrategy;
 import com.opnitech.rules.core.annotations.group.GroupKey;
+import com.opnitech.rules.core.annotations.group.GroupParentKey;
 import com.opnitech.rules.core.annotations.rule.Priority;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
@@ -20,10 +23,13 @@ public class ValidGroupDefinitionWithWhenAnnotation {
     private boolean executeWhen;
     private ExecutionStrategyEnum executionStrategy;
     private int priority;
+    private String parentGroupKey;
 
-    public ValidGroupDefinitionWithWhenAnnotation(int priority, String groupKey, WhenEnum whenEnum,
+    public ValidGroupDefinitionWithWhenAnnotation(int priority, String parentGroupKey, String groupKey, WhenEnum whenEnum,
             ExecutionStrategyEnum executionStrategy) {
+        
         this.priority = priority;
+        this.parentGroupKey = parentGroupKey;
         this.groupKey = groupKey;
         this.whenEnum = whenEnum;
         this.executionStrategy = executionStrategy;
@@ -33,6 +39,12 @@ public class ValidGroupDefinitionWithWhenAnnotation {
     public int retrievePriority() {
 
         return this.priority;
+    }
+
+    @GroupParentKey
+    public String retrieveGroupParentKey() {
+
+        return StringUtils.trimToNull(this.parentGroupKey);
     }
 
     @GroupDefinitionExecutionStrategy
