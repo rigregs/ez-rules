@@ -17,7 +17,11 @@ public class ValidGroupRuleWithValidGroupKey extends AbstractRule<WhenEnum> {
     private String groupKey;
 
     public ValidGroupRuleWithValidGroupKey(String groupKey) {
-        super(WhenEnum.ACCEPT);
+        this(groupKey, WhenEnum.ACCEPT);
+    }
+
+    public ValidGroupRuleWithValidGroupKey(String groupKey, WhenEnum whenEnum) {
+        super(whenEnum);
 
         this.groupKey = groupKey;
     }

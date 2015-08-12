@@ -15,8 +15,9 @@ import junit.framework.Assert;
 public class AbstractGroupWithWhenValidatorTest {
 
     private static final int RULE_GROUP_KEY_INDEX = 0;
-    private static final int RULE_EXECUTE_WHEN_INDEX = 1;
-    private static final int RULE_EXECUTE_THEN_INDEX = 2;
+    private static final int RULE_WHEN_ENUM_INDEX = 1;
+    private static final int RULE_EXECUTE_WHEN_INDEX = 2;
+    private static final int RULE_EXECUTE_THEN_INDEX = 3;
 
     private static final int GROUP_EXECUTION_STRATEGY_INDEX = 0;
     private static final int GROUP_GROUP_KEY_INDEX = 1;
@@ -80,7 +81,8 @@ public class AbstractGroupWithWhenValidatorTest {
 
         ValidGroupRuleWithValidGroupKey[] rules = new ValidGroupRuleWithValidGroupKey[ruleDataArray.length];
         for (int i = 0; i < rules.length; i++) {
-            rules[i] = new ValidGroupRuleWithValidGroupKey(ruleDataArray[i][RULE_GROUP_KEY_INDEX].toString());
+            rules[i] = new ValidGroupRuleWithValidGroupKey(ruleDataArray[i][RULE_GROUP_KEY_INDEX].toString(),
+                    (WhenEnum) ruleDataArray[i][RULE_WHEN_ENUM_INDEX]);
             rulesEngine.registerExecutable(rules[i]);
         }
 

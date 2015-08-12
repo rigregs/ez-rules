@@ -9,15 +9,15 @@ import com.opnitech.rules.core.enums.WhenEnum;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends AbstractGroupWithWhenValidatorTest {
+public class AllPossibleStrategyGroupWithWhenAnnotationValidatorTest extends AbstractGroupWithWhenValidatorTest {
 
     @Test
     public void testOneGroup() throws EngineException {
 
-        testGroupWithWhen(ExecutionStrategyEnum.STOP_FIRST, new Object[][]
+        testGroupWithWhen(ExecutionStrategyEnum.ALL_POSSIBLE, new Object[][]
             {
                 {
-                    ExecutionStrategyEnum.STOP_FIRST,
+                    ExecutionStrategyEnum.ALL_POSSIBLE,
                     "TEST_GROUP_KEY",
                     WhenEnum.ACCEPT,
                     true
@@ -32,8 +32,8 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
                         },
                 {
                     "TEST_GROUP_KEY",
-                    WhenEnum.ACCEPT,
-                    false,
+                    WhenEnum.REJECT,
+                    true,
                     false
                         }
             });
@@ -42,16 +42,16 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
     @Test
     public void testTwoGroupFirstReject() throws EngineException {
 
-        testGroupWithWhen(ExecutionStrategyEnum.STOP_FIRST, new Object[][]
+        testGroupWithWhen(ExecutionStrategyEnum.ALL_POSSIBLE, new Object[][]
             {
                 {
-                    ExecutionStrategyEnum.STOP_FIRST,
+                    ExecutionStrategyEnum.ALL_POSSIBLE,
                     "TEST_GROUP_KEY_1",
                     WhenEnum.REJECT,
                     true
                         },
                 {
-                    ExecutionStrategyEnum.STOP_FIRST,
+                    ExecutionStrategyEnum.ALL_POSSIBLE,
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
                     true
@@ -72,15 +72,15 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
                         },
                 {
                     "TEST_GROUP_KEY_2",
-                    WhenEnum.ACCEPT,
+                    WhenEnum.REJECT,
                     true,
-                    true
+                    false
                         },
                 {
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
-                    false,
-                    false
+                    true,
+                    true
                         }
             });
     }
@@ -88,10 +88,10 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
     @Test
     public void testTwoGroupFirstRejectCombined() throws EngineException {
 
-        testGroupWithWhen(ExecutionStrategyEnum.STOP_FIRST, new Object[][]
+        testGroupWithWhen(ExecutionStrategyEnum.ALL_POSSIBLE, new Object[][]
             {
                 {
-                    ExecutionStrategyEnum.STOP_FIRST,
+                    ExecutionStrategyEnum.ALL_POSSIBLE,
                     "TEST_GROUP_KEY_1",
                     WhenEnum.REJECT,
                     true
@@ -115,6 +115,12 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
                     WhenEnum.ACCEPT,
                     false,
                     false
+                        },
+                {
+                    "TEST_GROUP_KEY_2",
+                    WhenEnum.ACCEPT,
+                    true,
+                    true
                         },
                 {
                     "TEST_GROUP_KEY_2",
@@ -134,19 +140,19 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
     @Test
     public void testTwoGroupFirstAccept() throws EngineException {
 
-        testGroupWithWhen(ExecutionStrategyEnum.STOP_FIRST, new Object[][]
+        testGroupWithWhen(ExecutionStrategyEnum.ALL_POSSIBLE, new Object[][]
             {
                 {
-                    ExecutionStrategyEnum.STOP_FIRST,
+                    ExecutionStrategyEnum.ALL_POSSIBLE,
                     "TEST_GROUP_KEY_1",
                     WhenEnum.ACCEPT,
                     true
                         },
                 {
-                    ExecutionStrategyEnum.STOP_FIRST,
+                    ExecutionStrategyEnum.ALL_POSSIBLE,
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
-                    false
+                    true
                         }
             }, new Object[][]
             {
@@ -159,20 +165,20 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
                 {
                     "TEST_GROUP_KEY_1",
                     WhenEnum.ACCEPT,
-                    false,
-                    false
+                    true,
+                    true
                         },
                 {
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
-                    false,
-                    false
+                    true,
+                    true
                         },
                 {
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
-                    false,
-                    false
+                    true,
+                    true
                         }
             });
     }
@@ -180,10 +186,10 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
     @Test
     public void testTwoGroupFirstAcceptCombined() throws EngineException {
 
-        testGroupWithWhen(ExecutionStrategyEnum.STOP_FIRST, new Object[][]
+        testGroupWithWhen(ExecutionStrategyEnum.ALL_POSSIBLE, new Object[][]
             {
                 {
-                    ExecutionStrategyEnum.STOP_FIRST,
+                    ExecutionStrategyEnum.ALL_POSSIBLE,
                     "TEST_GROUP_KEY_1",
                     WhenEnum.ACCEPT,
                     true
@@ -192,7 +198,7 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
                     ExecutionStrategyEnum.ALL,
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
-                    false
+                    true
                         }
             }, new Object[][]
             {
@@ -205,20 +211,20 @@ public class StopFirstStrategyGroupWithWhenAnnotationValidatorTest extends Abstr
                 {
                     "TEST_GROUP_KEY_1",
                     WhenEnum.ACCEPT,
-                    false,
-                    false
+                    true,
+                    true
                         },
                 {
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
-                    false,
-                    false
+                    true,
+                    true
                         },
                 {
                     "TEST_GROUP_KEY_2",
                     WhenEnum.ACCEPT,
-                    false,
-                    false
+                    true,
+                    true
                         }
             });
     }
