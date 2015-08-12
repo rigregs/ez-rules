@@ -61,9 +61,11 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
         validateGroupKeyMethod(executable);
     }
 
-    private void validateGroupKeyMethod(Object executable) throws Exception {
+    @Override
+    protected void validateGroupKeyMethod(Object executable) throws Exception {
 
-        validateGroupKeyMethods(executable);
+        super.validateGroupKeyMethod(executable);
+
         validateAmbiguosGroupKey(executable);
     }
 

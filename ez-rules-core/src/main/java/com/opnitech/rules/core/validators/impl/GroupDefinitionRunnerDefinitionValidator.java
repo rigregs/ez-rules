@@ -2,8 +2,12 @@ package com.opnitech.rules.core.validators.impl;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
+import com.opnitech.rules.core.annotations.group.GroupDefinitionExecutionStrategy;
 import com.opnitech.rules.core.annotations.rule.When;
+import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.utils.AnnotationUtil;
 import com.opnitech.rules.core.utils.AnnotationValidatorUtil;
@@ -51,16 +55,24 @@ public class GroupDefinitionRunnerDefinitionValidator extends AbstractValidator
         validateExecutionStrategy(executable);
         validateValidPriorityMethod(executable);
 
-        validateGroupKeyMethods(executable);
+        validateGroupKeyMethod(executable);
     }
 
     private void validateExecutionStrategy(Object executable) throws Exception {
 
         GroupDefinition groupDefinition = AnnotationUtil.resolveAnnotation(executable, GroupDefinition.class);
-        if (groupDefinition.value() == null) {
-            ExceptionUtil.throwIllegalArgumentException(
-                    "Invalid Group Execution Strategy in the Group Definition. You are trying to register a Group Definition without a valid Rule Execution Strategy. Group Definition: ''{0}''",
-                    executable);
+
+        if (CollectionUtils
+                .isEmpty(AnnotationUtil.resolveMethodsWithAnnotation(executable, GroupDefinitionExecutionStrategy.class))) {
+            if (groupDefinition.value() == null) {
+                ExceptionUtil.throwIllegalArgumentException(
+                        "Invalid Group Execution Strategy in the Group Definition. You are trying to register a Group Definition without a valid Rule Execution Strategy. Group Definition: ''{0}''",
+                        executable);
+            }
         }
+
+        AnnotationValidatorUtil.validateAnnotatedMethods(executable, GroupDefinitionExecutionStrategy.class, 0, 1, false,
+                ExecutionStrategyEnum.class);
+        validateExecutableIsInstance(executable, GroupDefinitionExecutionStrategy.class);
     }
 }

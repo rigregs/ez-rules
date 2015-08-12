@@ -31,33 +31,26 @@ public abstract class AbstractValidator {
         }
     }
 
-    protected void validateGroupKeyMethods(Object executable) throws Exception {
+    protected void validateGroupKeyMethod(Object executable) throws Exception {
 
         AnnotationValidatorUtil.validateAnnotatedMethods(executable, GroupKey.class, 0, 1, false, String.class);
-
-        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, GroupKey.class);
-        if (CollectionUtils.isNotEmpty(methods)) {
-            validateExecutableType(executable, methods.get(0), Priority.class);
-        }
+        validateExecutableIsInstance(executable, GroupKey.class);
     }
 
     protected void validateValidPriorityMethod(Object executable) throws Exception {
 
         AnnotationValidatorUtil.validateAnnotatedMethods(executable, Priority.class, 0, 1, false, Integer.TYPE);
-
-        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, Priority.class);
-
-        if (CollectionUtils.isNotEmpty(methods)) {
-            validateExecutableType(executable, methods.get(0), Priority.class);
-        }
+        validateExecutableIsInstance(executable, Priority.class);
     }
 
-    private void validateExecutableType(Object executable, Method method, Class<? extends Annotation> annotationClass) {
+    protected void validateExecutableIsInstance(Object executable, Class<? extends Annotation> annotationClass) throws Exception {
 
-        if (Class.class.isAssignableFrom(executable.getClass())) {
+        List<Method> methods = AnnotationUtil.resolveMethodsWithAnnotation(executable, annotationClass);
+
+        if (CollectionUtils.isNotEmpty(methods) && Class.class.isAssignableFrom(executable.getClass())) {
             ExceptionUtil.throwIllegalArgumentException(
                     "You cannot register a 'Executable' as a class that contain a method with the ''{0}'' annotation. You need to register the definition as instance executable. 'Executable': ''{1}'', Method: ''{2}''",
-                    annotationClass, executable, method.getName());
+                    annotationClass, executable, methods.iterator().next().getName());
         }
     }
 }
