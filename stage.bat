@@ -1,0 +1,1 @@
+mvn clean deploy -DsignRelease=true -P release

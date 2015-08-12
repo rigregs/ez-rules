@@ -1,1 +1,1 @@
-mvn clean deploy -DsignRelease=true -P release
+mvn nexus-staging:release -DsignRelease=true 
