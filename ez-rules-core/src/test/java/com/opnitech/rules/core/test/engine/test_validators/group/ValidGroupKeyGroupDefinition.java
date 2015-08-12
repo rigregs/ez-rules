@@ -11,8 +11,8 @@ public class ValidGroupKeyGroupDefinition {
 
     private String result;
 
-    public ValidGroupKeyGroupDefinition(String result) {
-        this.result = result;
+    public ValidGroupKeyGroupDefinition(String groupKey) {
+        this.result = groupKey;
     }
 
     @GroupKey

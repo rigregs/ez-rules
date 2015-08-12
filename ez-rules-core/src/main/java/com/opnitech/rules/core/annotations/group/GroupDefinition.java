@@ -25,5 +25,5 @@ public @interface GroupDefinition {
 
     Class<?>groupParentKey() default Void.class;
 
-    ExecutionStrategyEnum value() default ExecutionStrategyEnum.STOP_FIRST;
+    ExecutionStrategyEnum value() default ExecutionStrategyEnum.ALL;
 }

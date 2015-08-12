@@ -74,6 +74,8 @@ public final class RulesEngine {
 
     public RulesEngine(ExecutionStrategyEnum executionStrategy, String description) {
 
+        Validate.notNull(executionStrategy);
+
         this.executionStrategy = executionStrategy;
         this.description = description;
     }
