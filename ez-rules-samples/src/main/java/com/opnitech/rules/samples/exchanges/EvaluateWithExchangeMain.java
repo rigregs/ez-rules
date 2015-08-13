@@ -23,7 +23,7 @@ public class EvaluateWithExchangeMain {
 
         System.out.println("This execution should not evaluate");
         System.out.println("****");
-        rulesEngine.execute(Boolean.FALSE, "Evaluation");
+        rulesEngine.execute(Boolean.FALSE, "Hello world!");
         System.out.println("****");
     }
 
@@ -35,7 +35,7 @@ public class EvaluateWithExchangeMain {
 
         System.out.println("This should print from the callback");
         System.out.println("****");
-        rulesEngine.execute(Boolean.TRUE, "Evaluation");
+        rulesEngine.execute(Boolean.TRUE, "Hello world!");
         System.out.println("****");
     }
 }
