@@ -60,7 +60,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
     @Override
     public <ExchangeType> ExchangeType resolveExchangeByClass(Class<ExchangeType> exchangeClass) {
 
-        return ClassUtil.<ExchangeType> resolveEntity(exchangeClass, this.exchanges.values());
+        return ClassUtil.<ExchangeType> resolveEntityByClassOrByInterfaces(exchangeClass, this.exchanges.values());
     }
 
     /*

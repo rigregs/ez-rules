@@ -132,6 +132,29 @@ public final class ClassUtil {
 
     /**
      * Resolve the first element of a class that match with the specified class
+     * using the class mechanism, if cannot be found we try to resolve the match
+     * using the entity interfaces (useful when the entity is a proxy)
+     * 
+     * @param <EntityType>
+     *            Entity generic type
+     * @param entities
+     *            List of entities
+     * @param entityClass
+     *            Class of the entity to be resolved
+     * @return The resolved entity
+     */
+    public static <EntityType> EntityType resolveEntityByClassOrByInterfaces(Class<?> entityClass, Collection<Object> entities) {
+
+        EntityType entity = ClassUtil.resolveEntityByClass(entityClass, entities);
+        if (entity == null) {
+            entity = ClassUtil.resolveEntityUsingInterfaces(entityClass, entities);
+        }
+
+        return entity;
+    }
+
+    /**
+     * Resolve the first element of a class that match with the specified class
      * 
      * @param <EntityType>
      *            Entity generic type
@@ -142,11 +165,40 @@ public final class ClassUtil {
      * @return The resolved entity
      */
     @SuppressWarnings("unchecked")
-    public static <EntityType> EntityType resolveEntity(Class<?> entityClass, Collection<Object> entities) {
+    public static <EntityType> EntityType resolveEntityByClass(Class<?> entityClass, Collection<Object> entities) {
 
         for (Object entity : entities) {
-            if (entity.getClass().isAssignableFrom(entityClass)) {
+            if (entity != null && entity.getClass().isAssignableFrom(entityClass)) {
                 return (EntityType) entity;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve the first element of a class that match with the specified class
+     * using the interfaces
+     * 
+     * @param <EntityType>
+     *            Entity generic type
+     * @param entities
+     *            List of entities
+     * @param entityClass
+     *            Class of the entity to be resolved
+     * @return The resolved entity
+     */
+    @SuppressWarnings("unchecked")
+    public static <EntityType> EntityType resolveEntityUsingInterfaces(Class<?> entityClass, Collection<Object> entities) {
+
+        for (Object entity : entities) {
+            if (entity != null) {
+                Class<?>[] entityInterfaces = entity.getClass().getInterfaces();
+                for (Class<?> entityInterface : entityInterfaces) {
+                    if (entityInterface.isAssignableFrom(entityClass)) {
+                        return (EntityType) entity;
+                    }
+                }
             }
         }
 

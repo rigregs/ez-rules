@@ -14,6 +14,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.opnitech.rules.core.RulesEngine;
 import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.annotations.group.GroupKey;
@@ -32,6 +33,8 @@ import com.opnitech.rules.core.utils.ExceptionUtil;
 import com.opnitech.rules.core.utils.LoggerUtil;
 
 /**
+ * You should not use this class directly, insetad use the {@link RulesEngine}
+ * 
  * @author Rigre Gregorio Garciandia Sonora
  */
 public class RuleEngineExecuter {

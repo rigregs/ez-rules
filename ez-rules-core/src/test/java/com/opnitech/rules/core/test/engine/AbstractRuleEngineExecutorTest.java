@@ -45,6 +45,13 @@ public class AbstractRuleEngineExecutorTest {
             throw execute.getException();
         }
 
+        validateExecutables(executeWhen, executeAtLeastOneThen, executables);
+
+        return execute;
+    }
+
+    protected void validateExecutables(boolean executeWhen, boolean executeAtLeastOneThen, Object... executables) {
+
         for (Object executable : executables) {
             if (AbstractRule.class.isAssignableFrom(executable.getClass())) {
                 AbstractRule<?> rule = (AbstractRule<?>) executable;
@@ -53,8 +60,6 @@ public class AbstractRuleEngineExecutorTest {
                 Assert.assertEquals(executeAtLeastOneThen, !rule.getExecuteThens().isEmpty());
             }
         }
-
-        return execute;
     }
 
     protected void validateCallback(AbstractCallbackRule callbackRule, Class<?>[] expectedWhenCallbacks,

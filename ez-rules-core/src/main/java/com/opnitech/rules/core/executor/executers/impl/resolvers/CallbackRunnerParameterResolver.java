@@ -25,7 +25,8 @@ class CallbackRunnerParameterResolver implements RunnerParameterResolver {
     @Override
     public Object resolveParameter(WorkflowState<?> workflowState, ParameterMetadata methodParameterMetadata) {
 
-        Object callback = ClassUtil.resolveEntity(methodParameterMetadata.getParameterType(), workflowState.getCallbacks());
+        Object callback = ClassUtil.resolveEntityByClassOrByInterfaces(methodParameterMetadata.getParameterType(),
+                workflowState.getCallbacks());
 
         if (callback == null) {
             MethodMetadata methodMetadata = methodParameterMetadata.getMethodMetadata();
