@@ -3,6 +3,7 @@ package com.opnitech.rules.core.executor.flow;
 import java.util.List;
 
 import com.opnitech.rules.core.ExchangeManager;
+import com.opnitech.rules.core.annotations.rule.Then;
 
 /**
  * Represent the global data that is needed for the rule execution, all rule
@@ -13,7 +14,7 @@ import com.opnitech.rules.core.ExchangeManager;
  *            Allow the client to define the overall result type of the rule
  *            execution. There is two ways to define the rule result, using the
  *            exchange manager injected in the rule or using the return value of
- *            the {@Then} Annotate method
+ *            the {@link Then} Annotate method
  */
 public final class WorkflowState<ResultType> {
 

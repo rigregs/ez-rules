@@ -1,5 +1,7 @@
 package com.opnitech.rules.core;
 
+import com.opnitech.rules.core.annotations.rule.Then;
+
 /**
  * Allow to manage the exchange parameters between all the rules in the engine
  * 
@@ -14,7 +16,7 @@ public interface ExchangeManager {
      *            Allow the client to define the overall result type of the rule
      *            execution. There is two ways to define the rule result, using
      *            the exchange manager injected in the rule or using the return
-     *            value of the {@Then} Annotate method
+     *            value of the {@link Then} Annotate method
      * @return ResultType Type of the result that will be returned
      */
     <ResultType> ResultType resolveResult();
@@ -26,7 +28,7 @@ public interface ExchangeManager {
      *            Allow the client to define the overall result type of the rule
      *            execution. There is two ways to define the rule result, using
      *            the exchange manager injected in the rule or using the return
-     *            value of the {@Then} Annotate method
+     *            value of the {@link Then} Annotate method
      * @param result
      *            Register a result of the overall rule execution
      */

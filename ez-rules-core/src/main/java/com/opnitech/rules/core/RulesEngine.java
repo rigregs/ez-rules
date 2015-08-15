@@ -17,6 +17,7 @@ import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.annotations.rule.Callback;
 import com.opnitech.rules.core.annotations.rule.Rule;
+import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.executor.RuleEngineExecuter;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
@@ -86,8 +87,8 @@ public final class RulesEngine {
      * 
      * @param <ResultType>
      *            The result of the rule execution, it populate with the last
-     *            result of a {@When} annotated method of the lasted register of
-     *            a result using the {ExchangeManager}
+     *            result of a {@link When} annotated method of the lasted
+     *            register of a result using the {ExchangeManager}
      * @param exchanges
      *            Initial list of exchanges that the rules will use. The engine
      *            will try to match the parameters to the rules method with the
@@ -109,8 +110,8 @@ public final class RulesEngine {
      * 
      * @param <ResultType>
      *            The result of the rule execution, it populate with the last
-     *            result of a {@When} annotated method of the lasted register of
-     *            a result using the {ExchangeManager}
+     *            result of a {@link When} annotated method of the lasted
+     *            register of a result using the {ExchangeManager}
      * @param exchanges
      *            Initial list of exchanges that the rules will use. The engine
      *            will try to match the parameters to the rules method with the

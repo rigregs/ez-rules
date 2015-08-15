@@ -18,6 +18,7 @@ import com.opnitech.rules.core.annotations.group.Group;
 import com.opnitech.rules.core.annotations.group.GroupDefinition;
 import com.opnitech.rules.core.annotations.group.GroupKey;
 import com.opnitech.rules.core.annotations.group.GroupParentKey;
+import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.executor.executers.Runner;
 import com.opnitech.rules.core.executor.executers.impl.AbstractGroupRunner;
@@ -52,8 +53,8 @@ public class RuleEngineExecuter {
      * 
      * @param <ResultType>
      *            The result of the rule execution, it populate with the last
-     *            result of a {@When} annotated method of the lasted register of
-     *            a result using the {ExchangeManager}
+     *            result of a {@link When} annotated method of the lasted
+     *            register of a result using the {ExchangeManager}
      * @param exchanges
      *            Allow to execute the rules with an specific array of exchanges
      * @return The final workflow state of the rule execution
