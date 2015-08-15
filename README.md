@@ -21,6 +21,9 @@ Some of the features available in the framework are:
 ### Project Web Site
 [http://opnitech.com/content/products/ez-rules](http://opnitech.com/content/products/ez-rules)
 
+### Release notes
+[https://github.com/rigregs/ez-rules/releases] (https://github.com/rigregs/ez-rules/releases)
+
 ### Continuous integration
 [Build Jenkins job @ CloudBees](https://buildhive.cloudbees.com/job/rigregs/job/ez-rules)
 
