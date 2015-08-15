@@ -8,7 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 
 import com.opnitech.rules.core.EngineException;
-import com.opnitech.rules.core.RuleEngineExecutionResult;
+import com.opnitech.rules.core.RuleExecutionResult;
 import com.opnitech.rules.core.RulesEngine;
 
 /**
@@ -40,7 +40,7 @@ public class AbstractRuleEngineExecutorTest {
         RulesEngine engine = new RulesEngine();
         engine.setExecutables(Arrays.asList(executables));
 
-        RuleEngineExecutionResult execute = engine.execute();
+        RuleExecutionResult execute = engine.execute();
         if (!execute.isSuccess()) {
             throw execute.getException();
         }

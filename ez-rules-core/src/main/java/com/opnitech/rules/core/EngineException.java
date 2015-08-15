@@ -3,7 +3,7 @@ package com.opnitech.rules.core;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-public class EngineException extends Exception {
+public class EngineException extends RuntimeException {
 
     private static final long serialVersionUID = -6002982537821208698L;
 

@@ -95,7 +95,7 @@ public final class RulesEngine {
      * @throws EngineException
      *             If any exception occurs it get wrapped in a EngineException
      */
-    public RuleEngineExecutionResult execute(Object... exchanges) throws EngineException {
+    public RuleExecutionResult execute(Object... exchanges) throws EngineException {
 
         return internalExecute(true, exchanges);
     }
@@ -114,12 +114,12 @@ public final class RulesEngine {
      * @throws EngineException
      *             If any exception occurs it get wrapped in a EngineException
      */
-    public RuleEngineExecutionResult executeSilent(Object... exchanges) throws EngineException {
+    public RuleExecutionResult executeSilent(Object... exchanges) throws EngineException {
 
         return internalExecute(false, exchanges);
     }
 
-    private RuleEngineExecutionResult internalExecute(boolean throwException, Object... exchanges) throws EngineException {
+    private RuleExecutionResult internalExecute(boolean throwException, Object... exchanges) throws EngineException {
 
         try {
             validateNullableExchanges(exchanges);
@@ -131,7 +131,7 @@ public final class RulesEngine {
 
             Throwable throwable = workflowState.getThrowable();
 
-            return new RuleEngineExecutionResult(throwable == null, throwable != null
+            return new RuleExecutionResult(throwable == null, throwable != null
                     ? wrapToEngineException(throwable)
                     : null, workflowState.getExchangeManager());
         }
@@ -140,7 +140,7 @@ public final class RulesEngine {
                 throw wrapToEngineException(e);
             }
 
-            return new RuleEngineExecutionResult(false, wrapToEngineException(e), null);
+            return new RuleExecutionResult(false, wrapToEngineException(e), null);
         }
     }
 
@@ -234,7 +234,8 @@ public final class RulesEngine {
 
         if (!registered) {
             this.validated = false;
-            ExceptionUtil.throwIllegalArgumentException("Invalid argument trying to register a Rule Engine Element: ''{0}''",
+            ExceptionUtil.throwIllegalArgumentException(
+                    "Invalid executer trying to register a Rule Engine Element: ''{0}'', the element doesn''t match any of the posssible executers...",
                     value);
         }
     }

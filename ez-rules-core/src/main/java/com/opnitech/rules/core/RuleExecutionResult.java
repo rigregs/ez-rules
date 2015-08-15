@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 
  * @author Rigre Gregorio Garciandia Sonora
  */
-public final class RuleEngineExecutionResult implements Serializable {
+public final class RuleExecutionResult implements Serializable {
 
     private static final long serialVersionUID = 3201692196289859060L;
 
@@ -17,7 +17,7 @@ public final class RuleEngineExecutionResult implements Serializable {
 
     private ExchangeManager exchangeManager;
 
-    public RuleEngineExecutionResult(boolean success, EngineException exception, ExchangeManager exchangeManager) {
+    public RuleExecutionResult(boolean success, EngineException exception, ExchangeManager exchangeManager) {
 
         this.success = success;
         this.exception = exception;
