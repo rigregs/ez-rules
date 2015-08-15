@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.opnitech.rules.core.EngineException;
-import com.opnitech.rules.core.RuleExecutionResult;
+import com.opnitech.rules.core.ExecutionResult;
 import com.opnitech.rules.core.RulesEngine;
 import com.opnitech.rules.core.test.engine.test_workflow.rule.group.AbstractGroupRule;
 import com.opnitech.rules.core.test.engine.test_workflow.rule.group.ExecuteAllFirstGroupRule1;
@@ -145,7 +145,7 @@ public class GroupRuleWorkflowExecutionTest {
 
         callback.registerRules(rulesEngine);
 
-        RuleExecutionResult execute = rulesEngine.execute();
+        ExecutionResult<?> execute = rulesEngine.execute();
         if (execute.getException() != null) {
             throw execute.getException();
         }

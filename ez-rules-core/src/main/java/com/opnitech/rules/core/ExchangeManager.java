@@ -4,8 +4,28 @@ package com.opnitech.rules.core;
  * Allow to manage the exchange parameters between all the rules in the engine
  * 
  * @author Rigre Gregorio Garciandia Sonora
+ * @param <ResultType>
+ *            Allow the client to define the overall result type of the rule
+ *            execution. There is two ways to define the rule result, using the
+ *            exchange manager injected in the rule or using the return value of
+ *            the {@Then} Annotate method
  */
-public interface ExchangeManager {
+public interface ExchangeManager<ResultType> {
+
+    /**
+     * Allow to resolve a exchange from a type
+     * 
+     * @return ResultType Type of the result that will be returned
+     */
+    ResultType resolveResult();
+
+    /**
+     * Allow to add a new exchange
+     * 
+     * @param result
+     *            Register a result of the overall rule execution
+     */
+    void registerResult(ResultType result);
 
     /**
      * Allow to resolve a exchange from a type
@@ -37,7 +57,7 @@ public interface ExchangeManager {
      * @param exchange
      *            Exchange to be added
      */
-    <ExchangeType> void addExchange(ExchangeType exchange);
+    <ExchangeType> void registerExchange(ExchangeType exchange);
 
     /**
      * Allow to add a new exchange
@@ -50,7 +70,7 @@ public interface ExchangeManager {
      * @param exchange
      *            Exchange to be added
      */
-    <ExchangeType> void addExchange(Object name, ExchangeType exchange);
+    <ExchangeType> void registerExchange(Object name, ExchangeType exchange);
 
     /**
      * Allow to replace one exchange

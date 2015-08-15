@@ -18,7 +18,7 @@ public class StopFirstGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     @Override
-    public WhenResult doExecution(WorkflowState workflowState, PriorityList<Runner> executors) throws Throwable {
+    public WhenResult doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
 
         for (Runner runner : executors) {
 

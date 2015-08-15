@@ -52,13 +52,18 @@ public class RuleEngineExecuter {
     /**
      * Manage the execution of the rule
      * 
+     * @param <ResultType>
+     *            The result of the rule execution, it populate with the last
+     *            result of a {@When} annotated method of the lasted register of
+     *            a result using the {ExchangeManager}
      * @param exchanges
      *            Allow to execute the rules with an specific array of exchanges
      * @return The final workflow state of the rule execution
      */
-    public WorkflowState execute(Object... exchanges) {
+    public <ResultType> WorkflowState<ResultType> execute(Object... exchanges) {
 
-        WorkflowState workflowState = new WorkflowState(this.callbacks, exchanges);
+        @SuppressWarnings("unused")
+        WorkflowState<ResultType> workflowState = new WorkflowState<ResultType>(this.callbacks, exchanges);
 
         try {
             this.mainGroupRunner.execute(workflowState);

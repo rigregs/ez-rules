@@ -20,9 +20,9 @@ public class SingleRuleParameterResolver implements ParameterResolver {
         SingleRuleParameterResolver.PARAMETER_RESOLVERS.add(new ExchangeParameterResolver());
     }
 
-    private final WorkflowState workflowState;
+    private final WorkflowState<?> workflowState;
 
-    public SingleRuleParameterResolver(WorkflowState workflowState) {
+    public SingleRuleParameterResolver(WorkflowState<?> workflowState) {
 
         this.workflowState = workflowState;
     }

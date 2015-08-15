@@ -84,6 +84,10 @@ public final class RulesEngine {
      * Execute the rule engine, you can pass as many exchange you need for the
      * process
      * 
+     * @param <ResultType>
+     *            The result of the rule execution, it populate with the last
+     *            result of a {@When} annotated method of the lasted register of
+     *            a result using the {ExchangeManager}
      * @param exchanges
      *            Initial list of exchanges that the rules will use. The engine
      *            will try to match the parameters to the rules method with the
@@ -95,7 +99,7 @@ public final class RulesEngine {
      * @throws EngineException
      *             If any exception occurs it get wrapped in a EngineException
      */
-    public RuleExecutionResult execute(Object... exchanges) throws EngineException {
+    public <ResultType> ExecutionResult<ResultType> execute(Object... exchanges) throws EngineException {
 
         return internalExecute(true, exchanges);
     }
@@ -103,6 +107,10 @@ public final class RulesEngine {
     /**
      * Execute without trigger internal exceptions in the rules
      * 
+     * @param <ResultType>
+     *            The result of the rule execution, it populate with the last
+     *            result of a {@When} annotated method of the lasted register of
+     *            a result using the {ExchangeManager}
      * @param exchanges
      *            Initial list of exchanges that the rules will use. The engine
      *            will try to match the parameters to the rules method with the
@@ -114,33 +122,41 @@ public final class RulesEngine {
      * @throws EngineException
      *             If any exception occurs it get wrapped in a EngineException
      */
-    public RuleExecutionResult executeSilent(Object... exchanges) throws EngineException {
+    public <ResultType> ExecutionResult<ResultType> executeSilent(Object... exchanges) throws EngineException {
 
         return internalExecute(false, exchanges);
     }
 
-    private RuleExecutionResult internalExecute(boolean throwException, Object... exchanges) throws EngineException {
+    private <ResultType> ExecutionResult<ResultType> internalExecute(boolean throwException, Object... exchanges)
+            throws EngineException {
 
         try {
             validateNullableExchanges(exchanges);
 
-            WorkflowState workflowState = internalExecute(exchanges);
+            WorkflowState<ResultType> workflowState = internalExecute(exchanges);
             if (throwException && workflowState.getThrowable() != null) {
                 throw wrapToEngineException(workflowState.getThrowable());
             }
 
             Throwable throwable = workflowState.getThrowable();
 
-            return new RuleExecutionResult(throwable == null, throwable != null
+            @SuppressWarnings("unused")
+            ExecutionResult<ResultType> ruleExecutionResult = new ExecutionResult<ResultType>(throwable == null, throwable != null
                     ? wrapToEngineException(throwable)
-                    : null, workflowState.getExchangeManager());
+                    : null, workflowState.getExchangeManager().resolveResult());
+
+            return ruleExecutionResult;
         }
         catch (Exception e) {
             if (throwException) {
                 throw wrapToEngineException(e);
             }
 
-            return new RuleExecutionResult(false, wrapToEngineException(e), null);
+            @SuppressWarnings("unused")
+            ExecutionResult<ResultType> ruleExecutionResult = new ExecutionResult<ResultType>(false, wrapToEngineException(e),
+                    null);
+
+            return ruleExecutionResult;
         }
     }
 
@@ -162,7 +178,7 @@ public final class RulesEngine {
         }
     }
 
-    private WorkflowState internalExecute(Object... exchanges) throws EngineException {
+    private <ResultType> WorkflowState<ResultType> internalExecute(Object... exchanges) throws EngineException {
 
         if (!this.validated) {
             ExceptionUtil.throwIllegalArgumentException(

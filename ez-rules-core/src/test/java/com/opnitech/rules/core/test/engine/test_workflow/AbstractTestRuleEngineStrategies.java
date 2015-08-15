@@ -3,7 +3,7 @@ package com.opnitech.rules.core.test.engine.test_workflow;
 import org.junit.Assert;
 
 import com.opnitech.rules.core.EngineException;
-import com.opnitech.rules.core.RuleExecutionResult;
+import com.opnitech.rules.core.ExecutionResult;
 import com.opnitech.rules.core.RulesEngine;
 import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.enums.WhenEnum;
@@ -30,7 +30,7 @@ public class AbstractTestRuleEngineStrategies {
             rulesEngine.registerExecutable(rules[i]);
         }
 
-        RuleExecutionResult execute = rulesEngine.execute(exchange1);
+        ExecutionResult<?> execute = rulesEngine.execute(exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }

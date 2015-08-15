@@ -10,5 +10,5 @@ import com.opnitech.rules.core.executor.util.PriorityList;
  */
 public interface GroupRunnerStrategy {
 
-    WhenResult doExecution(WorkflowState workflowState, PriorityList<Runner> executors) throws Throwable;
+    WhenResult doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable;
 }

@@ -10,9 +10,9 @@ import com.opnitech.rules.core.executor.util.PriorityOrdered;
  */
 public interface Runner extends PriorityOrdered {
 
-    WhenResult execute(WorkflowState workflowState) throws Throwable;
+    WhenResult execute(WorkflowState<?> workflowState) throws Throwable;
 
-    WhenResult executeWhen(WorkflowState workflowState) throws Throwable;
+    WhenResult executeWhen(WorkflowState<?> workflowState) throws Throwable;
 
     void logRuleMetadata(Logger logger, Object producer, int level);
 }

@@ -87,7 +87,7 @@ public abstract class AbstractGroupRunner extends AbstractRunner implements Grou
     }
 
     @Override
-    public WhenResult execute(WorkflowState workflowState) throws Throwable {
+    public WhenResult execute(WorkflowState<?> workflowState) throws Throwable {
 
         return this.groupRunnerStrategy.doExecution(workflowState, this.getExecutors());
     }

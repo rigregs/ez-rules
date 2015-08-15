@@ -3,7 +3,7 @@ package com.opnitech.rules.core.test.engine.test_workflow;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.opnitech.rules.core.RuleExecutionResult;
+import com.opnitech.rules.core.ExecutionResult;
 import com.opnitech.rules.core.RulesEngine;
 import com.opnitech.rules.core.test.engine.test_workflow.callback.TestValidCallback;
 import com.opnitech.rules.core.test.engine.test_workflow.exchanges.Exchange1;
@@ -44,7 +44,7 @@ public class RuleWorkflowExecutionTest {
 
         Exchange1 exchange1 = new Exchange1("TEST");
 
-        RuleExecutionResult execute = rulesEngine.execute(exchange1);
+        ExecutionResult<?> execute = rulesEngine.execute(exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }
@@ -64,7 +64,7 @@ public class RuleWorkflowExecutionTest {
         Exchange1 exchange1 = new Exchange1("TEST");
         Exchange2 exchange2 = new Exchange2("TEST");
 
-        RuleExecutionResult execute = rulesEngine.execute(exchange1, exchange2);
+        ExecutionResult<?> execute = rulesEngine.execute(exchange1, exchange2);
         if (execute.getException() != null) {
             throw execute.getException();
         }
@@ -95,7 +95,7 @@ public class RuleWorkflowExecutionTest {
         RulesEngine rulesEngine = new RulesEngine();
         rulesEngine.registerExecutable(rule);
 
-        RuleExecutionResult execute = rulesEngine.execute(exchange1, exchange2);
+        ExecutionResult<?> execute = rulesEngine.execute(exchange1, exchange2);
         if (execute.getException() != null) {
             throw execute.getException();
         }
@@ -120,7 +120,7 @@ public class RuleWorkflowExecutionTest {
         rulesEngine.registerExecutable(TestValidCallback.class);
         rulesEngine.registerExecutable(rule);
 
-        RuleExecutionResult execute = rulesEngine.execute(exchange1);
+        ExecutionResult<?> execute = rulesEngine.execute(exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }
@@ -135,7 +135,7 @@ public class RuleWorkflowExecutionTest {
         RulesEngine rulesEngine = new RulesEngine();
         rulesEngine.registerExecutable(rule);
 
-        RuleExecutionResult execute = rulesEngine.execute(exchange1);
+        ExecutionResult<?> execute = rulesEngine.execute(exchange1);
         if (execute.getException() != null) {
             throw execute.getException();
         }

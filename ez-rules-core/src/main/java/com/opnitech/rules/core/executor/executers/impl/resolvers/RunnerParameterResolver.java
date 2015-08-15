@@ -8,7 +8,7 @@ import com.opnitech.rules.core.executor.reflection.ParameterMetadata;
  */
 interface RunnerParameterResolver {
 
-    boolean acceptParameter(WorkflowState workflowState, ParameterMetadata methodParameterMetadata);
+    boolean acceptParameter(WorkflowState<?> workflowState, ParameterMetadata methodParameterMetadata);
 
-    Object resolveParameter(WorkflowState workflowState, ParameterMetadata methodParameterMetadata);
+    Object resolveParameter(WorkflowState<?> workflowState, ParameterMetadata methodParameterMetadata);
 }

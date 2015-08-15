@@ -55,7 +55,7 @@ public abstract class AbstractRunner implements Runner {
     }
 
     @Override
-    public WhenResult executeWhen(WorkflowState workflowState) throws Throwable {
+    public WhenResult executeWhen(WorkflowState<?> workflowState) throws Throwable {
 
         if (this.acceptExecutionMethodMetadata != null) {
             WhenExecutor whenExecutor = AbstractRunner.WHEN_EXECUTORS.get(this.acceptExecutionMethodMetadata.getReturnType());
@@ -96,7 +96,7 @@ public abstract class AbstractRunner implements Runner {
     }
 
     private static interface WhenExecutor {
-        WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
+        WhenEnum executeWhen(WorkflowState<?> workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
                 throws Throwable;
     }
 
@@ -107,7 +107,7 @@ public abstract class AbstractRunner implements Runner {
         }
 
         @Override
-        public WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
+        public WhenEnum executeWhen(WorkflowState<?> workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
                 throws Throwable {
 
             MethodRunnerResult<WhenEnum> methodExecutionResult = new MethodRunnerResult<>(rule);
@@ -126,7 +126,7 @@ public abstract class AbstractRunner implements Runner {
         }
 
         @Override
-        public WhenEnum executeWhen(WorkflowState workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
+        public WhenEnum executeWhen(WorkflowState<?> workflowState, MethodMetadata acceptExecutionMethodMetadata, Object rule)
                 throws Throwable {
 
             MethodRunnerResult<Boolean> methodExecutionResult = new MethodRunnerResult<>(rule);

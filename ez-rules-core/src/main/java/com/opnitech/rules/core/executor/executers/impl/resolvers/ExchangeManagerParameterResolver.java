@@ -14,13 +14,13 @@ class ExchangeManagerParameterResolver implements RunnerParameterResolver {
     }
 
     @Override
-    public boolean acceptParameter(WorkflowState workflowState, ParameterMetadata methodParameterMetadata) {
+    public boolean acceptParameter(WorkflowState<?> workflowState, ParameterMetadata methodParameterMetadata) {
 
         return ExchangeManager.class.isAssignableFrom(methodParameterMetadata.getParameterType());
     }
 
     @Override
-    public Object resolveParameter(WorkflowState workflowState, ParameterMetadata methodParameterMetadata) {
+    public Object resolveParameter(WorkflowState<?> workflowState, ParameterMetadata methodParameterMetadata) {
 
         return workflowState.getExchangeManager();
     }

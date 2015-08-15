@@ -9,19 +9,25 @@ import com.opnitech.rules.core.ExchangeManager;
  * executors exchange this data in order to keep the rules stateless.
  * 
  * @author Rigre Gregorio Garciandia Sonora
+ * @param <ResultType>
+ *            Allow the client to define the overall result type of the rule
+ *            execution. There is two ways to define the rule result, using the
+ *            exchange manager injected in the rule or using the return value of
+ *            the {@Then} Annotate method
  */
-public final class WorkflowState {
+public final class WorkflowState<ResultType> {
 
-    private final ExchangeManager exchangeManager;
+    private final ExchangeManager<ResultType> exchangeManager;
 
     private final List<Object> callbacks;
 
     private Throwable throwable;
 
+    @SuppressWarnings("unused")
     public WorkflowState(List<Object> callbacks, Object... exchanges) {
 
         this.callbacks = callbacks;
-        this.exchangeManager = new ExchangeManagerFlow(exchanges);
+        this.exchangeManager = new ExchangeManagerFlow<ResultType>(exchanges);
     }
 
     /**
@@ -30,7 +36,7 @@ public final class WorkflowState {
      * @return Return the exchange Manager allowing to change the state of the
      *         rule Exchanger inside any rule.
      */
-    public ExchangeManager getExchangeManager() {
+    public ExchangeManager<ResultType> getExchangeManager() {
 
         return this.exchangeManager;
     }

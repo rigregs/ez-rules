@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 
  * @author Rigre Gregorio Garciandia Sonora
  */
-public final class RuleExecutionResult implements Serializable {
+public final class ExecutionResult<ResultType> implements Serializable {
 
     private static final long serialVersionUID = 3201692196289859060L;
 
@@ -15,13 +15,13 @@ public final class RuleExecutionResult implements Serializable {
 
     private final EngineException exception;
 
-    private ExchangeManager exchangeManager;
+    private final ResultType result;
 
-    public RuleExecutionResult(boolean success, EngineException exception, ExchangeManager exchangeManager) {
+    public ExecutionResult(boolean success, EngineException exception, ResultType result) {
 
         this.success = success;
         this.exception = exception;
-        this.exchangeManager = exchangeManager;
+        this.result = result;
     }
 
     /**
@@ -45,8 +45,11 @@ public final class RuleExecutionResult implements Serializable {
         return this.exception;
     }
 
-    public ExchangeManager getExchangeManager() {
+    /**
+     * @return The result of the rule engine
+     */
+    public ResultType getResult() {
 
-        return this.exchangeManager;
+        return this.result;
     }
 }

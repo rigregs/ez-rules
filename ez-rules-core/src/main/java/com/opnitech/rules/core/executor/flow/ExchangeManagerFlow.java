@@ -14,21 +14,48 @@ import com.opnitech.rules.core.utils.ClassUtil;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-final class ExchangeManagerFlow implements ExchangeManager {
+final class ExchangeManagerFlow<ResultType> implements ExchangeManager<ResultType> {
+
+    private final static Object RESULT_KEY = new Object();
 
     private final Map<Object, Object> exchanges = new HashMap<>();
 
     public ExchangeManagerFlow(Object... exchanges) {
 
         for (Object exchange : exchanges) {
-            addExchange(exchange);
+            registerExchange(exchange);
         }
     }
 
     /*
      * (non-Javadoc)
+     * @see com.opnitech.rules.core.ExchangeManager#resolveResult()
+     */
+    @Override
+    public ResultType resolveResult() {
+
+        @SuppressWarnings("unchecked")
+        ResultType resultType = (ResultType) this.exchanges.get(ExchangeManagerFlow.RESULT_KEY);
+
+        return resultType;
+    }
+
+    /*
+     * (non-Javadoc)
      * @see
-     * com.opnitech.rules.core.ExchangeManager#resolveExchange(java.lang.Class)
+     * com.opnitech.rules.core.ExchangeManager#registerResult(java.lang.Object)
+     */
+    @Override
+    public void registerResult(ResultType result) {
+
+        registerExchange(ExchangeManagerFlow.RESULT_KEY, result);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.opnitech.rules.core.ExchangeManager#resolveExchangeByClass(java.lang.
+     * Class)
      */
     @Override
     public <ExchangeType> ExchangeType resolveExchangeByClass(Class<ExchangeType> exchangeClass) {
@@ -54,7 +81,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
      * com.opnitech.rules.core.ExchangeManager#addExchange(java.lang.Object)
      */
     @Override
-    public <ExchangeType> void addExchange(ExchangeType exchange) {
+    public <ExchangeType> void registerExchange(ExchangeType exchange) {
 
         Validate.notNull(exchange);
 
@@ -65,7 +92,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
             handleNamedExchange(exchange);
         }
         else {
-            addExchange(exchange.getClass(), exchange);
+            registerExchange(exchange.getClass(), exchange);
         }
 
     }
@@ -77,7 +104,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
         List<?> builderExchanges = exchangeBuilder.getExchanges();
         if (CollectionUtils.isNotEmpty(builderExchanges)) {
             for (Object internalExchange : builderExchanges) {
-                addExchange(internalExchange);
+                registerExchange(internalExchange);
             }
         }
     }
@@ -85,7 +112,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
     private <ExchangeType> void handleNamedExchange(ExchangeType exchange) {
 
         ExchangeBuilder.NamedExchange namedExchange = (ExchangeBuilder.NamedExchange) exchange;
-        addExchange(namedExchange.getName(), namedExchange.getValue());
+        registerExchange(namedExchange.getName(), namedExchange.getValue());
     }
 
     /*
@@ -95,7 +122,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
      * java.lang.Object)
      */
     @Override
-    public <ExchangeType> void addExchange(Object name, ExchangeType exchange) {
+    public <ExchangeType> void registerExchange(Object name, ExchangeType exchange) {
 
         Validate.notNull(exchange);
 
@@ -137,7 +164,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
     public <ExchangeType> void replaceExchange(ExchangeType oldExchange, ExchangeType newExchange) {
 
         removeExchangeByValue(oldExchange);
-        addExchange(newExchange);
+        registerExchange(newExchange);
     }
 
     /*
@@ -150,7 +177,7 @@ final class ExchangeManagerFlow implements ExchangeManager {
     public <ExchangeType> void replaceExchange(Object name, ExchangeType oldExchange, ExchangeType newExchange) {
 
         removeExchangeByValue(oldExchange);
-        addExchange(name, newExchange);
+        registerExchange(name, newExchange);
     }
 
     public Map<Object, Object> getExchanges() {

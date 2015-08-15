@@ -24,7 +24,7 @@ public class TestCallbackRule {
     }
 
     @Then
-    public void action(Exchange1 exchange1, ExchangeManager exchangeManager, @Callback TestValidCallback testValidCallback) {
+    public void action(Exchange1 exchange1, ExchangeManager<?> exchangeManager, @Callback TestValidCallback testValidCallback) {
 
         Validate.notNull(exchange1);
         Validate.notNull(testValidCallback);

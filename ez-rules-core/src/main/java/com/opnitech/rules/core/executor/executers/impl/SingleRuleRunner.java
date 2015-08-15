@@ -44,7 +44,7 @@ public class SingleRuleRunner extends AbstractRunner {
     }
 
     @Override
-    public WhenResult execute(WorkflowState workflowState) throws Throwable {
+    public WhenResult execute(WorkflowState<?> workflowState) throws Throwable {
 
         doExecuteThen(workflowState);
 
@@ -110,7 +110,7 @@ public class SingleRuleRunner extends AbstractRunner {
         }
     }
 
-    protected void doExecuteThen(WorkflowState workflowState) throws Throwable {
+    protected void doExecuteThen(WorkflowState<?> workflowState) throws Throwable {
 
         for (MethodMetadata methodMetadata : this.actionMethodMetadatas) {
 

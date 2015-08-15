@@ -18,7 +18,7 @@ public class AllPossibleGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     @Override
-    public WhenResult doExecution(WorkflowState workflowState, PriorityList<Runner> executors) throws Throwable {
+    public WhenResult doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
 
         WhenEnum finalResult = WhenEnum.REJECT;
 
