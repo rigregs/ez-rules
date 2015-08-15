@@ -45,7 +45,6 @@
 		<ez.maven-gpg-plugin.version>1.5</ez.maven-gpg-plugin.version>
 		<ez.maven-release-plugin.version>2.5</ez.maven-release-plugin.version>
 		<ez.maven-compiler-plugin.version>3.3</ez.maven-compiler-plugin.version>
-		<ez.groovy-eclipse-compiler-plugin.version>2.9.2-01</ez.groovy-eclipse-compiler-plugin.version>
 		<ez.build-helper-maven-plugin.version>1.9.1</ez.build-helper-maven-plugin.version>
 		<ez.maven-eclipse-plugin.version>2.10</ez.maven-eclipse-plugin.version>
 
@@ -54,7 +53,6 @@
 		<ez.junit.version>4.4</ez.junit.version>
 		<ez.commons-lang.version>3.4</ez.commons-lang.version>
 		<ez.commons-collections.version>3.2.1</ez.commons-collections.version>
-		<ez.groovy.version>2.4.4</ez.groovy.version>
 	</properties>
 
 	<scm>
@@ -140,13 +138,6 @@
 				<artifactId>commons-collections</artifactId>
 				<version>${ez.commons-collections.version}</version>
 			</dependency>
-
-			<!-- Groovy -->
-			<dependency>
-				<groupId>org.codehaus.groovy</groupId>
-				<artifactId>groovy-all</artifactId>
-				<version>${ez.groovy.version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -187,13 +178,6 @@
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${ez.maven-compiler-plugin.version}</version>
-				</plugin>
-
-				<plugin>
-					<groupId>org.codehaus.groovy</groupId>
-					<artifactId>groovy-eclipse-compiler</artifactId>
-					<version>${ez.groovy-eclipse-compiler-plugin.version}</version>
-					<extensions>true</extensions>
 				</plugin>
 
 				<plugin>
