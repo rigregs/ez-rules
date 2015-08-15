@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import com.opnitech.rules.core.annotations.rule.Rule;
 import com.opnitech.rules.core.annotations.rule.Then;
 import com.opnitech.rules.core.enums.WhenEnum;
-import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.executers.impl.resolvers.SingleRuleParameterResolver;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.reflection.MethodMetadata;
@@ -44,17 +43,11 @@ public class SingleRuleRunner extends AbstractRunner {
     }
 
     @Override
-    public WhenResult execute(WorkflowState<?> workflowState) throws Throwable {
+    public WhenEnum execute(WorkflowState<?> workflowState) throws Throwable {
 
         doExecuteThen(workflowState);
 
-        return new WhenResult(WhenEnum.ACCEPT);
-    }
-
-    @Override
-    protected WhenResult createWhenResult(WhenEnum whenEnum) {
-
-        return new WhenResult(whenEnum);
+        return WhenEnum.ACCEPT;
     }
 
     @Override
@@ -114,7 +107,14 @@ public class SingleRuleRunner extends AbstractRunner {
 
         for (MethodMetadata methodMetadata : this.actionMethodMetadatas) {
 
-            methodMetadata.execute(new MethodRunnerResult<Void>(getExecutable()), new SingleRuleParameterResolver(workflowState));
+            @SuppressWarnings("unused")
+            MethodRunnerResult<?> methodExecutionResult = new MethodRunnerResult<Object>(getExecutable());
+
+            methodMetadata.execute(methodExecutionResult, new SingleRuleParameterResolver(workflowState));
+
+            if (!Void.TYPE.isAssignableFrom(methodMetadata.getReturnType())) {
+                workflowState.getExchangeManager().registerResult(methodExecutionResult.getResult());
+            }
         }
     }
 

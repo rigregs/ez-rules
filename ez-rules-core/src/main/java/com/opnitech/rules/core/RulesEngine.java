@@ -140,10 +140,14 @@ public final class RulesEngine {
 
             Throwable throwable = workflowState.getThrowable();
 
-            @SuppressWarnings("unused")
+            @SuppressWarnings(
+                {
+                    "unchecked",
+                    "unused"
+                })
             ExecutionResult<ResultType> ruleExecutionResult = new ExecutionResult<ResultType>(throwable == null, throwable != null
                     ? wrapToEngineException(throwable)
-                    : null, workflowState.getExchangeManager().resolveResult());
+                    : null, (ResultType) workflowState.getExchangeManager().resolveResult());
 
             return ruleExecutionResult;
         }

@@ -1,7 +1,7 @@
 package com.opnitech.rules.core.executor.executers.impl.strategy;
 
+import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.executor.executers.Runner;
-import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.util.PriorityList;
 
@@ -10,5 +10,5 @@ import com.opnitech.rules.core.executor.util.PriorityList;
  */
 public interface GroupRunnerStrategy {
 
-    WhenResult doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable;
+    WhenEnum doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable;
 }

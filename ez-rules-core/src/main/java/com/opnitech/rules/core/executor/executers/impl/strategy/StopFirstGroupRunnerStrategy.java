@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.executor.executers.Runner;
-import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.util.PriorityList;
 
@@ -18,23 +17,23 @@ public class StopFirstGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     @Override
-    public WhenResult doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
+    public WhenEnum doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
 
         for (Runner runner : executors) {
 
-            WhenResult executeWhen = runner.executeWhen(workflowState);
+            WhenEnum executeWhen = runner.executeWhen(workflowState);
 
-            if (executeWhen.getWhenEnum().getPriority() < 0) {
+            if (executeWhen.getPriority() < 0) {
                 return executeWhen;
             }
 
-            if (Objects.equals(WhenEnum.ACCEPT, executeWhen.getWhenEnum())) {
-                WhenResult whenExecuteResult = runner.execute(workflowState);
+            if (Objects.equals(WhenEnum.ACCEPT, executeWhen)) {
+                WhenEnum whenExecuteResult = runner.execute(workflowState);
 
                 return whenExecuteResult;
             }
         }
 
-        return new WhenResult(WhenEnum.REJECT);
+        return WhenEnum.REJECT;
     }
 }

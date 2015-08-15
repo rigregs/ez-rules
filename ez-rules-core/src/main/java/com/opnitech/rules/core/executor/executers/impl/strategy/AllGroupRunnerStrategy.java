@@ -4,7 +4,6 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.executor.executers.Runner;
-import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.util.PriorityList;
 
@@ -19,16 +18,16 @@ public class AllGroupRunnerStrategy implements GroupRunnerStrategy {
     }
 
     @Override
-    public WhenResult doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
+    public WhenEnum doExecution(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
 
-        WhenResult allRunnerWhen = checkAllRunnerWhen(workflowState, executors);
-        if (ObjectUtils.notEqual(WhenEnum.ACCEPT, allRunnerWhen.getWhenEnum())) {
+        WhenEnum allRunnerWhen = checkAllRunnerWhen(workflowState, executors);
+        if (ObjectUtils.notEqual(WhenEnum.ACCEPT, allRunnerWhen)) {
             return allRunnerWhen;
         }
 
         executeActions(workflowState, executors);
 
-        return new WhenResult(WhenEnum.ACCEPT);
+        return WhenEnum.ACCEPT;
     }
 
     private void executeActions(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
@@ -38,17 +37,17 @@ public class AllGroupRunnerStrategy implements GroupRunnerStrategy {
         }
     }
 
-    private WhenResult checkAllRunnerWhen(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
+    private WhenEnum checkAllRunnerWhen(WorkflowState<?> workflowState, PriorityList<Runner> executors) throws Throwable {
 
         for (Runner runner : executors) {
 
-            WhenResult executeWhen = runner.executeWhen(workflowState);
+            WhenEnum executeWhen = runner.executeWhen(workflowState);
 
-            if (ObjectUtils.notEqual(WhenEnum.ACCEPT, executeWhen.getWhenEnum())) {
+            if (ObjectUtils.notEqual(WhenEnum.ACCEPT, executeWhen)) {
                 return executeWhen;
             }
         }
 
-        return new WhenResult(WhenEnum.ACCEPT);
+        return WhenEnum.ACCEPT;
     }
 }

@@ -17,17 +17,16 @@ import com.opnitech.rules.core.ExchangeManager;
  */
 public final class WorkflowState<ResultType> {
 
-    private final ExchangeManager<ResultType> exchangeManager;
+    private final ExchangeManager exchangeManager;
 
     private final List<Object> callbacks;
 
     private Throwable throwable;
 
-    @SuppressWarnings("unused")
     public WorkflowState(List<Object> callbacks, Object... exchanges) {
 
         this.callbacks = callbacks;
-        this.exchangeManager = new ExchangeManagerFlow<ResultType>(exchanges);
+        this.exchangeManager = new ExchangeManagerFlow(exchanges);
     }
 
     /**
@@ -36,7 +35,7 @@ public final class WorkflowState<ResultType> {
      * @return Return the exchange Manager allowing to change the state of the
      *         rule Exchanger inside any rule.
      */
-    public ExchangeManager<ResultType> getExchangeManager() {
+    public ExchangeManager getExchangeManager() {
 
         return this.exchangeManager;
     }

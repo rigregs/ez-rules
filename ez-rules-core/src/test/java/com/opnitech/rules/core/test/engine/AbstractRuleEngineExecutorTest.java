@@ -29,18 +29,18 @@ public class AbstractRuleEngineExecutorTest {
         }
     }
 
-    protected void validateRule(Object... executables) throws EngineException {
+    protected <ResultType> ExecutionResult<ResultType> validateRule(Object... executables) throws EngineException {
 
-        validateWithPreconditionsRule(true, true, executables);
+        return validateWithPreconditionsRule(true, true, executables);
     }
 
-    protected void validateWithPreconditionsRule(boolean executeWhen, boolean executeAtLeastOneThen, Object... executables)
-            throws EngineException {
+    protected <ResultType> ExecutionResult<ResultType> validateWithPreconditionsRule(boolean executeWhen,
+            boolean executeAtLeastOneThen, Object... executables) throws EngineException {
 
         RulesEngine engine = new RulesEngine();
         engine.setExecutables(Arrays.asList(executables));
 
-        ExecutionResult<?> execute = engine.execute();
+        ExecutionResult<ResultType> execute = engine.execute();
         if (!execute.isSuccess()) {
             throw execute.getException();
         }
@@ -53,6 +53,8 @@ public class AbstractRuleEngineExecutorTest {
                 Assert.assertEquals(executeAtLeastOneThen, !rule.getExecuteThens().isEmpty());
             }
         }
+
+        return execute;
     }
 
     protected void validateCallback(AbstractCallbackRule callbackRule, Class<?>[] expectedWhenCallbacks,

@@ -55,7 +55,7 @@ public class RuleRunnerDefinitionValidator extends AbstractValidator
         AnnotationValidatorUtil.validateAnnotatedMethods(executable, When.class, 1, 1, true, WhenEnum.class, Boolean.class,
                 boolean.class);
 
-        AnnotationValidatorUtil.validateAnnotatedMethods(executable, Then.class, 1, Integer.MAX_VALUE, true, Void.TYPE);
+        AnnotationValidatorUtil.validateAnnotatedMethods(executable, Then.class, 1, Integer.MAX_VALUE, true);
 
         validateValidPriorityMethod(executable);
         validateGroupKeyMethod(executable);

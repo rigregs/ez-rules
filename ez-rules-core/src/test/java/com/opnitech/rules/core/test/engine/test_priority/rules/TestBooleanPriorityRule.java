@@ -31,5 +31,6 @@ public class TestBooleanPriorityRule extends AbstractRule<Boolean> {
     @Then
     public void then() {
 
-        doExecuteThen(TestBooleanPriorityRule.class.getEnclosingMethod());    }
+        doExecuteThen(TestBooleanPriorityRule.class.getEnclosingMethod());
+    }
 }

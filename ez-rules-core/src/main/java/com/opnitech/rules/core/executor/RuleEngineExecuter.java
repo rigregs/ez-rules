@@ -39,8 +39,6 @@ public class RuleEngineExecuter {
 
     private List<Object> callbacks = new ArrayList<>();
 
-    // private PriorityList<Runner> executors = new PriorityList<>();
-
     private ExecutionStrategyEnum executionStrategy;
 
     private MainGroupRunner mainGroupRunner;

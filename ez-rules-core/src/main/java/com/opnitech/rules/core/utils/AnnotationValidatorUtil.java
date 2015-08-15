@@ -76,7 +76,6 @@ public final class AnnotationValidatorUtil {
 
         Validate.notNull(possibleAnnotated);
         Validate.notNull(annotationClass);
-        Validate.isTrue(ArrayUtils.isNotEmpty(possibleReturnTypes));
         Validate.isTrue(minExpectedMethodCount == Integer.MIN_VALUE || minExpectedMethodCount >= 0);
         Validate.isTrue(maxExpectedMethodCount == Integer.MAX_VALUE || maxExpectedMethodCount >= 0);
 

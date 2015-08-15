@@ -14,7 +14,7 @@ import com.opnitech.rules.core.utils.ClassUtil;
 /**
  * @author Rigre Gregorio Garciandia Sonora
  */
-final class ExchangeManagerFlow<ResultType> implements ExchangeManager<ResultType> {
+final class ExchangeManagerFlow implements ExchangeManager {
 
     private final static Object RESULT_KEY = new Object();
 
@@ -32,7 +32,7 @@ final class ExchangeManagerFlow<ResultType> implements ExchangeManager<ResultTyp
      * @see com.opnitech.rules.core.ExchangeManager#resolveResult()
      */
     @Override
-    public ResultType resolveResult() {
+    public <ResultType> ResultType resolveResult() {
 
         @SuppressWarnings("unchecked")
         ResultType resultType = (ResultType) this.exchanges.get(ExchangeManagerFlow.RESULT_KEY);
@@ -46,7 +46,7 @@ final class ExchangeManagerFlow<ResultType> implements ExchangeManager<ResultTyp
      * com.opnitech.rules.core.ExchangeManager#registerResult(java.lang.Object)
      */
     @Override
-    public void registerResult(ResultType result) {
+    public <ResultType> void registerResult(ResultType result) {
 
         registerExchange(ExchangeManagerFlow.RESULT_KEY, result);
     }

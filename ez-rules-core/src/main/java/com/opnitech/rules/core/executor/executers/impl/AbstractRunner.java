@@ -11,7 +11,6 @@ import com.opnitech.rules.core.annotations.rule.Priority;
 import com.opnitech.rules.core.annotations.rule.When;
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.executor.executers.Runner;
-import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.executers.impl.resolvers.SingleRuleParameterResolver;
 import com.opnitech.rules.core.executor.flow.WorkflowState;
 import com.opnitech.rules.core.executor.reflection.MethodMetadata;
@@ -40,8 +39,6 @@ public abstract class AbstractRunner implements Runner {
         this.acceptExecutionMethodMetadata = createAcceptExecutionMethodMetadata();
     }
 
-    protected abstract WhenResult createWhenResult(WhenEnum whenEnum);
-
     private MethodMetadata createAcceptExecutionMethodMetadata() throws Exception {
 
         if (this.executable == null) {
@@ -55,16 +52,16 @@ public abstract class AbstractRunner implements Runner {
     }
 
     @Override
-    public WhenResult executeWhen(WorkflowState<?> workflowState) throws Throwable {
+    public WhenEnum executeWhen(WorkflowState<?> workflowState) throws Throwable {
 
         if (this.acceptExecutionMethodMetadata != null) {
             WhenExecutor whenExecutor = AbstractRunner.WHEN_EXECUTORS.get(this.acceptExecutionMethodMetadata.getReturnType());
             Validate.notNull(whenExecutor);
 
-            return createWhenResult(whenExecutor.executeWhen(workflowState, this.acceptExecutionMethodMetadata, this.executable));
+            return whenExecutor.executeWhen(workflowState, this.acceptExecutionMethodMetadata, this.executable);
         }
 
-        return createWhenResult(WhenEnum.ACCEPT);
+        return WhenEnum.ACCEPT;
     }
 
     protected int resolvePriority(int annotationPriority) throws Exception {

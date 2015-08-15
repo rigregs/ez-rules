@@ -11,7 +11,6 @@ import com.opnitech.rules.core.enums.ExecutionStrategyEnum;
 import com.opnitech.rules.core.enums.WhenEnum;
 import com.opnitech.rules.core.executor.executers.GroupRunner;
 import com.opnitech.rules.core.executor.executers.Runner;
-import com.opnitech.rules.core.executor.executers.WhenResult;
 import com.opnitech.rules.core.executor.executers.impl.strategy.AllGroupRunnerStrategy;
 import com.opnitech.rules.core.executor.executers.impl.strategy.AllPossibleGroupRunnerStrategy;
 import com.opnitech.rules.core.executor.executers.impl.strategy.GroupRunnerStrategy;
@@ -50,12 +49,6 @@ public abstract class AbstractGroupRunner extends AbstractRunner implements Grou
     protected abstract Object retrieveGroupDefinitionType();
 
     @Override
-    protected WhenResult createWhenResult(WhenEnum whenEnum) {
-
-        return new WhenResult(whenEnum);
-    }
-
-    @Override
     public void logRuleMetadata(Logger logger, Object producer, int level) {
 
         LoggerUtil.info(logger, level, producer, null,
@@ -87,7 +80,7 @@ public abstract class AbstractGroupRunner extends AbstractRunner implements Grou
     }
 
     @Override
-    public WhenResult execute(WorkflowState<?> workflowState) throws Throwable {
+    public WhenEnum execute(WorkflowState<?> workflowState) throws Throwable {
 
         return this.groupRunnerStrategy.doExecution(workflowState, this.getExecutors());
     }

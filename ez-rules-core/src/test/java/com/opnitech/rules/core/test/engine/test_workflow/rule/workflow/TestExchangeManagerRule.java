@@ -29,7 +29,7 @@ public class TestExchangeManagerRule {
     }
 
     @Then(priority = 1)
-    public void action1(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager<?> exchangeManager) {
+    public void action1(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager exchangeManager) {
 
         Validate.notNull(exchangeManager);
 
@@ -40,7 +40,7 @@ public class TestExchangeManagerRule {
     }
 
     @Then(priority = 2)
-    public void actionAddExchange(Exchange1 exchange1, ExchangeManager<?> exchangeManager) {
+    public void actionAddExchange(Exchange1 exchange1, ExchangeManager exchangeManager) {
 
         Validate.notNull(exchangeManager);
 
@@ -52,7 +52,7 @@ public class TestExchangeManagerRule {
     }
 
     @Then(priority = 3)
-    public void actionValidate3(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager<?> exchangeManager) {
+    public void actionValidate3(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager exchangeManager) {
 
         Validate.notNull(exchangeManager);
 
@@ -64,7 +64,7 @@ public class TestExchangeManagerRule {
     }
 
     @Then(priority = 4)
-    public void actionReplace4(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager<?> exchangeManager) {
+    public void actionReplace4(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager exchangeManager) {
 
         Validate.notNull(exchangeManager);
 
@@ -76,7 +76,7 @@ public class TestExchangeManagerRule {
     }
 
     @Then(priority = 5)
-    public void actionCheckNewExchange4(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager<?> exchangeManager) {
+    public void actionCheckNewExchange4(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager exchangeManager) {
 
         Validate.notNull(exchangeManager);
 
@@ -88,7 +88,7 @@ public class TestExchangeManagerRule {
     }
 
     @Then(priority = 6)
-    public void actionRemoveExchange6(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager<?> exchangeManager) {
+    public void actionRemoveExchange6(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager exchangeManager) {
 
         Validate.notNull(exchangeManager);
 
@@ -101,7 +101,7 @@ public class TestExchangeManagerRule {
     }
 
     @Then(priority = 7)
-    public void actionCheckRemoveExchange7(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager<?> exchangeManager) {
+    public void actionCheckRemoveExchange7(Exchange1 exchange1, Exchange2 exchange2, ExchangeManager exchangeManager) {
 
         Validate.notNull(exchangeManager);
 
