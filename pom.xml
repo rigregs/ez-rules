@@ -5,7 +5,7 @@
 
 	<groupId>com.opnitech.rules</groupId>
 	<artifactId>ez-rules</artifactId>
-	<version>0.3-beta</version>
+	<version>0.4-beta-SNAPSHOT</version>
 
 	<modules>
 		<module>ez-rules-core</module>
