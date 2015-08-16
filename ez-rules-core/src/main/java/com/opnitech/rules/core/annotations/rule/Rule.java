@@ -18,6 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 @Target(ElementType.TYPE)
 public @interface Rule {
 
+    String ruleId() default StringUtils.EMPTY;
+
     String description() default StringUtils.EMPTY;
 
     int priority() default 0;
