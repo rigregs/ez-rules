@@ -9,19 +9,15 @@ import java.lang.reflect.Proxy;
  */
 public class ParamToBeProxyFactory {
 
-    public static Object createProxy(final ParamToBeProxy paramToBeProxy) {
+    public static Object createProxy(final ParamToBeProxy paramToBeProxy, Class<?>[] interfaces) {
 
-        return Proxy.newProxyInstance(ParamToBeProxyFactory.class.getClassLoader(), new Class[]
-            {
-                ParamToBeProxyInterface1.class,
-                ParamToBeProxyInterface2.class
-            }, new InvocationHandler() {
+        return Proxy.newProxyInstance(ParamToBeProxyFactory.class.getClassLoader(), interfaces, new InvocationHandler() {
 
-                @Override
-                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-                    return paramToBeProxy.getValue();
-                }
-            });
+                return paramToBeProxy.getValue();
+            }
+        });
     }
 }

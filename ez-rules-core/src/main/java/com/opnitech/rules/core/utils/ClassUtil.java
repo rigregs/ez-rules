@@ -195,7 +195,7 @@ public final class ClassUtil {
             if (entity != null) {
                 Class<?>[] entityInterfaces = entity.getClass().getInterfaces();
                 for (Class<?> entityInterface : entityInterfaces) {
-                    if (entityInterface.isAssignableFrom(entityClass)) {
+                    if (entityClass.isAssignableFrom(entityInterface)) {
                         return (EntityType) entity;
                     }
                 }
