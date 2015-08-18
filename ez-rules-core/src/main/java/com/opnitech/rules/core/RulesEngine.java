@@ -59,9 +59,9 @@ public final class RulesEngine {
 
     private Lock ruleEngineExecuterLock = new ReentrantLock();
 
-    private final String description;
+    private String description;
 
-    private final ExecutionStrategyEnum executionStrategy;
+    private ExecutionStrategyEnum executionStrategy;
 
     public RulesEngine() {
 
@@ -78,7 +78,7 @@ public final class RulesEngine {
         Validate.notNull(executionStrategy);
 
         this.executionStrategy = executionStrategy;
-        this.description = description;
+        this.setDescription(description);
     }
 
     /**
@@ -297,7 +297,7 @@ public final class RulesEngine {
 
             if (RulesEngine.LOGGER.isInfoEnabled()) {
 
-                LoggerUtil.info(RulesEngine.LOGGER, this, this.description,
+                LoggerUtil.info(RulesEngine.LOGGER, this, this.getDescription(),
                         "Register Executable. Type: ''{0}'', Executable:''{1}''", annotationClass, executable);
             }
 
@@ -370,5 +370,28 @@ public final class RulesEngine {
         catch (Exception e) {
             throw new EngineException(e);
         }
+    }
+
+    public ExecutionStrategyEnum getExecutionStrategy() {
+
+        return this.executionStrategy;
+    }
+
+    public void setExecutionStrategy(ExecutionStrategyEnum executionStrategy) {
+
+        Validate.notNull(executionStrategy, "Execution strategy cannot be null.");
+        this.executionStrategy = executionStrategy;
+
+        clearExecuter();
+    }
+
+    public String getDescription() {
+
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+
+        this.description = description;
     }
 }
