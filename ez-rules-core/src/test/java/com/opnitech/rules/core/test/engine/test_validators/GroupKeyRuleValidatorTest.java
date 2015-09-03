@@ -41,7 +41,7 @@ public class GroupKeyRuleValidatorTest extends AbstractRuleEngineExecutorTest {
     @Test
     public void testValidGroupRuleWithValidGroupKeyButNullResult() {
 
-        validateExceptionRule(new ValidGroupRuleWithValidGroupKey(null));
+        validateRule(new ValidGroupRuleWithValidGroupKey(null));
     }
 
     @Test

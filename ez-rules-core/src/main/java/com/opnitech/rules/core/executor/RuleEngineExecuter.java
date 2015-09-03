@@ -198,7 +198,7 @@ public class RuleEngineExecuter {
 
         String groupKey = (String) methodWithGroupAnnotation.invoke(executable);
 
-        if (StringUtils.isBlank(groupKey)) {
+        if (groupKey != null && StringUtils.isBlank(groupKey)) {
             ExceptionUtil.throwIllegalArgumentException(
                     "Invalid Group Key method in the rule. A group method cannot return a blank String. Rule: ''{0}'', Group Key Method: ''{1}''",
                     executable, methodWithGroupAnnotation.getName());
