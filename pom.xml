@@ -52,7 +52,7 @@
 		<ez.org.slf4j.version>1.7.12</ez.org.slf4j.version>
 		<ez.junit.version>4.4</ez.junit.version>
 		<ez.commons-lang.version>3.4</ez.commons-lang.version>
-		<ez.commons-collections.version>3.2.1</ez.commons-collections.version>
+		<ez.commons-collections.version>3.2.2</ez.commons-collections.version>
 	</properties>
 
 	<scm>
